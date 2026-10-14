@@ -354,7 +354,7 @@ const TB=[ // 右侧按钮布局（画布坐标）
  {id:'molotov',x:W-150,y:H-265,r:40,label:'燃烧瓶',drag:true},{id:'roar',x:W-55,y:H-275,r:36,label:'咆哮'},{id:'domain',x:W-345,y:H-150,r:38,label:'领域'},
  {id:'dash',x:W-360,y:H-55,r:36,label:'闪避'},{id:'pick',x:W-50,y:H-30-170,r:0,label:''}];
 TB[7]={id:'pick',x:W-330,y:H-250,r:32,label:'拾取'};
-function toCanvas(t){const r=C.getBoundingClientRect();return{x:(t.clientX-r.left)*W/r.width,y:(t.clientY-r.top)*H/r.height}}
+function toCanvas(t){const r=C.getBoundingClientRect();const rw=r.width||1,rh=r.height||1;return{x:(t.clientX-r.left)*W/rw,y:(t.clientY-r.top)*H/rh}}
 function nearestEnemy(r=520){let b=null,bd=r;for(const e of S.enemies){if(e.dead)continue;const d=dist(e,S.p);if(d<bd){bd=d;b=e}}return b}
 function autoAim(){const e=nearestEnemy();if(e)return{x:e.x,y:e.y-20};const p=S.p;return{x:p.x+p.face*100,y:p.y-20}}
 function clusterAim(){let best=null,bs=-1;for(const e of S.enemies){if(e.dead||dist(e,S.p)>420)continue;let n=0;for(const o of S.enemies)if(!o.dead&&dist(o,e)<120)n++;if(n>bs){bs=n;best=e}}return best?{x:best.x,y:best.y}:autoAim()}
@@ -384,6 +384,15 @@ function drawTouch(){if(S.state!=='play'&&S.state!=='levelup')return;
   if(cd>0)text(cd.toFixed(1),b.x,b.y-b.r-6,16,'#fff','center',true,3);if(P?.cost)text(P.cost+'',b.x+b.r*0.7,b.y+b.r*0.85,13,'#ffb347','center',true,3)}
  for(const d of Object.values(T.drag)){const pt=Math.hypot(d.x-d.sx,d.y-d.sy)>25?dragPoint(d):clusterAim();const r=d.b.id==='leap'?SK.leap.radius:SK.molotov.radius;
   g.save();g.translate(-S.cam.x,-S.cam.y);g.strokeStyle='#ffd400';g.lineWidth=4;g.setLineDash([10,8]);g.beginPath();g.moveTo(S.p.x,S.p.y);g.lineTo(pt.x,pt.y);g.stroke();g.setLineDash([]);ell(pt.x,pt.y,r,r/1.3);g.stroke();g.restore()}}
-// 画布自适应
-function fit(){const s=Math.min(innerWidth/W,innerHeight/H);C.style.width=W*s+'px';C.style.height=H*s+'px'}addEventListener('resize',fit);fit();
+// 画布自适应（iOS 旋转后 innerHeight 可能滞后，优先 visualViewport + 100dvh）
+const rotEl=document.getElementById('rot'),rotBtn=document.getElementById('rot-go');
+if(sessionStorage.getItem('rot-dismiss')==='1')document.documentElement.classList.add('rot-dismissed');
+rotBtn?.addEventListener('click',()=>{sessionStorage.setItem('rot-dismiss','1');document.documentElement.classList.add('rot-dismissed');rotEl&&(rotEl.style.display='none');scheduleFit()});
+function viewSize(){const vv=window.visualViewport;return{w:vv?.width??innerWidth,h:vv?.height??innerHeight}}
+function fit(){const{w,h}=viewSize();if(w<1||h<1)return;const s=Math.min(w/W,h/H);C.style.width=W*s+'px';C.style.height=H*s+'px';
+ document.documentElement.style.setProperty('--app-h',h+'px');if(rotEl&&!document.documentElement.classList.contains('rot-dismissed')){const land=matchMedia('(orientation: landscape)').matches;rotEl.style.display=land?'none':'';rotEl.setAttribute('aria-hidden',land?'true':'false')}}
+function scheduleFit(){fit();requestAnimationFrame(fit);setTimeout(fit,80);setTimeout(fit,300)}
+addEventListener('resize',scheduleFit);addEventListener('orientationchange',scheduleFit);
+window.visualViewport?.addEventListener('resize',scheduleFit);window.visualViewport?.addEventListener('scroll',scheduleFit);
+scheduleFit();
 window.__game={get S(){return S},Art,hurt,dash,startWave,openShop,spawn,elitePack,dropLoot,tryCast,setWave:n=>{S.wave=n-1;startWave()}};
