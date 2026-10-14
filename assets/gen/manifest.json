@@ -212,7 +212,8 @@
   "btn_gray": "assets/gen/ui_btn_gray.png",
   "panel": "assets/gen/ui_panel.png",
   "card_shop": "assets/gen/ui_card_shop.png",
-  "card_level": "assets/gen/ui_card_level.png"
+  "card_level": "assets/gen/ui_card_level.png",
+  "icon_dash": "assets/gen/ui_icon_dash.png"
  },
  "_ground": "assets/gen/ground_kowloon.jpg",
  "_edge": "assets/gen/edge_kowloon.png"
