@@ -1,0 +1,219 @@
+{
+ "hero_idle": {
+  "src": "assets/gen/hero_idle.png",
+  "frames": 4,
+  "w": 71,
+  "h": 114,
+  "ax": 0.5,
+  "ay": 0.9824561403508771
+ },
+ "hero_run": {
+  "src": "assets/gen/hero_run.png",
+  "frames": 6,
+  "w": 85,
+  "h": 107,
+  "ax": 0.5,
+  "ay": 0.9813084112149533
+ },
+ "hero_combo": {
+  "src": "assets/gen/hero_combo.png",
+  "frames": 6,
+  "w": 146,
+  "h": 102,
+  "ax": 0.5,
+  "ay": 0.9803921568627451
+ },
+ "hero_sweep": {
+  "src": "assets/gen/hero_sweep.png",
+  "frames": 6,
+  "w": 192,
+  "h": 147,
+  "ax": 0.5,
+  "ay": 0.9863945578231292
+ },
+ "hero_dodge": {
+  "src": "assets/gen/hero_dodge.png",
+  "frames": 4,
+  "w": 144,
+  "h": 107,
+  "ax": 0.5,
+  "ay": 0.9813084112149533
+ },
+ "hero_hit": {
+  "src": "assets/gen/hero_hit.png",
+  "frames": 3,
+  "w": 131,
+  "h": 118,
+  "ax": 0.5,
+  "ay": 0.9830508474576272
+ },
+ "hero_death": {
+  "src": "assets/gen/hero_death.png",
+  "frames": 5,
+  "w": 173,
+  "h": 110,
+  "ax": 0.5,
+  "ay": 0.9818181818181818
+ },
+ "cultivator_move": {
+  "src": "assets/gen/cultivator_move.png",
+  "frames": 4,
+  "w": 86,
+  "h": 104,
+  "ax": 0.5,
+  "ay": 0.9807692307692307
+ },
+ "cultivator_attack": {
+  "src": "assets/gen/cultivator_attack.png",
+  "frames": 4,
+  "w": 117,
+  "h": 95,
+  "ax": 0.5,
+  "ay": 0.9789473684210527
+ },
+ "cultivator_death": {
+  "src": "assets/gen/cultivator_death.png",
+  "frames": 4,
+  "w": 118,
+  "h": 87,
+  "ax": 0.5,
+  "ay": 0.9770114942528736
+ },
+ "taoist_move": {
+  "src": "assets/gen/taoist_move.png",
+  "frames": 4,
+  "w": 78,
+  "h": 104,
+  "ax": 0.5,
+  "ay": 0.9807692307692307
+ },
+ "taoist_attack": {
+  "src": "assets/gen/taoist_attack.png",
+  "frames": 4,
+  "w": 121,
+  "h": 98,
+  "ax": 0.5,
+  "ay": 0.9795918367346939
+ },
+ "taoist_death": {
+  "src": "assets/gen/taoist_death.png",
+  "frames": 4,
+  "w": 117,
+  "h": 94,
+  "ax": 0.5,
+  "ay": 0.9787234042553191
+ },
+ "monk_move": {
+  "src": "assets/gen/monk_move.png",
+  "frames": 4,
+  "w": 84,
+  "h": 104,
+  "ax": 0.5,
+  "ay": 0.9807692307692307
+ },
+ "monk_attack": {
+  "src": "assets/gen/monk_attack.png",
+  "frames": 4,
+  "w": 119,
+  "h": 119,
+  "ax": 0.5,
+  "ay": 0.9831932773109243
+ },
+ "monk_death": {
+  "src": "assets/gen/monk_death.png",
+  "frames": 4,
+  "w": 123,
+  "h": 94,
+  "ax": 0.5,
+  "ay": 0.9787234042553191
+ },
+ "paladin_move": {
+  "src": "assets/gen/paladin_move.png",
+  "frames": 4,
+  "w": 97,
+  "h": 111,
+  "ax": 0.5,
+  "ay": 0.9819819819819819
+ },
+ "paladin_attack": {
+  "src": "assets/gen/paladin_attack.png",
+  "frames": 4,
+  "w": 151,
+  "h": 100,
+  "ax": 0.5,
+  "ay": 0.98
+ },
+ "paladin_death": {
+  "src": "assets/gen/paladin_death.png",
+  "frames": 4,
+  "w": 158,
+  "h": 103,
+  "ax": 0.5,
+  "ay": 0.9805825242718447
+ },
+ "vfx_punch": {
+  "src": "assets/gen/vfx_punch.png",
+  "frames": 6,
+  "w": 180,
+  "h": 202,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_sweep": {
+  "src": "assets/gen/vfx_sweep.png",
+  "frames": 6,
+  "w": 184,
+  "h": 139,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_slam": {
+  "src": "assets/gen/vfx_slam.png",
+  "frames": 6,
+  "w": 186,
+  "h": 181,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_fire": {
+  "src": "assets/gen/vfx_fire.png",
+  "frames": 6,
+  "w": 189,
+  "h": 145,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_aura": {
+  "src": "assets/gen/vfx_aura.png",
+  "frames": 6,
+  "w": 192,
+  "h": 193,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_beam": {
+  "src": "assets/gen/vfx_beam.png",
+  "frames": 6,
+  "w": 165,
+  "h": 210,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "_ui": {
+  "orb_hp": "assets/gen/ui_orb_hp.png",
+  "orb_fury": "assets/gen/ui_orb_fury.png",
+  "icon_fist": "assets/gen/ui_icon_fist.png",
+  "icon_pipe": "assets/gen/ui_icon_pipe.png",
+  "icon_kick": "assets/gen/ui_icon_kick.png",
+  "icon_bottle": "assets/gen/ui_icon_bottle.png",
+  "icon_roar": "assets/gen/ui_icon_roar.png",
+  "icon_flame": "assets/gen/ui_icon_flame.png",
+  "btn_yellow": "assets/gen/ui_btn_yellow.png",
+  "btn_gray": "assets/gen/ui_btn_gray.png",
+  "panel": "assets/gen/ui_panel.png",
+  "card_shop": "assets/gen/ui_card_shop.png",
+  "card_level": "assets/gen/ui_card_level.png"
+ },
+ "_ground": "assets/gen/ground_kowloon.jpg",
+ "_edge": "assets/gen/edge_kowloon.png"
+}

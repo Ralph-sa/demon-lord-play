@@ -45,7 +45,29 @@ export const Art={sprites:{},icons:{},bg:null,
   for(const [k,o] of Object.entries(ENEMY)){const S=k==='archangel'?192:96;for(const a of['run','attack'])this.sprites[k+'_'+a]=[0,1,2,3].map(f=>humanoid(o,a,f,S))}
   this.bg=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src='assets/arena_kowloon.jpg'});
   this.floor=this.makeFloor();
+  try{await this.loadGen()}catch(e){console.warn('生成美术加载失败，使用程序化兜底',e)}
  },
+ // 定稿美术（assets/gen/manifest.json）：切成与程序化精灵同规格的帧（底部锚点位于 0.92 高度处）
+ gen:{},ui:{},
+ async loadGen(){
+  const M=await (await fetch('assets/gen/manifest.json')).json();
+  const img=s=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=s});
+  const frames=(im,m,H)=>{const out=[],s=H/m.h;for(let f=0;f<m.frames;f++){const w=Math.ceil(m.w*s),h=Math.ceil(m.h*s/0.92*(m.ay||1)),c=cv(Math.max(w,96),Math.max(h,10)),x=c.getContext('2d');
+    x.drawImage(im,f*m.w,0,m.w,m.h,(c.width-w)/2,c.height*0.92-m.h*s*(m.ay||1),w,m.h*s);out.push(c)}return out};
+  const jobs=Object.entries(M).filter(([k])=>!k.startsWith('_')).map(async([k,m])=>{const im=await img(m.src);if(im)this.gen[k]={m,im}});
+  await Promise.all(jobs);
+  const G=(k,H)=>this.gen[k]?frames(this.gen[k].im,this.gen[k].m,H):null,set=(k,v)=>{if(v)this.sprites[k]=v};
+  // 主角：普通形态直接用；魔化形态 = 暗红色调 + 紫色魔气
+  const HERO={idle:'hero_idle',run:'hero_run',attack:'hero_combo',sweep:'hero_sweep',dodge:'hero_dodge',hit:'hero_hit',death:'hero_death'};
+  for(const[a,k]of Object.entries(HERO)){const fr=G(k,100);if(!fr)continue;set('punk_'+a,fr);set('demon_'+a,fr.map(c=>this.demonize(c)))}
+  for(const t of['cultivator','taoist','monk','paladin']){set(t+'_run',G(t+'_move',92));set(t+'_attack',G(t+'_attack',92));set(t+'_death',G(t+'_death',92))}
+  for(const v of['punch','sweep','slam','fire','aura','beam'])if(this.gen['vfx_'+v])this.sprites['vfx_'+v]=frames(this.gen['vfx_'+v].im,this.gen['vfx_'+v].m,this.gen['vfx_'+v].m.h);
+  for(const[k,s]of Object.entries(M._ui||{})){const im=await img(s);if(im)this.ui[k]=im}
+  const gr=M._ground&&await img(M._ground);if(gr){const c=cv(512,512);c.getContext('2d').drawImage(gr,0,0,512,512);this.floor=c}
+  this.edge=M._edge?await img(M._edge):null;
+ },
+ demonize(src){const c=cv(src.width,src.height),x=c.getContext('2d');x.shadowColor='rgba(170,40,255,.9)';x.shadowBlur=14;x.drawImage(src,0,0);x.shadowBlur=0;
+  x.globalCompositeOperation='source-atop';x.fillStyle='rgba(150,10,20,.45)';x.fillRect(0,0,c.width,c.height);return c},
  makeFloor(){const c=cv(256,256),g=c.getContext('2d');g.fillStyle='#4a4038';g.fillRect(0,0,256,256);
   for(let y=0;y<4;y++)for(let x=0;x<4;x++){g.fillStyle=`hsl(25,${8+((x*7+y*3)%5)*2}%,${22+((x+y)%3)*2}%)`;g.fillRect(x*64+2,y*64+2,60,60)}
   g.strokeStyle='#111';g.lineWidth=3;for(let i=0;i<=4;i++){g.beginPath();g.moveTo(i*64,0);g.lineTo(i*64,256);g.moveTo(0,i*64);g.lineTo(256,i*64);g.stroke()}

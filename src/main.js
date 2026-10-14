@@ -42,7 +42,7 @@ function damage(e,amt,o={}){if(e.dead||e.invuln>0)return;const p=S.p;let tier=0;
   if(tier===2)impact()}
  if(o.slow){e.slowT=2;e.slowF=o.slow}
  if(e.hp<=0)kill(e)}
-function kill(e){e.dead=true;S.stats.kills++;S.decals.push({x:e.x,y:e.y,r:e.r*1.6,t:8,seed:Math.random()*99});S.fx.push({type:'splash',x:e.x,y:e.y-20,t:0.35,r:e.r*2});
+function kill(e){e.dead=true;S.stats.kills++;S.decals.push({x:e.x,y:e.y,r:e.r*1.6,t:8,seed:Math.random()*99});if(Art.sprites[e.type+'_death'])S.fx.push({type:'corpse',key:e.type+'_death',x:e.x,y:e.y,face:e.face||1,t:1.6,t0:1.6});S.fx.push({type:'splash',x:e.x,y:e.y-20,t:0.35,r:e.r*2});
  S.gems.push({x:e.x,y:e.y,xp:e.xp*(e.elite?3:1),soul:e.soul*(e.elite?3:1)});
  const ch=e.elite?0.8:e.ai==='boss'?1:0.05;if(Math.random()<ch)dropLoot(e.x,e.y,e.ai==='boss'?3:e.elite?(Math.random()<0.35?3:2):undefined);
  if(e.elite){S.stats.elites++;impact()}if(e.ai==='boss'){S.flash=0.8;S.hitstop=0.5;for(let i=0;i<3;i++)dropLoot(e.x+rnd(-80,80),e.y+rnd(-40,40))}}
@@ -202,7 +202,7 @@ let buttons=[];function onClick(){for(const b of buttons)if(mouse.x>b.x&&mouse.x
 const FONT='"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif';
 function text(t,x,y,size,col='#fff',al='left',bold=true,stroke=0){g.font=`${bold?'900':'500'} ${size}px ${FONT}`;g.textAlign=al;if(stroke){g.lineWidth=stroke;g.strokeStyle='#000';g.lineJoin='round';g.strokeText(t,x,y)}g.fillStyle=col;g.fillText(t,x,y)}
 function inkRect(x,y,w,h,fill){g.fillStyle='#000';g.fillRect(x+5,y+5,w,h);g.fillStyle=fill;g.fillRect(x,y,w,h);g.lineWidth=4;g.strokeStyle='#000';g.strokeRect(x,y,w,h)}
-function btn(x,y,w,h,label,fn,col='#f2f2f2'){buttons.push({x,y,w,h,fn});const hov=mouse.x>x&&mouse.x<x+w&&mouse.y>y&&mouse.y<y+h;inkRect(x,y,w,h,hov?'#ffd400':col);text(label,x+w/2,y+h/2+8,22,'#111','center')}
+function btn(x,y,w,h,label,fn,col='#f2f2f2'){buttons.push({x,y,w,h,fn});const hov=mouse.x>x&&mouse.x<x+w&&mouse.y>y&&mouse.y<y+h;if(Art.ui.btn_yellow){g.drawImage(hov||col!=='#f2f2f2'?Art.ui.btn_yellow:Art.ui.btn_gray,x-4,y-4,w+8,h+8)}else inkRect(x,y,w,h,hov?'#ffd400':col);text(label,x+w/2,y+h/2+8,22,'#111','center')}
 function drawSprite(key,frame,x,y,face,scale=1,tint){const fr=Art.sprites[key];if(!fr)return;const im=fr[((frame|0)%fr.length+fr.length)%fr.length];g.save();g.translate(x,y);g.scale(face*scale,scale);g.drawImage(tint?tinted(im,tint):im,-im.width/2,-im.height*0.92);g.restore()}
 const TC=new Map();function tinted(im,col){const k=col;let m=TC.get(im);if(!m){m={};TC.set(im,m)}if(m[k])return m[k];const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-atop';x.globalAlpha=0.7;x.fillStyle=col;x.fillRect(0,0,c.width,c.height);return m[k]=c}
 const ell=(x,y,r,ry)=>{g.beginPath();g.ellipse(x,y,r,ry??r*0.55,0,0,7)};
@@ -220,15 +220,15 @@ function drawTelegraph(e){const k=1-e.stT/e.wmax;g.save();g.fillStyle=`rgba(255,
  g.restore();if(e.tk!=='ring'&&e.ai!=='boss')text('!',e.x,e.y-e.r*4-10,30,'#ff3b2f','center',true,5)}
 function drawWorld(){const p=S.p;S.cam.x=clamp(p.x-W/2,0,WORLD.w-W);S.cam.y=clamp(p.y-H/2,0,WORLD.h-H);
  g.save();const sh=S.shake;g.translate(-S.cam.x+rnd(-sh,sh),-S.cam.y+rnd(-sh,sh));
- g.fillStyle=g.createPattern(Art.floor,'repeat');g.fillRect(0,0,WORLD.w,WORLD.h);if(Art.bg)for(let x=0;x<WORLD.w;x+=1024)g.drawImage(Art.bg,x,0,1024,300);
+ g.fillStyle=g.createPattern(Art.floor,'repeat');g.fillRect(0,0,WORLD.w,WORLD.h);if(Art.edge){const eh=300,ew=Art.edge.width*eh/Art.edge.height;for(let x=0;x<WORLD.w;x+=ew)g.drawImage(Art.edge,x,0,ew,eh)}else if(Art.bg)for(let x=0;x<WORLD.w;x+=1024)g.drawImage(Art.bg,x,0,1024,300);
  g.fillStyle='rgba(0,0,0,.35)';g.fillRect(0,0,WORLD.w,WORLD.h);g.lineWidth=10;g.strokeStyle='#000';g.strokeRect(0,0,WORLD.w,WORLD.h);
  ['金龙茶餐厅','跌打','當','九龍城寨','麻雀館'].forEach((s,i)=>{g.save();g.shadowColor=i%2?'#f2a':'#2ef';g.shadowBlur=18;text(s,200+i*420,60,34,i%2?'#ff5ab4':'#5ff3ff','left',true,6);g.restore()});
  for(const dc of S.decals){g.globalAlpha=Math.min(1,dc.t/2);inkSplat(dc.x,dc.y,dc.r,dc.seed);g.globalAlpha=1}
- for(const z of S.zones){const a=Math.min(1,z.t)*(z.arm>0?0.4:1);g.fillStyle=`rgba(${z.col},${0.28*a})`;ell(z.x,z.y,z.r,z.r/1.3);g.fill();g.strokeStyle=`rgba(${z.col},${0.9*a})`;g.lineWidth=3;g.stroke();
+ for(const z of S.zones){const a=Math.min(1,z.t)*(z.arm>0?0.4:1);const vf=Art.sprites.vfx_fire;if(vf&&z.owner!=='e'&&!z.follow){const im=vf[Math.floor(S.t*10)%vf.length],s=z.r*2.2/im.width;g.globalAlpha=a;g.drawImage(im,z.x-im.width*s/2,z.y-im.height*s*0.75,im.width*s,im.height*s);g.globalAlpha=1}if(z.follow&&Art.sprites.vfx_aura){const va=Art.sprites.vfx_aura,im=va[Math.floor(S.t*10)%va.length],s=z.r*2.2/im.width;g.globalAlpha=0.7*a;g.drawImage(im,z.x-im.width*s/2,z.y-im.height*s/2,im.width*s,im.height*s);g.globalAlpha=1}g.fillStyle=`rgba(${z.col},${0.28*a})`;ell(z.x,z.y,z.r,z.r/1.3);g.fill();g.strokeStyle=`rgba(${z.col},${0.9*a})`;g.lineWidth=3;g.stroke();
   for(let i=0;i<5;i++){const fa=S.t*2+i*1.26,fx=z.x+Math.cos(fa)*z.r*0.6,fy=z.y+Math.sin(fa)*z.r*0.35;g.fillStyle=`rgba(${z.col},${0.8*a})`;g.beginPath();g.moveTo(fx-7,fy);g.quadraticCurveTo(fx,fy-28-Math.sin(S.t*9+i)*8,fx+7,fy);g.fill()}}
  for(const e of S.enemies)if(e.st==='wind')drawTelegraph(e);
  if(p.cast?.id==='sweep'&&!p.cast.done){g.fillStyle='rgba(255,255,255,.12)';sector(p.x,p.y,SK.sweep.range,p.cast.ang,S.runes.sweep==='a'?6.28:SK.sweep.arc);g.fill()}
- for(const l of S.loot){const R=RARITY[l.rarity];if(l.rarity>=1){const gr=g.createLinearGradient(0,l.y-260,0,l.y);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,R.c);g.globalAlpha=0.35+0.15*Math.sin(l.t*4);g.fillStyle=gr;g.fillRect(l.x-(4+l.rarity*3),l.y-260,8+l.rarity*6,260);g.globalAlpha=1}
+ for(const l of S.loot){const R=RARITY[l.rarity];const vb=Art.sprites.vfx_beam;if(vb&&l.rarity>=2){const im=vb[Math.floor(l.t*8)%vb.length];g.drawImage(im,l.x-im.width*0.35,l.y-im.height*0.7*0.92,im.width*0.7,im.height*0.7)}if(l.rarity>=1){const gr=g.createLinearGradient(0,l.y-260,0,l.y);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,R.c);g.globalAlpha=0.35+0.15*Math.sin(l.t*4);g.fillStyle=gr;g.fillRect(l.x-(4+l.rarity*3),l.y-260,8+l.rarity*6,260);g.globalAlpha=1}
   g.fillStyle=R.c;g.fillRect(l.x-10,l.y-8,20,12);g.strokeStyle='#000';g.lineWidth=3;g.strokeRect(l.x-10,l.y-8,20,12);text(l.name,l.x,l.y+24,15,R.c,'center',true,4)}
  for(const gm of S.gems){g.fillStyle=gm.soul>2?'#c46bff':'#5cf0ff';g.beginPath();g.moveTo(gm.x,gm.y-12);g.lineTo(gm.x+7,gm.y-4);g.lineTo(gm.x,gm.y+4);g.lineTo(gm.x-7,gm.y-4);g.closePath();g.fill();g.lineWidth=2;g.strokeStyle='#000';g.stroke()}
  const ents=[...S.enemies.map(e=>({y:e.y,e})),{y:p.y,p:1}].sort((a,b)=>a.y-b.y);
@@ -247,7 +247,10 @@ function drawWorld(){const p=S.p;S.cam.x=clamp(p.x-W/2,0,WORLD.w-W);S.cam.y=clam
  for(const f of S.fx)drawFx(f);
  for(const n of S.nums){const sz=[20,30,46][n.tier||0];g.globalAlpha=Math.min(1,n.t*3);text(n.txt+(n.tier===2?'!!':n.tier===1?'!':''),n.x,n.y,sz,n.c,'center',true,n.tier===2?8:5);g.globalAlpha=1}
  g.restore()}
-function drawFx(f){g.save();g.globalAlpha=Math.min(1,f.t*6);const p=S.p;
+const VFXMAP={fist:'vfx_punch',cleave:'vfx_sweep',quake:'vfx_slam',boom:'vfx_fire',roar:'vfx_aura'};
+function drawGenFx(f){const fr=Art.sprites[VFXMAP[f.type]];if(!fr)return;if(f.t0==null)f.t0=Math.max(f.t,0.01);const k=clamp(1-f.t/f.t0,0,0.999),im=fr[Math.floor(k*fr.length)];
+ const s=f.type==='fist'?(f.big?1.1:0.7):Math.max(0.5,(f.r||80)*2/im.width);g.save();g.translate(f.x,f.y);if(f.type==='cleave')g.rotate(f.a);g.globalCompositeOperation='lighter';g.drawImage(im,-im.width*s/2,-im.height*s/2,im.width*s,im.height*s);g.restore()}
+function drawFx(f){drawGenFx(f);g.save();g.globalAlpha=Math.min(1,f.t*6);const p=S.p;
  if(f.type==='fist'){g.translate(f.x,f.y);g.rotate(f.a);g.fillStyle='#fff';g.strokeStyle='#000';g.lineWidth=4;const s=f.big?1.8:1;g.beginPath();for(let i=0;i<10;i++){const a=i/10*6.28,r=(i%2?10:26)*s;g.lineTo(Math.cos(a)*r,Math.sin(a)*r)}g.closePath();g.fill();g.stroke();
   for(let i=0;i<4;i++){g.beginPath();g.moveTo(-50*s,(i-1.5)*8);g.lineTo(-20*s,(i-1.5)*8);g.stroke()}}
  if(f.type==='cleave'){g.translate(f.x,f.y);g.scale(1,0.75);g.lineCap='round';const k=1-f.t/0.22;g.strokeStyle='#fff';g.lineWidth=26;g.beginPath();g.arc(0,0,f.r*0.85,f.a-f.arc/2,f.a-f.arc/2+f.arc*Math.min(1,k*1.5+0.3));g.stroke();g.strokeStyle='#000';g.lineWidth=5;g.stroke();g.strokeStyle='#ff3355';g.lineWidth=6;g.beginPath();g.arc(0,0,f.r*0.6,f.a-f.arc/2,f.a+f.arc/2);g.stroke()}
@@ -262,17 +265,19 @@ function drawFx(f){g.save();g.globalAlpha=Math.min(1,f.t*6);const p=S.p;
  if(f.type==='pillar'){g.fillStyle='rgba(255,250,200,.9)';g.fillRect(f.x-45,f.y-900,90,900);g.strokeStyle='#000';g.lineWidth=4;g.strokeRect(f.x-45,f.y-900,90,900)}
  if(f.type==='ring'){g.strokeStyle=f.c;g.lineWidth=4;ell(f.x,f.y,f.r);g.stroke()}
  if(f.type==='spark'){g.fillStyle='#fff';g.beginPath();g.arc(f.x,f.y,12,0,7);g.fill()}
+ if(f.type==='corpse'){const fr=Art.sprites[f.key];g.globalAlpha=Math.min(1,f.t*2);drawSprite(f.key,Math.min(fr.length-1,Math.floor((1-f.t/f.t0)*fr.length*1.6)),f.x,f.y,f.face)}
  if(f.type==='ghost'){g.globalAlpha=f.t*2;drawSprite(f.form+'_run',0,f.x,f.y,f.face,1,'#6bd0ff')}
  g.restore()}
 function orb(x,y,r,v,col,label,val){g.save();g.fillStyle='#000';g.beginPath();g.arc(x,y,r+8,0,7);g.fill();g.beginPath();g.arc(x,y,r,0,7);g.clip();g.fillStyle='#1a1010';g.fillRect(x-r,y-r,2*r,2*r);
  const lv=y+r-2*r*clamp(v,0,1);g.fillStyle=col;g.beginPath();g.moveTo(x-r,y+r);g.lineTo(x-r,lv);for(let i=0;i<=20;i++)g.lineTo(x-r+i*r/10,lv+Math.sin(S.t*3+i)*3);g.lineTo(x+r,y+r);g.fill();
- g.fillStyle='rgba(255,255,255,.25)';g.beginPath();g.ellipse(x-r*0.3,y-r*0.45,r*0.35,r*0.2,-0.5,0,7);g.fill();g.restore();g.lineWidth=5;g.strokeStyle='#c9a24a';g.beginPath();g.arc(x,y,r+4,0,7);g.stroke();
+ g.fillStyle='rgba(255,255,255,.25)';g.beginPath();g.ellipse(x-r*0.3,y-r*0.45,r*0.35,r*0.2,-0.5,0,7);g.fill();g.restore();g.lineWidth=5;g.strokeStyle='#c9a24a';g.beginPath();g.arc(x,y,r+4,0,7);g.stroke();{const oi=Art.ui[col==='#c4161c'?'orb_hp':'orb_fury'];if(oi){const s=(r+10)*2/Math.min(oi.width,oi.height)*1.08;g.globalAlpha=0.32;g.drawImage(oi,x-oi.width*s/2,y-oi.height*s/2,oi.width*s,oi.height*s);g.globalAlpha=1}}
  text(val,x,y+8,22,'#fff','center',true,5);text(label,x,y+r+30,16,'#ddd','center',true,4)}
+const ICON={fist:'icon_fist',sweep:'icon_pipe',leap:'icon_kick',molotov:'icon_bottle',roar:'icon_roar',domain:'icon_flame',dash:'icon_kick'};
 function drawHUD(){const p=S.p,mh=maxhp();if(T.on){orb(70,190,44,p.hp/mh,'#c4161c','生命',`${Math.ceil(p.hp)}`);orb(180,190,44,p.fury/100,'#e07a10','气势',Math.floor(p.fury)+'');drawTouch()}else{orb(100,H-100,72,p.hp/mh,'#c4161c','生命',`${Math.ceil(p.hp)}/${mh}`);orb(W-100,H-100,72,p.fury/100,'#e07a10','气势',Math.floor(p.fury)+'');
  // 技能栏
  const bar=[['fist'],['sweep'],['leap'],['molotov'],['roar'],['domain'],['dash']],bw=74,x0=W/2-bar.length*(bw+8)/2;
  g.fillStyle='rgba(0,0,0,.6)';g.fillRect(x0-14,H-118,bar.length*(bw+8)+20,112);
- bar.forEach(([id],i)=>{const P=SK[id],x=x0+i*(bw+8),y=H-108,lock=P.demon&&!S.evolved;inkRect(x,y,bw,bw,lock?'#333':P.col);text(P.icon,x+bw/2,y+50,34,'#111','center');
+ bar.forEach(([id],i)=>{const P=SK[id],x=x0+i*(bw+8),y=H-108,lock=P.demon&&!S.evolved;inkRect(x,y,bw,bw,lock?'#333':P.col);{const ic=Art.ui[ICON[id]];if(ic){g.globalAlpha=lock?0.35:1;g.drawImage(ic,x+3,y+3,bw-6,bw-6);g.globalAlpha=1}else text(P.icon,x+bw/2,y+50,34,'#111','center')}
   const cd=S.cds[id]||0,maxcd=id==='dash'?P.cd:P.cd*(1-stat('cdr'))||1;if(cd>0){g.save();g.beginPath();g.rect(x,y,bw,bw);g.clip();g.fillStyle='rgba(0,0,0,.7)';g.beginPath();g.moveTo(x+bw/2,y+bw/2);g.arc(x+bw/2,y+bw/2,bw,-Math.PI/2,-Math.PI/2+6.283*cd/maxcd);g.closePath();g.fill();g.restore();text(cd.toFixed(1),x+bw/2,y+48,22,'#fff','center',true,4)}
   if(lock){g.fillStyle='rgba(0,0,0,.6)';g.fillRect(x,y,bw,bw);text('进化解锁',x+bw/2,y+44,14,'#ccc','center')}
   if(P.cost&&p.fury<P.cost&&!lock){g.fillStyle='rgba(40,0,80,.55)';g.fillRect(x,y,bw,bw)}
@@ -296,11 +301,11 @@ function drawTooltip(l){const R=RARITY[l.rarity],cur=S.gear[l.slot],x=W/2+40,y=1
  if(cur){text('当前装备：'+cur.name,x+20,yy+4,14,RARITY[cur.rarity].c,'left',true);yy+=22;for(const s of CL){text(s,x+30,yy,13,'#888','left',false);yy+=20}}else{text('当前：空',x+20,yy,14,'#888','left',false);yy+=20}
  text('[E] 拾取并装备',x+w/2,y+h-10,15,'#ffd400','center',true,3)}
 function panel(title){g.fillStyle='rgba(0,0,0,.72)';g.fillRect(0,0,W,H);text(title,W/2,110,52,'#ffd400','center',true,10)}
-function drawLevelUp(){panel('升级！选择一项');S.choices.forEach((c,i)=>{const x=W/2-450+i*310,y=210;inkRect(x,y,280,280,c.rune?'#2a1840':'#f5f0e0');
+function drawLevelUp(){panel('升级！选择一项');S.choices.forEach((c,i)=>{const x=W/2-450+i*310,y=210;if(!c.rune&&Art.ui.card_level)g.drawImage(Art.ui.card_level,x-20,y-30,320,350);else inkRect(x,y,280,280,c.rune?'#2a1840':'#f5f0e0');
  if(c.rune)text('技能符文',x+140,y+34,16,'#ffd400','center');text(c.t,x+140,y+96,c.rune?28:40,c.rune?'#ffd400':'#111','center');text(c.d,x+140,y+150,18,c.rune?'#ddd':'#333','center',false);btn(x+40,y+210,200,48,`选择 [${i+1}]`,()=>chooseUp(i))})}
 function drawShop(){panel(`黑市 · 第 ${S.wave} 波结束`);text(`魂晶 ${S.soul}    小弟助攻 ${S.helpers.length}/3`,W/2,160,24,'#c88bff','center',true,5);
  S.shop.slots.forEach((s,i)=>{const x=60+i*300,y=200;if(s.sold){inkRect(x,y,270,300,'#333');text('已售出',x+135,y+150,28,'#888','center');return}
-  const R=RARITY[s.rarity];inkRect(x,y,270,300,'#f5f0e0');g.fillStyle=R.c;g.fillRect(x,y,270,36);g.strokeRect(x,y,270,36);text(R.n+(s.kind==='w'?' · 小弟助攻':' · 道具'),x+135,y+26,18,'#111','center');
+  const R=RARITY[s.rarity];if(Art.ui.card_shop)g.drawImage(Art.ui.card_shop,x-20,y-40,310,380);else inkRect(x,y,270,300,'#f5f0e0');g.fillStyle=R.c;g.fillRect(x,y,270,36);g.strokeRect(x,y,270,36);text(R.n+(s.kind==='w'?' · 小弟助攻':' · 道具'),x+135,y+26,18,'#111','center');
   if(s.kind==='w'){text(s.w.name,x+135,y+86,32,'#111','center');text(`自动攻击 · 伤害 ${s.w.dmg}  间隔 ${s.w.cd}s`,x+135,y+124,17,'#333','center',false);text(`[${s.w.tag}]`,x+135,y+152,18,'#a33','center')}
   else{text(s.it.name,x+135,y+86,32,'#111','center');text(s.it.desc,x+135,y+130,18,'#333','center',false)}
   const can=S.soul>=s.price&&(s.kind!=='w'||S.helpers.length<3);btn(x+20,y+220,150,48,`${s.price} 魂晶`,()=>buy(i),can?'#9f9':'#888');btn(x+180,y+220,70,48,S.locked[i]?'已锁':'锁定',()=>S.locked[i]=!S.locked[i],S.locked[i]?'#ffd400':'#ddd')});
