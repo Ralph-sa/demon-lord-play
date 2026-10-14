@@ -1,0 +1,13 @@
+{
+"slots":{"glove":"拳套","coat":"外套","chain":"金链"},
+"bases":{"glove":["指虎","缠手布","铁拳套"],"coat":["花衬衫","皮夹克","唐装"],"chain":["金链","玉佩","佛珠"]},
+"affixes":[["dmg","伤害",0.06,"%"],["hp","生命",14,""],["crit","暴击",0.04,"%"],["fury","气势获取",0.12,"%"],["cdr","冷却缩减",0.05,"%"],["speed","移速",0.05,"%"]],
+"legendary":[
+ {"id":"twinFlask","name":"双生酒壶","slot":"chain","desc":"燃烧瓶留下两块火场"},
+ {"id":"thunderLeg","name":"雷公腿","slot":"coat","desc":"飞踹落地召唤 6 道落雷"},
+ {"id":"guanBlade","name":"关二哥护手","slot":"glove","desc":"钢管横扫发出穿透刀气"},
+ {"id":"dragonStaff","name":"龙头信物","slot":"chain","desc":"压场咆哮额外回满气势，冷却 -4 秒"},
+ {"id":"ironFist","name":"十八铜人拳套","slot":"glove","desc":"铁拳第三击产生冲击波（穿透）"}
+],
+"elites":{"熔岩":{"col":"#ff5a1a","desc":"留下熔岩"},"冰冻":{"col":"#7fe0ff","desc":"命中减速"},"快速":{"col":"#ffe14a","desc":"移速 ×1.6"},"护盾":{"col":"#d0d0ff","desc":"周期护盾"}}
+}

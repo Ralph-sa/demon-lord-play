@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen"><meta name="apple-mobile-web-app-title" content="古惑仔成魔">
+<meta name="theme-color" content="#000"><link rel="manifest" href="manifest.json">
+<title>古惑仔成魔 · 原型</title>
+<style>html,body{margin:0;background:#000;height:100%;width:100%;overflow:hidden;position:fixed;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body{display:flex;align-items:center;justify-content:center}canvas{display:block;touch-action:none}
+#rot{display:none;position:fixed;inset:0;background:#111;color:#ffd400;font:900 28px sans-serif;align-items:center;justify-content:center;text-align:center;z-index:9}
+@media (orientation:portrait) and (pointer:coarse){#rot{display:flex}}</style></head>
+<body><canvas id="c" width="1280" height="720"></canvas><div id="rot">📱↻<br>请横屏游玩</div>
+<script>document.addEventListener('gesturestart',e=>e.preventDefault());document.addEventListener('dblclick',e=>e.preventDefault())</script>
+<script type="module" src="src/main.js"></script></body></html>

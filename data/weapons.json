@@ -1,0 +1,10 @@
+[
+{"id":"knife","name":"西瓜刀","type":"melee","dmg":12,"cd":0.7,"range":70,"color":"#ddd","price":12,"rarity":0,"tag":"街头"},
+{"id":"bat","name":"铁水管","type":"melee","dmg":18,"cd":1.1,"range":85,"color":"#999","price":15,"rarity":0,"tag":"街头"},
+{"id":"bottle","name":"燃烧酒瓶","type":"proj","dmg":10,"cd":1.2,"speed":320,"range":320,"aoe":50,"color":"#f80","price":18,"rarity":1,"tag":"火焰"},
+{"id":"dart","name":"麻将飞牌","type":"proj","dmg":7,"cd":0.45,"speed":520,"range":380,"color":"#fff","price":14,"rarity":0,"tag":"街头"},
+{"id":"chain","name":"铁链","type":"melee","dmg":14,"cd":0.9,"range":120,"color":"#bbb","price":20,"rarity":1,"tag":"鲜血"},
+{"id":"firecracker","name":"鞭炮","type":"proj","dmg":6,"cd":0.8,"speed":360,"range":300,"aoe":40,"color":"#f33","price":16,"rarity":1,"tag":"火焰"},
+{"id":"evilorb","name":"邪气珠","type":"orbit","dmg":9,"cd":0.3,"range":80,"color":"#a3f","price":30,"rarity":2,"tag":"暗影"},
+{"id":"thunder","name":"黑雷符","type":"chain","dmg":20,"cd":1.6,"range":260,"color":"#8cf","price":35,"rarity":3,"tag":"雷霆"}
+]

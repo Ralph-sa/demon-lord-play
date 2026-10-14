@@ -1,0 +1,103 @@
+[
+{
+"t": 30,
+"rate": 1.0,
+"mix": {
+"cultivator": 1
+},
+"elite": 0
+},
+{
+"t": 35,
+"rate": 0.8,
+"mix": {
+"cultivator": 3,
+"taoist": 1
+},
+"elite": 0
+},
+{
+"t": 40,
+"rate": 0.7,
+"mix": {
+"cultivator": 3,
+"taoist": 2
+},
+"elite": 1
+},
+{
+"t": 40,
+"rate": 0.6,
+"mix": {
+"cultivator": 3,
+"taoist": 2,
+"monk": 1
+},
+"elite": 0
+},
+{
+"t": 45,
+"rate": 0.55,
+"mix": {
+"cultivator": 3,
+"taoist": 2,
+"monk": 1,
+"paladin": 1
+},
+"elite": 0
+},
+{
+"t": 45,
+"rate": 0.5,
+"mix": {
+"cultivator": 4,
+"taoist": 2,
+"monk": 1,
+"paladin": 1
+},
+"elite": 1
+},
+{
+"t": 50,
+"rate": 0.45,
+"mix": {
+"cultivator": 4,
+"taoist": 3,
+"monk": 2,
+"paladin": 2
+},
+"elite": 0
+},
+{
+"t": 50,
+"rate": 0.4,
+"mix": {
+"cultivator": 4,
+"taoist": 3,
+"monk": 2,
+"paladin": 2
+},
+"elite": 2
+},
+{
+"t": 55,
+"rate": 0.35,
+"mix": {
+"cultivator": 4,
+"taoist": 3,
+"monk": 2,
+"paladin": 3
+},
+"elite": 2
+},
+{
+"t": 90,
+"rate": 1.2,
+"mix": {
+"cultivator": 2,
+"taoist": 1
+},
+"boss": "archangel",
+"elite": 0
+}
+]

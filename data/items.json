@@ -1,0 +1,10 @@
+[
+{"name":"金链子","desc":"最大生命 +15","stat":"maxhp","v":15,"price":15,"rarity":0},
+{"name":"人字拖","desc":"移速 +10%","stat":"speed","v":0.1,"price":14,"rarity":0},
+{"name":"纹身·过肩龙","desc":"伤害 +12%","stat":"dmg","v":0.12,"price":22,"rarity":1},
+{"name":"大哥大","desc":"攻速 +12%","stat":"atkspd","v":0.12,"price":22,"rarity":1},
+{"name":"墨镜","desc":"暴击 +8%","stat":"crit","v":0.08,"price":20,"rarity":1},
+{"name":"叉烧包","desc":"每秒回血 +0.6","stat":"regen","v":0.6,"price":18,"rarity":0},
+{"name":"黑金劳力士","desc":"拾取范围 +40%","stat":"pickup","v":0.4,"price":16,"rarity":0},
+{"name":"魔王契约","desc":"伤害 +25% 生命 -10","stat":"pact","v":0.25,"price":40,"rarity":3}
+]

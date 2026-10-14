@@ -1,0 +1,15 @@
+{
+"fist":{"name":"铁拳连击","key":"左键","icon":"拳","col":"#ffd84a","cost":0,"gain":7,"cd":0,"wind":0.07,"rec":0.16,"dmg":[14,16,34],"range":78,"arc":1.6,"kb":[30,30,260],
+  "runes":{"a":{"name":"寸劲","desc":"第三拳眩晕 1 秒"},"b":{"name":"连环拳","desc":"出拳更快，每拳额外 +4 气势"}}},
+"sweep":{"name":"钢管横扫","key":"右键","icon":"扫","col":"#ff6b6b","cost":30,"cd":0,"wind":0.22,"rec":0.3,"dmg":70,"range":160,"arc":2.6,"kb":160,"slow":0.5,
+  "runes":{"a":{"name":"回旋","desc":"变为 360° 回旋横扫"},"b":{"name":"断骨","desc":"命中改为眩晕 1.2 秒，伤害 +20%"}}},
+"leap":{"name":"飞踹冲锋","key":"1","icon":"踹","col":"#6bd0ff","cost":0,"gain":15,"cd":6,"wind":0.1,"air":0.38,"rec":0.2,"dmg":80,"radius":115,"stun":1.2,"maxDist":360,
+  "runes":{"a":{"name":"地裂","desc":"落地范围 +60%，击飞"},"b":{"name":"双踹","desc":"落地 0.4 秒后再震一次"}}},
+"molotov":{"name":"燃烧瓶","key":"2","icon":"火","col":"#ffa94d","cost":25,"cd":3,"wind":0.15,"rec":0.15,"radius":95,"dur":4,"dps":30,"slow":0.3,"impact":30,
+  "runes":{"a":{"name":"猛火","desc":"火场伤害 ×1.8，范围 -25%"},"b":{"name":"粘油","desc":"减速 60%，范围 +30%"}}},
+"roar":{"name":"压场咆哮","key":"3","icon":"吼","col":"#c0ff6b","cost":0,"gain":40,"cd":12,"wind":0.25,"rec":0.25,"radius":230,"fear":2,"buff":0.3,"buffDur":5,
+  "runes":{"a":{"name":"挑衅","desc":"改为嘲讽拉近敌人，自身减伤 40%"},"b":{"name":"杀气","desc":"附带 50 伤害并眩晕 1 秒"}}},
+"domain":{"name":"魔王领域","key":"4","icon":"魔","col":"#b04aff","cost":60,"cd":16,"wind":0.5,"rec":0.4,"radius":300,"dmg":200,"dur":5,"dps":25,"slow":0.5,"demon":true,
+  "runes":{"a":{"name":"吞噬","desc":"每命中一个敌人回复 3 生命"},"b":{"name":"坍缩","desc":"爆发前把敌人吸向中心"}}},
+"dash":{"name":"闪避","key":"空格","icon":"闪","col":"#ffffff","cost":0,"cd":1.6,"dur":0.24,"speed":900,"iframes":0.3}
+}

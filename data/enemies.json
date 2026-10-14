@@ -1,0 +1,66 @@
+{
+"cultivator": {
+"name": "修仙者",
+"hp": 40,
+"speed": 95,
+"dmg": 10,
+"ai": "rush",
+"color": "#7fd3ff",
+"r": 14,
+"xp": 1,
+"soul": 1,
+"reach": 46,
+"wind": 0.5
+},
+"taoist": {
+"name": "道士",
+"hp": 34,
+"speed": 60,
+"dmg": 7,
+"ai": "ranged",
+"color": "#ffd84a",
+"r": 14,
+"xp": 2,
+"soul": 1,
+"range": 280,
+"cd": 2.6,
+"wind": 0.6
+},
+"monk": {
+"name": "和尚",
+"hp": 50,
+"speed": 55,
+"dmg": 5,
+"ai": "healer",
+"color": "#ff9a3c",
+"r": 15,
+"xp": 2,
+"soul": 2,
+"cd": 3,
+"wind": 0.8
+},
+"paladin": {
+"name": "圣骑士",
+"hp": 150,
+"speed": 45,
+"dmg": 18,
+"ai": "shield",
+"color": "#e8e8ff",
+"r": 18,
+"xp": 4,
+"soul": 3,
+"reach": 56,
+"wind": 0.8
+},
+"archangel": {
+"name": "大天使·米迦",
+"hp": 5200,
+"speed": 70,
+"dmg": 20,
+"ai": "boss",
+"color": "#fff6b0",
+"r": 40,
+"xp": 50,
+"soul": 60
+}
+}
