@@ -1,3 +1,4 @@
+import {Audio} from './audio.js';
 // 暗黑式主动技能行为。数值来自 data/skills.json，符文 a/b 改变行为。
 // 每个技能：wind(前摇) → active(生效帧) → rec(后摇)。leap 有空中阶段。
 export const BEHAVIOR={
@@ -5,12 +6,14 @@ export const BEHAVIOR={
   start(c,aim,cast){const S=c.S;S.combo=(S.comboT>0?S.combo+1:0)%3;S.comboT=0.9;cast.step=S.combo;cast.ang=aim.ang;
    const fast=c.rune('fist')==='b';cast.wind=c.P.fist.wind*(fast?0.6:1);cast.rec=c.P.fist.rec*(fast?0.6:1)*(cast.step===2?1.6:1)},
   active(c,cast){const P=c.P.fist,S=c.S,p=S.p,st=cast.step;let n=0;
+   Audio.playSfx('attack',{vol:st===2?1.1:0.85,pitch:0.9+st*0.05});
    c.fx({type:'fist',x:p.x+Math.cos(cast.ang)*40,y:p.y-26+Math.sin(cast.ang)*28,a:cast.ang,t:0.15,big:st===2});
    for(const e of c.arc(p.x,p.y,cast.ang,P.range+(st===2?20:0),P.arc)){n++;c.damage(e,P.dmg[st],{dir:cast.ang,kb:P.kb[st],stun:st===2&&c.rune('fist')==='a'?1:0.15})}
    if(st===2&&c.leg('ironFist'))c.proj({x:p.x,y:p.y,ang:cast.ang,speed:700,life:0.45,dmg:40,pierce:true,col:'#ffd84a',w:30,kb:120});
    if(n)c.gain(P.gain+(c.rune('fist')==='b'?4:0));if(st===2)c.shake(n?6:2)}},
  sweep:{
   active(c,cast){const P=c.P.sweep,p=c.S.p,full=c.rune('sweep')==='a',bone=c.rune('sweep')==='b';
+   Audio.playSfx('sweep',{vol:1.05});
    c.fx({type:'cleave',x:p.x,y:p.y-20,a:cast.ang,r:P.range,arc:full?6.3:P.arc,t:0.22});c.shake(7);
    for(const e of c.arc(p.x,p.y,cast.ang,P.range,full?7:P.arc))c.damage(e,P.dmg*(bone?1.2:1),{dir:Math.atan2(e.y-p.y,e.x-p.x),kb:P.kb,stun:bone?1.2:0,slow:bone?0:P.slow});
    if(c.leg('guanBlade'))c.proj({x:p.x,y:p.y,ang:cast.ang,speed:650,life:0.7,dmg:55,pierce:true,col:'#ff3355',w:60,kb:80})}},

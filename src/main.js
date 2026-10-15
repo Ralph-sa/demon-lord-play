@@ -1,5 +1,6 @@
 import {Art,RARITY} from './art.js';
 import {BEHAVIOR} from './skills.js';
+import {Audio} from './audio.js';
 const C=document.getElementById('c'),g=C.getContext('2d'),W=1280,H=720,WORLD={w:2200,h:1500};
 const J=u=>fetch(u).then(r=>r.json());
 const [WEAPONS,ENEMIES,WAVES,ITEMS,SK,LOOT]=await Promise.all(['weapons','enemies','waves','items','skills','loot'].map(n=>J(`data/${n}.json`)));
@@ -15,7 +16,7 @@ C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mouse.x=(e.
 C.addEventListener('mousedown',e=>{if(e.button===2)mouse.r=true;else{mouse.l=true;if(onClick())mouse.l=false}});
 addEventListener('mouseup',e=>{if(e.button===2)mouse.r=false;else mouse.l=false});
 let S;
-function newRun(){S={state:'title',t:0,wave:0,waveT:0,spawnT:0,cam:{x:0,y:0},shake:0,hitstop:0,flash:0,impactT:0,clickMove:false,
+function newRun(){audioState='';S={state:'title',t:0,wave:0,waveT:0,spawnT:0,cam:{x:0,y:0},shake:0,hitstop:0,flash:0,impactT:0,clickMove:false,
  p:{x:WORLD.w/2,y:WORLD.h/2,z:0,hp:120,maxhp:120,fury:0,base:{dmg:1,speed:220,crit:0.08,fury:1,cdr:0,regen:0.5},lv:1,xp:0,xpNext:10,form:'punk',face:1,inv:0,dashT:0,hitT:0,deathT:0,slowT:0,cast:null,moveTo:null},
  enemies:[],projs:[],eproj:[],gems:[],fx:[],decals:[],zones:[],timers:[],flasks:[],nums:[],loot:[],helpers:[mkW('dart')],
  gear:{glove:null,coat:null,chain:null},items:[],soul:0,cds:{},runes:{},buffs:{},combo:0,comboT:0,
@@ -41,15 +42,15 @@ function damage(e,amt,o={}){if(e.dead||e.invuln>0)return;const p=S.p;let tier=0;
   if(o.knockup&&e.ai!=='boss'&&e.z<=0){e.vz=o.knockup;e.z=1}
   if(tier===2)impact()}
  if(o.slow){e.slowT=2;e.slowF=o.slow}
- if(e.hp<=0)kill(e)}
-function kill(e){e.dead=true;S.stats.kills++;S.decals.push({x:e.x,y:e.y,r:e.r*1.6,t:8,seed:Math.random()*99});if(Art.sprites[e.type+'_death'])S.fx.push({type:'corpse',key:e.type+'_death',x:e.x,y:e.y,face:e.face||1,t:1.6,t0:1.6});S.fx.push({type:'splash',x:e.x,y:e.y-20,t:0.35,r:e.r*2});
+ if(e.hp<=0)kill(e);else Audio.playSfx('enemy_hurt',{vol:0.7})}
+function kill(e){Audio.playSfx('enemy_die',{vol:0.75});e.dead=true;S.stats.kills++;S.decals.push({x:e.x,y:e.y,r:e.r*1.6,t:8,seed:Math.random()*99});if(Art.sprites[e.type+'_death'])S.fx.push({type:'corpse',key:e.type+'_death',x:e.x,y:e.y,face:e.face||1,t:1.6,t0:1.6});S.fx.push({type:'splash',x:e.x,y:e.y-20,t:0.35,r:e.r*2});
  S.gems.push({x:e.x,y:e.y,xp:e.xp*(e.elite?3:1),soul:e.soul*(e.elite?3:1)});
  const ch=e.elite?0.8:e.ai==='boss'?1:0.05;if(Math.random()<ch)dropLoot(e.x,e.y,e.ai==='boss'?3:e.elite?(Math.random()<0.35?3:2):undefined);
  if(e.elite){S.stats.elites++;impact()}if(e.ai==='boss'){S.flash=0.8;S.hitstop=0.5;for(let i=0;i<3;i++)dropLoot(e.x+rnd(-80,80),e.y+rnd(-40,40))}}
 function num(x,y,txt,tier,c){S.nums.push({x,y,txt:''+txt,t:tier===2?1.1:0.75,tier,c:c||['#fff','#ffd400','#ff3b2f'][tier]})}
 function impact(){S.impactT=0.07;S.shake=Math.max(S.shake,10)}
 function hurt(d,src){const p=S.p;if(p.inv>0||p.dashT>0||p.deathT>0)return;if(S.buffs.guard>0)d*=0.6;p.hp=Math.max(0,p.hp-d);p.inv=0.45;p.hitT=0.35;S.shake=Math.max(S.shake,8);S.hitstop=Math.max(S.hitstop,0.05);num(p.x,p.y-80,'-'+Math.round(d),0,'#f44');
- if(src?.affix==='冰冻')p.slowT=1.5;if(p.hp<=0&&!p.deathT){p.deathT=1.2;p.anim='death';p.cast=null;p.dashT=0;p.hitT=0}}
+ if(src?.affix==='冰冻')p.slowT=1.5;Audio.playSfx('hurt',{vol:0.85});if(p.hp<=0&&!p.deathT){Audio.playSfx('die');p.deathT=1.2;p.anim='death';p.cast=null;p.dashT=0;p.hitT=0}}
 const inArc=(e,x,y,ang,range,arc)=>{const d=Math.hypot(e.x-x,e.y-y);return d<range+e.r&&(arc>6||angDiff(Math.atan2(e.y-y,e.x-x),ang)<arc/2)};
 const ctx={get S(){return S},P:SK,rune:id=>S.runes[id],leg,damage,impact,
  arc:(x,y,a,r,arc)=>S.enemies.filter(e=>!e.dead&&inArc(e,x,y,a,r,arc)),circle:(x,y,r)=>S.enemies.filter(e=>!e.dead&&Math.hypot(e.x-x,(e.y-y)*1.3)<r+e.r),
@@ -63,14 +64,14 @@ function tryCast(id){const p=S.p,P=SK[id];if(p.deathT>0||p.cast||p.dashT>0||p.z>
  p.fury-=P.cost;let cd=P.cd*(1-stat('cdr'));if(id==='roar'&&leg('dragonStaff'))cd-=4;S.cds[id]=cd;
  const a=aim();const cast={id,ang:a.ang,t:0,wind:P.wind,rec:P.rec,air:0,done:false};p.face=Math.cos(a.ang)<0?-1:1;BEHAVIOR[id].start?.(ctx,a,cast);p.cast=cast;return true}
 function dash(){const p=S.p;if(p.deathT>0||(S.cds.dash||0)>0||p.z>0)return;if(p.cast&&p.cast.t<p.cast.wind)p.cast=null;else if(p.cast&&!p.cast.done)return;p.cast=null;
- let mx=(keys.d?1:0)-(keys.a?1:0)+T.jx,my=(keys.s?1:0)-(keys.w?1:0)+T.jy;let a=mx||my?Math.atan2(my,mx):aim().ang;p.dvx=Math.cos(a)*SK.dash.speed;p.dvy=Math.sin(a)*SK.dash.speed;p.dashT=SK.dash.dur;p.inv=SK.dash.iframes;S.cds.dash=SK.dash.cd}
+ let mx=(keys.d?1:0)-(keys.a?1:0)+T.jx,my=(keys.s?1:0)-(keys.w?1:0)+T.jy;let a=mx||my?Math.atan2(my,mx):aim().ang;p.dvx=Math.cos(a)*SK.dash.speed;p.dvy=Math.sin(a)*SK.dash.speed;p.dashT=SK.dash.dur;p.inv=SK.dash.iframes;S.cds.dash=SK.dash.cd;Audio.playSfx('dodge',{vol:0.8})}
 function updateCast(dt){const p=S.p,c=p.cast;if(!c)return;c.t+=dt;const B=BEHAVIOR[c.id];
  if(c.air&&c.t>c.wind&&c.t<c.wind+c.air)B.air(ctx,c,(c.t-c.wind)/c.air);
  if(!c.done&&c.t>=c.wind+c.air){c.done=true;B.active(ctx,c)}
  if(c.t>=c.wind+c.air+c.rec)p.cast=null}
 // ---------- 波次 / 刷怪 ----------
 let bannerTxt='',bannerT=0;const banner=t=>{bannerTxt=t;bannerT=2.2};
-function startWave(){S.wave++;const w=WAVES[S.wave-1];S.waveT=w.t;S.spawnT=0.5;S.state='play';S.enemies=[];S.eproj=[];S.zones=[];S.loot=S.loot.filter(l=>l.rarity>=2);
+function startWave(){const fromTitle=S.state==='title';if(fromTitle)Audio.playSfx('ui_start');S.wave++;const w=WAVES[S.wave-1];S.waveT=w.t;S.spawnT=0.5;S.state='play';S.enemies=[];S.eproj=[];S.zones=[];S.loot=S.loot.filter(l=>l.rarity>=2);
  if(w.boss){S.boss=spawn(w.boss,S.p.x,S.p.y-380);S.boss.phase=1;S.boss.patT=2;banner('BOSS：大天使·米迦 降临！')}else banner('第 '+S.wave+' 波');
  for(let i=0;i<(w.elite||0);i++)S.timers.push({t:6+i*12,fn:()=>elitePack()})}
 function spawn(type,x,y,affix){const d=ENEMIES[type],sc=1+(S.wave-1)*0.13;
@@ -185,7 +186,7 @@ const UPG=[['力量','伤害 +10%',p=>p.base.dmg+=0.1],['体魄','最大生命 +
 function openLevelUp(){S.state='levelup';const runes=[];for(const id of ORDER){if(S.runes[id]||(SK[id].demon&&!S.evolved))continue;for(const r of['a','b'])runes.push({rune:true,id,r,t:`${SK[id].name}·${SK[id].runes[r].name}`,d:SK[id].runes[r].desc})}
  runes.sort(()=>Math.random()-0.5);const stats=[...UPG].sort(()=>Math.random()-0.5).map(u=>({t:u[0],d:u[1],fn:u[2]}));
  const nr=Math.min(runes.length,S.p.lv%2===0?2:1);S.choices=[...runes.slice(0,nr),...stats].slice(0,3)}
-function chooseUp(i){const c=S.choices[i];if(!c)return;if(c.rune)S.runes[c.id]=c.r;else c.fn(S.p);S.choices=null;S.state='play'}
+function chooseUp(i){const c=S.choices[i];if(!c)return;Audio.playSfx('ui_levelup');if(c.rune)S.runes[c.id]=c.r;else c.fn(S.p);S.choices=null;S.state='play'}
 function endWave(){if(S.wave===5&&!S.evolved){S.state='evolve';return}openShop()}
 function rollShop(){const old=S.shop?.slots||[];S.shop.slots=[0,1,2,3].map(i=>{if(S.locked[i]&&old[i]&&!old[i].sold)return old[i];
  if(Math.random()<0.4){const b=pick(WEAPONS);const w=mkW(b.id);return{kind:'w',w,rarity:b.rarity,price:Math.round(b.price*(1+S.wave*0.08))}}
@@ -203,7 +204,8 @@ let buttons=[];function onClick(){for(const b of buttons)if(mouse.x>b.x&&mouse.x
 const FONT='"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif';
 function text(t,x,y,size,col='#fff',al='left',bold=true,stroke=0){g.font=`${bold?'900':'500'} ${size}px ${FONT}`;g.textAlign=al;if(stroke){g.lineWidth=stroke;g.strokeStyle='#000';g.lineJoin='round';g.strokeText(t,x,y)}g.fillStyle=col;g.fillText(t,x,y)}
 function inkRect(x,y,w,h,fill){g.fillStyle='#000';g.fillRect(x+5,y+5,w,h);g.fillStyle=fill;g.fillRect(x,y,w,h);g.lineWidth=4;g.strokeStyle='#000';g.strokeRect(x,y,w,h)}
-function btn(x,y,w,h,label,fn,col='#f2f2f2'){buttons.push({x,y,w,h,fn});const hov=mouse.x>x&&mouse.x<x+w&&mouse.y>y&&mouse.y<y+h;if(Art.ui.btn_yellow){g.drawImage(hov||col!=='#f2f2f2'?Art.ui.btn_yellow:Art.ui.btn_gray,x-4,y-4,w+8,h+8)}else inkRect(x,y,w,h,hov?'#ffd400':col);text(label,x+w/2,y+h/2+8,22,'#111','center')}
+function btn(x,y,w,h,label,fn,col='#f2f2f2',clickSfx=true){buttons.push({x,y,w,h,fn:()=>{if(clickSfx)Audio.playSfx('ui_click',{vol:0.65});fn()}});const hov=mouse.x>x&&mouse.x<x+w&&mouse.y>y&&mouse.y<y+h;if(Art.ui.btn_yellow){g.drawImage(hov||col!=='#f2f2f2'?Art.ui.btn_yellow:Art.ui.btn_gray,x-4,y-4,w+8,h+8)}else inkRect(x,y,w,h,hov?'#ffd400':col);text(label,x+w/2,y+h/2+8,22,'#111','center')}
+function drawMuteBtn(x,y){btn(x,y,72,34,Audio.isMuted()?'音效关':'音效开',()=>Audio.toggleMute(),Audio.isMuted()?'#666':'#444',false)}
 function drawSprite(key,frame,x,y,face,scale=1,tint){const fr=Art.sprites[key];if(!fr)return;const im=fr[((frame|0)%fr.length+fr.length)%fr.length];g.save();g.translate(x,y);g.scale(face*scale,scale);g.drawImage(tint?tinted(im,tint):im,-im.width/2,-im.height*0.92);g.restore()}
 const TC=new Map();function tinted(im,col){const k=col;let m=TC.get(im);if(!m){m={};TC.set(im,m)}if(m[k])return m[k];const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-atop';x.globalAlpha=0.7;x.fillStyle=col;x.fillRect(0,0,c.width,c.height);return m[k]=c}
 const ell=(x,y,r,ry)=>{g.beginPath();g.ellipse(x,y,r,ry??r*0.55,0,0,7)};
@@ -313,7 +315,7 @@ function drawHUD(){const p=S.p,mh=maxhp();if(T.on){orb(70,190,44,p.hp/mh,'#c4161
  Object.entries(LOOT.slots).forEach(([k,n],i)=>{const it=S.gear[k],x=W-210+i*66,y=14;inkRect(x,y,56,56,it?'#222':'#444');text(n,x+28,y+70,12,'#ccc','center',true,3);if(it){g.strokeStyle=RARITY[it.rarity].c;g.lineWidth=3;g.strokeRect(x+3,y+3,50,50);text(it.name.slice(0,2),x+28,y+35,15,RARITY[it.rarity].c,'center')}});
  if(S.clickMove)text('点击移动：开 (M)',W-20,110,14,'#9f9','right',true,3);
  const l=nearLoot();if(l)drawTooltip(l);
- if(bannerT>0)text(bannerTxt,W/2,H/2-150,56,'#ffd400','center',true,10)}
+ if(bannerT>0)text(bannerTxt,W/2,H/2-150,56,'#ffd400','center',true,10);drawMuteBtn(W-100,14)}
 function drawTooltip(l){const R=RARITY[l.rarity],cur=S.gear[l.slot],x=W/2+40,y=150,w=300;const L=fmtStats(l),CL=cur?fmtStats(cur):[];const h=110+L.length*22+(l.leg?44:0)+(cur?50+CL.length*20:20);
  g.fillStyle='rgba(10,8,6,.92)';g.fillRect(x,y,w,h);g.strokeStyle=R.c;g.lineWidth=3;g.strokeRect(x,y,w,h);let yy=y+30;text(l.name,x+w/2,yy,22,R.c,'center',true,0);yy+=24;text(`${R.n} · ${LOOT.slots[l.slot]}`,x+w/2,yy,14,'#aaa','center',false);yy+=28;
  for(const a of LOOT.affixes)if(l.stats[a[0]]){const dv=(l.stats[a[0]]||0)-(cur?.stats[a[0]]||0);text(fmtStats({stats:{[a[0]]:l.stats[a[0]]}})[0],x+20,yy,16,'#88aaff','left',false);text(dv>0?'▲':dv<0?'▼':'=',x+w-20,yy,16,dv>0?'#5f5':dv<0?'#f55':'#aaa','right');yy+=22}
@@ -336,12 +338,13 @@ function drawEvolve(){Art.impact(g,W,H,'#c01818');text('血脉觉醒',W/2,180,96
 function drawTitle(){if(Art.bg)g.drawImage(Art.bg,0,0,W,H);g.fillStyle='rgba(0,0,0,.5)';g.fillRect(0,0,W,H);text('古惑仔成魔',W/2,200,120,'#ffd400','center',true,16);text('第一幕 · 九龙城寨',W/2,268,34,'#fff','center',true,8);
  drawSprite('punk_idle',Math.floor(S.t*6),W/2-160,520,1,2.2);drawSprite('demon_idle',Math.floor(S.t*6),W/2+160,520,-1,2.6);
  ['WASD 移动 · 左键 铁拳连击（攒气势）· 右键 钢管横扫（耗气势）','1 飞踹  2 燃烧瓶  3 咆哮  4 魔王领域 · 空格 闪避 · E 拾取 · M 点击移动'].forEach((s,i)=>text(s,W/2,580+i*32,22,'#fff','center',true,5));
- if(Math.floor(S.t*2)%2)text('按 Enter 开始',W/2,690,32,'#ffd400','center',true,7);buttons=[{x:0,y:0,w:W,h:H,fn:startWave}]}
+ if(Math.floor(S.t*2)%2)text('按 Enter 开始',W/2,690,32,'#ffd400','center',true,7);drawMuteBtn(W-100,24);buttons.push({x:0,y:0,w:W,h:H,fn:startWave})}
 function drawEnd(win){g.fillStyle=win?'rgba(80,0,0,.75)':'rgba(0,0,0,.8)';g.fillRect(0,0,W,H);text(win?'天使陨落 · 城寨归你':'扑街！',W/2,170,80,win?'#ffd400':'#f44','center',true,12);
  const st=S.stats;[`到达波次：${S.wave}/10`,`等级：${S.p.lv}`,`击杀：${st.kills}（精英 ${st.elites}）`,`总伤害：${Math.round(st.dmg)}   最高单击：${Math.round(st.maxHit)}`,`获得魂晶：${st.soulTotal}`,`时长：${Math.floor(st.time/60)}分${Math.floor(st.time%60)}秒`,'符文：'+(Object.entries(S.runes).map(([k,r])=>SK[k].runes[r].name).join('、')||'无'),'装备：'+(Object.values(S.gear).filter(Boolean).map(i=>i.name).join('、')||'无')]
   .forEach((l,i)=>text(l,W/2,250+i*40,24,'#fff','center',true,5));btn(W/2-140,600,280,60,'再来一局 [Enter]',newRun,'#ffd400')}
-let last=performance.now();
-function frame(now){const dt=clamp((now-last)/1000,0,0.05);last=now;update(dt);buttons=[];g.clearRect(0,0,W,H);
+let last=performance.now(),audioState='';
+function syncGameAudio(){if(S.state===audioState)return;audioState=S.state;Audio.syncBgm(S.state)}
+function frame(now){const dt=clamp((now-last)/1000,0,0.05);last=now;update(dt);syncGameAudio();buttons=[];g.clearRect(0,0,W,H);
  if(S.state==='title')drawTitle();else{drawWorld();if(S.impactT>0){g.globalAlpha=0.55;Art.impact(g,W,H,'rgba(255,255,255,0)');g.globalAlpha=1}drawHUD();
   if(S.state==='levelup')drawLevelUp();if(S.state==='shop')drawShop();if(S.state==='evolve')drawEvolve();if(S.state==='over')drawEnd(false);if(S.state==='win')drawEnd(true)}
  if(S.flash>0){g.fillStyle=`rgba(255,255,255,${S.flash})`;g.fillRect(0,0,W,H)}requestAnimationFrame(frame)}
@@ -395,4 +398,5 @@ function scheduleFit(){fit();requestAnimationFrame(fit);setTimeout(fit,80);setTi
 addEventListener('resize',scheduleFit);addEventListener('orientationchange',scheduleFit);
 window.visualViewport?.addEventListener('resize',scheduleFit);window.visualViewport?.addEventListener('scroll',scheduleFit);
 scheduleFit();
-window.__game={get S(){return S},Art,hurt,dash,startWave,openShop,spawn,elitePack,dropLoot,tryCast,setWave:n=>{S.wave=n-1;startWave()}};
+window.__game={get S(){return S},Art,Audio,hurt,dash,startWave,openShop,spawn,elitePack,dropLoot,tryCast,setWave:n=>{S.wave=n-1;startWave()}};
+Audio.bindUnlock(C);
