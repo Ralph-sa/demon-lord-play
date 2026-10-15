@@ -1,6 +1,6 @@
 import {Art,RARITY} from './art.js';
 import {BEHAVIOR} from './skills.js';
-import {Audio} from './audio.js';
+import {Audio,attachAudio} from './audio-api.js';
 const C=document.getElementById('c'),g=C.getContext('2d'),W=1280,H=720,WORLD={w:2200,h:1500};
 const J=u=>fetch(u).then(r=>r.json());
 const [WEAPONS,ENEMIES,WAVES,ITEMS,SK,LOOT]=await Promise.all(['weapons','enemies','waves','items','skills','loot'].map(n=>J(`data/${n}.json`)));
@@ -15,7 +15,7 @@ C.addEventListener('contextmenu',e=>e.preventDefault());
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mouse.x=(e.clientX-r.left)*W/r.width;mouse.y=(e.clientY-r.top)*H/r.height});
 C.addEventListener('mousedown',e=>{if(e.button===2)mouse.r=true;else{mouse.l=true;if(onClick())mouse.l=false}});
 addEventListener('mouseup',e=>{if(e.button===2)mouse.r=false;else mouse.l=false});
-let S;
+let S,audioState='';
 function newRun(){audioState='';S={state:'title',t:0,wave:0,waveT:0,spawnT:0,cam:{x:0,y:0},shake:0,hitstop:0,flash:0,impactT:0,clickMove:false,
  p:{x:WORLD.w/2,y:WORLD.h/2,z:0,hp:120,maxhp:120,fury:0,base:{dmg:1,speed:220,crit:0.08,fury:1,cdr:0,regen:0.5},lv:1,xp:0,xpNext:10,form:'punk',face:1,inv:0,dashT:0,hitT:0,deathT:0,slowT:0,cast:null,moveTo:null},
  enemies:[],projs:[],eproj:[],gems:[],fx:[],decals:[],zones:[],timers:[],flasks:[],nums:[],loot:[],helpers:[mkW('dart')],
@@ -205,7 +205,7 @@ const FONT='"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif';
 function text(t,x,y,size,col='#fff',al='left',bold=true,stroke=0){g.font=`${bold?'900':'500'} ${size}px ${FONT}`;g.textAlign=al;if(stroke){g.lineWidth=stroke;g.strokeStyle='#000';g.lineJoin='round';g.strokeText(t,x,y)}g.fillStyle=col;g.fillText(t,x,y)}
 function inkRect(x,y,w,h,fill){g.fillStyle='#000';g.fillRect(x+5,y+5,w,h);g.fillStyle=fill;g.fillRect(x,y,w,h);g.lineWidth=4;g.strokeStyle='#000';g.strokeRect(x,y,w,h)}
 function btn(x,y,w,h,label,fn,col='#f2f2f2',clickSfx=true){buttons.push({x,y,w,h,fn:()=>{if(clickSfx)Audio.playSfx('ui_click',{vol:0.65});fn()}});const hov=mouse.x>x&&mouse.x<x+w&&mouse.y>y&&mouse.y<y+h;if(Art.ui.btn_yellow){g.drawImage(hov||col!=='#f2f2f2'?Art.ui.btn_yellow:Art.ui.btn_gray,x-4,y-4,w+8,h+8)}else inkRect(x,y,w,h,hov?'#ffd400':col);text(label,x+w/2,y+h/2+8,22,'#111','center')}
-function drawMuteBtn(x,y){btn(x,y,72,34,Audio.isMuted()?'音效关':'音效开',()=>Audio.toggleMute(),Audio.isMuted()?'#666':'#444',false)}
+function drawMuteBtn(x,y){const label=Audio.ready?(Audio.isMuted()?'音效关':'音效开'):'音效…';btn(x,y,72,34,label,()=>Audio.toggleMute(),Audio.isMuted()?'#666':'#444',false)}
 function drawSprite(key,frame,x,y,face,scale=1,tint){const fr=Art.sprites[key];if(!fr)return;const im=fr[((frame|0)%fr.length+fr.length)%fr.length];g.save();g.translate(x,y);g.scale(face*scale,scale);g.drawImage(tint?tinted(im,tint):im,-im.width/2,-im.height*0.92);g.restore()}
 const TC=new Map();function tinted(im,col){const k=col;let m=TC.get(im);if(!m){m={};TC.set(im,m)}if(m[k])return m[k];const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-atop';x.globalAlpha=0.7;x.fillStyle=col;x.fillRect(0,0,c.width,c.height);return m[k]=c}
 const ell=(x,y,r,ry)=>{g.beginPath();g.ellipse(x,y,r,ry??r*0.55,0,0,7)};
@@ -342,7 +342,7 @@ function drawTitle(){if(Art.bg)g.drawImage(Art.bg,0,0,W,H);g.fillStyle='rgba(0,0
 function drawEnd(win){g.fillStyle=win?'rgba(80,0,0,.75)':'rgba(0,0,0,.8)';g.fillRect(0,0,W,H);text(win?'天使陨落 · 城寨归你':'扑街！',W/2,170,80,win?'#ffd400':'#f44','center',true,12);
  const st=S.stats;[`到达波次：${S.wave}/10`,`等级：${S.p.lv}`,`击杀：${st.kills}（精英 ${st.elites}）`,`总伤害：${Math.round(st.dmg)}   最高单击：${Math.round(st.maxHit)}`,`获得魂晶：${st.soulTotal}`,`时长：${Math.floor(st.time/60)}分${Math.floor(st.time%60)}秒`,'符文：'+(Object.entries(S.runes).map(([k,r])=>SK[k].runes[r].name).join('、')||'无'),'装备：'+(Object.values(S.gear).filter(Boolean).map(i=>i.name).join('、')||'无')]
   .forEach((l,i)=>text(l,W/2,250+i*40,24,'#fff','center',true,5));btn(W/2-140,600,280,60,'再来一局 [Enter]',newRun,'#ffd400')}
-let last=performance.now(),audioState='';
+let last=performance.now();
 function syncGameAudio(){if(S.state===audioState)return;audioState=S.state;Audio.syncBgm(S.state)}
 function frame(now){const dt=clamp((now-last)/1000,0,0.05);last=now;update(dt);syncGameAudio();buttons=[];g.clearRect(0,0,W,H);
  if(S.state==='title')drawTitle();else{drawWorld();if(S.impactT>0){g.globalAlpha=0.55;Art.impact(g,W,H,'rgba(255,255,255,0)');g.globalAlpha=1}drawHUD();
@@ -390,4 +390,4 @@ function drawTouch(){if(S.state!=='play'&&S.state!=='levelup')return;
 // 画布/竖屏遮罩由 index.html 内联脚本初始化；模块加载后再触发一次重算
 window.__scheduleFit?.();
 window.__game={get S(){return S},Art,Audio,hurt,dash,startWave,openShop,spawn,elitePack,dropLoot,tryCast,setWave:n=>{S.wave=n-1;startWave()}};
-try{Audio.bindUnlock(C)}catch(e){console.warn('[audio] bindUnlock 失败',e)}
+import('./audio.js').then(m=>{attachAudio(m.Audio);try{m.Audio.bindUnlock(C)}catch(e){console.warn('[audio] bindUnlock 失败',e)}}).catch(e=>console.warn('[audio] 模块加载失败，游戏静音运行',e));

@@ -1,4 +1,4 @@
-import {Audio} from './audio.js';
+import {Audio} from './audio-api.js';
 // 暗黑式主动技能行为。数值来自 data/skills.json，符文 a/b 改变行为。
 // 每个技能：wind(前摇) → active(生效帧) → rec(后摇)。leap 有空中阶段。
 export const BEHAVIOR={
