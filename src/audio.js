@@ -150,12 +150,18 @@ function isMuted() {
 /** 在首次点击/按键/触摸时调用 */
 function bindUnlock(el) {
   const once = async () => {
-    await unlock();
+    try {
+      await unlock();
+    } catch (e) {
+      console.warn('[audio] 解锁失败', e);
+    }
     document.removeEventListener('pointerdown', once, true);
     document.removeEventListener('keydown', once, true);
+    document.removeEventListener('touchend', once, true);
   };
   document.addEventListener('pointerdown', once, true);
   document.addEventListener('keydown', once, true);
+  document.addEventListener('touchend', once, true);
   loadAll().catch(() => {});
 }
 

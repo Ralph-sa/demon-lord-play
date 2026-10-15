@@ -387,16 +387,7 @@ function drawTouch(){if(S.state!=='play'&&S.state!=='levelup')return;
   if(cd>0)text(cd.toFixed(1),b.x,b.y-b.r-6,16,'#fff','center',true,3);if(P?.cost)text(P.cost+'',b.x+b.r*0.7,b.y+b.r*0.85,13,'#ffb347','center',true,3)}
  for(const d of Object.values(T.drag)){const pt=Math.hypot(d.x-d.sx,d.y-d.sy)>25?dragPoint(d):clusterAim();const r=d.b.id==='leap'?SK.leap.radius:SK.molotov.radius;
   g.save();g.translate(-S.cam.x,-S.cam.y);g.strokeStyle='#ffd400';g.lineWidth=4;g.setLineDash([10,8]);g.beginPath();g.moveTo(S.p.x,S.p.y);g.lineTo(pt.x,pt.y);g.stroke();g.setLineDash([]);ell(pt.x,pt.y,r,r/1.3);g.stroke();g.restore()}}
-// 画布自适应（iOS 旋转后 innerHeight 可能滞后，优先 visualViewport + 100dvh）
-const rotEl=document.getElementById('rot'),rotBtn=document.getElementById('rot-go');
-if(sessionStorage.getItem('rot-dismiss')==='1')document.documentElement.classList.add('rot-dismissed');
-rotBtn?.addEventListener('click',()=>{sessionStorage.setItem('rot-dismiss','1');document.documentElement.classList.add('rot-dismissed');rotEl&&(rotEl.style.display='none');scheduleFit()});
-function viewSize(){const vv=window.visualViewport;return{w:vv?.width??innerWidth,h:vv?.height??innerHeight}}
-function fit(){const{w,h}=viewSize();if(w<1||h<1)return;const s=Math.min(w/W,h/H);C.style.width=W*s+'px';C.style.height=H*s+'px';
- document.documentElement.style.setProperty('--app-h',h+'px');if(rotEl&&!document.documentElement.classList.contains('rot-dismissed')){const land=matchMedia('(orientation: landscape)').matches;rotEl.style.display=land?'none':'';rotEl.setAttribute('aria-hidden',land?'true':'false')}}
-function scheduleFit(){fit();requestAnimationFrame(fit);setTimeout(fit,80);setTimeout(fit,300)}
-addEventListener('resize',scheduleFit);addEventListener('orientationchange',scheduleFit);
-window.visualViewport?.addEventListener('resize',scheduleFit);window.visualViewport?.addEventListener('scroll',scheduleFit);
-scheduleFit();
+// 画布/竖屏遮罩由 index.html 内联脚本初始化；模块加载后再触发一次重算
+window.__scheduleFit?.();
 window.__game={get S(){return S},Art,Audio,hurt,dash,startWave,openShop,spawn,elitePack,dropLoot,tryCast,setWave:n=>{S.wave=n-1;startWave()}};
-Audio.bindUnlock(C);
+try{Audio.bindUnlock(C)}catch(e){console.warn('[audio] bindUnlock 失败',e)}

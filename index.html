@@ -6,15 +6,65 @@
 <title>古惑仔成魔 · 原型</title>
 <style>
 html,body{margin:0;background:#000;width:100%;overflow:hidden;position:fixed;inset:0;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
- height:100%;height:100dvh;min-height:100dvh}
+ height:var(--app-h,100dvh);min-height:var(--app-h,100dvh)}
 body{display:flex;align-items:center;justify-content:center}
 canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
 #rot{display:none;position:fixed;inset:0;background:#111;color:#ffd400;font:900 28px sans-serif;flex-direction:column;gap:1.2rem;
- align-items:center;justify-content:center;text-align:center;z-index:9;padding:1.5rem;box-sizing:border-box}
-#rot button{font:700 18px sans-serif;padding:.65rem 1.25rem;border:3px solid #ffd400;border-radius:12px;background:#222;color:#fff;cursor:pointer;touch-action:manipulation}
+ align-items:center;justify-content:center;text-align:center;z-index:9;padding:1.5rem;box-sizing:border-box;pointer-events:auto}
+#rot button{font:700 18px sans-serif;padding:.65rem 1.25rem;border:3px solid #ffd400;border-radius:12px;background:#222;color:#fff;cursor:pointer;touch-action:manipulation;pointer-events:auto}
 #rot button:active{background:#333}
 @media (orientation:portrait) and (pointer:coarse){html:not(.rot-dismissed) #rot{display:flex}}
+@media (orientation:landscape){#rot{display:none!important}}
 </style></head>
 <body><canvas id="c" width="1280" height="720"></canvas><div id="rot" aria-hidden="true"><span>📱↻<br>请横屏游玩</span><button type="button" id="rot-go">仍要竖屏玩</button></div>
 <script>document.addEventListener('gesturestart',e=>e.preventDefault());document.addEventListener('dblclick',e=>e.preventDefault())</script>
+<script>
+// 不依赖 ES module：竖屏遮罩关闭 + 画布尺寸（main.js 加载失败或较慢时仍可玩）
+(function(){
+  const GW=1280,GH=720,C=document.getElementById('c'),rot=document.getElementById('rot'),rotBtn=document.getElementById('rot-go');
+  const ROT_KEY='rot-dismiss';
+  function dismissRot(){
+    try{sessionStorage.setItem(ROT_KEY,'1')}catch(_){}
+    document.documentElement.classList.add('rot-dismissed');
+    if(rot){rot.style.display='none';rot.setAttribute('aria-hidden','true')}
+    scheduleFit();
+  }
+  if(sessionStorage.getItem(ROT_KEY)==='1')document.documentElement.classList.add('rot-dismissed');
+  function bindRotBtn(el){
+    if(!el||el.dataset.rotBound)return;
+    el.dataset.rotBound='1';
+    el.addEventListener('click',e=>{e.stopPropagation();dismissRot()});
+    el.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();dismissRot()},{passive:false});
+  }
+  bindRotBtn(rotBtn);
+  function viewSize(){
+    const vv=window.visualViewport;
+    const w=Math.max(vv?.width||0,innerWidth,document.documentElement.clientWidth||0);
+    const h=Math.max(vv?.height||0,innerHeight,document.documentElement.clientHeight||0);
+    return{w:Math.round(w)||1,h:Math.round(h)||1};
+  }
+  function syncRot(){
+    if(!rot)return;
+    if(document.documentElement.classList.contains('rot-dismissed')){rot.style.display='none';rot.setAttribute('aria-hidden','true');return}
+    const land=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
+    if(land){rot.style.display='none';rot.setAttribute('aria-hidden','true')}
+    else{rot.style.removeProperty('display');rot.setAttribute('aria-hidden','false')}
+  }
+  function fit(){
+    const{w,h}=viewSize();
+    if(!C||w<1||h<1)return;
+    const s=Math.min(w/GW,h/GH);
+    C.style.width=(GW*s)+'px';
+    C.style.height=(GH*s)+'px';
+    document.documentElement.style.setProperty('--app-h',h+'px');
+    syncRot();
+  }
+  function scheduleFit(){fit();requestAnimationFrame(fit);setTimeout(fit,80);setTimeout(fit,300)}
+  window.__scheduleFit=scheduleFit;
+  addEventListener('resize',scheduleFit);addEventListener('orientationchange',scheduleFit);
+  window.visualViewport?.addEventListener('resize',scheduleFit);
+  window.visualViewport?.addEventListener('scroll',scheduleFit);
+  scheduleFit();
+})();
+</script>
 <script type="module" src="src/main.js"></script></body></html>
