@@ -83,16 +83,25 @@ uniform sampler2D uTexture;
 uniform vec2 uCenter;
 uniform float uStrength;
 void main() {
+    vec4 sharp = texture(uTexture, vTextureCoord);
+    if (uStrength <= 0.001) {
+        finalColor = sharp;
+        return;
+    }
     vec2 dir = uCenter - vTextureCoord;
     vec4 acc = vec4(0.0);
     float wsum = 0.0;
     for (int i = 0; i < 8; i++) {
         float t = float(i) / 7.0;
         float w = 1.0 - t * 0.65;
-        acc += texture(uTexture, vTextureCoord + dir * t * uStrength * 0.08) * w;
+        acc += texture(uTexture, vTextureCoord + dir * t * uStrength * 0.05) * w;
         wsum += w;
     }
-    finalColor = acc / wsum;
+    vec4 blurred = acc / wsum;
+    vec2 uv = vTextureCoord;
+    float edge = max(abs(uv.x - 0.5), abs(uv.y - 0.5)) * 2.0;
+    float edgeMask = smoothstep(0.35, 0.92, edge);
+    finalColor = mix(sharp, blurred, edgeMask * uStrength);
 }`;
 
 export const DAMAGE_EDGE_FRAG = `in vec2 vTextureCoord;

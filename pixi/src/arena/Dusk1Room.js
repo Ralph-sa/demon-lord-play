@@ -19,6 +19,43 @@ function addSprite(parent, catalog, key, x, y, opts = {}) {
   return s;
 }
 
+/** 可走区上沿矮墙：前景层 + 两端柱 + 高对比立面 */
+function addPlayFrontierWall(edgesFront, edgesBack, catalog, playTop, topSeq) {
+  const py = playTop.y ?? 198;
+  const px0 = playTop.x0 ?? 72;
+  const px1 = playTop.x1 ?? 1328;
+  const pScale = playTop.scale ?? 0.62;
+  const pSeq = playTop.sequence || topSeq;
+  const wallH = 303 * pScale;
+  const span = px1 - px0;
+
+  const shadow = new Graphics();
+  shadow.ellipse((px0 + px1) * 0.5, py + 12, span * 0.5, 22).fill({ color: 0x000000, alpha: 0.52 });
+  shadow.zIndex = py - 80;
+  edgesBack.addChild(shadow);
+
+  const pillar = (x) => {
+    addSprite(edgesFront, catalog, 'walls/wall_top_c.webp', x, py, {
+      scaleMul: pScale * 1.28,
+      zIndex: py + 12,
+    });
+  };
+  pillar(px0 + 18);
+  pillar(px1 - 18);
+
+  tileTopRow(edgesFront, catalog, py, px0 + 42, px1 - 42, pSeq, pScale * 1.1);
+
+  const face = new Graphics();
+  const topY = py - wallH;
+  const inset = 28;
+  face.roundRect(px0 + inset, topY + 18, span - inset * 2, wallH - 32, 5).fill({ color: 0x4a3428, alpha: 0.96 });
+  face.rect(px0 + inset, topY + 14, span - inset * 2, 10).fill({ color: 0xffe4a8, alpha: 0.98 });
+  face.rect(px0 + inset + 6, topY + 36, span - inset * 2 - 12, wallH - 70).fill({ color: 0x2a1e18, alpha: 0.55 });
+  face.rect(px0 + inset, py - 8, span - inset * 2, 6).fill({ color: 0x120c08, alpha: 0.75 });
+  face.zIndex = py + 8;
+  edgesFront.addChild(face);
+}
+
 function tileTopRow(parent, catalog, y, x0, x1, sequence, scaleMul = 1) {
   const sprites = [];
   let x = x0;
@@ -144,6 +181,7 @@ export function buildDusk1Room(scene, catalog) {
   const edgesBack = new Container();
   edgesBack.cullableChildren = false;
   const edgesFront = new Container();
+  edgesFront.sortableChildren = true;
   edgesFront.cullableChildren = false;
   edgesFront.sortableChildren = true;
   const fgRails = [];
@@ -164,26 +202,7 @@ export function buildDusk1Room(scene, catalog) {
 
   const playTop = scene.walls?.playTopWall;
   if (playTop) {
-    const py = playTop.y ?? scene.play?.y ?? 198;
-    const px0 = playTop.x0 ?? scene.play?.x ?? 72;
-    const px1 = playTop.x1 ?? (scene.play ? scene.play.x + scene.play.w : WORLD_W - 72);
-    const pSeq = playTop.sequence || topSeq;
-    const pScale = playTop.scale ?? 0.58;
-    tileTopRow(edgesBack, catalog, py, px0, px1, pSeq, pScale);
-    const wallH = 303 * pScale;
-    const dress = new Graphics();
-    const midX = (px0 + px1) * 0.5;
-    const span = px1 - px0;
-    dress.ellipse(midX, py + 6, span * 0.48, 14 * pScale).fill({ color: 0x000000, alpha: 0.32 });
-    const capY = py - wallH + 10 * pScale;
-    dress.moveTo(px0, capY);
-    dress.lineTo(px1, capY);
-    dress.stroke({ width: Math.max(2, 3 * pScale), color: 0xffe8c0, alpha: 0.9 });
-    dress.moveTo(px0 + 8, py - 2);
-    dress.lineTo(px1 - 8, py - 2);
-    dress.stroke({ width: 2, color: 0x6a5a48, alpha: 0.55 });
-    dress.zIndex = py - 1;
-    edgesBack.addChild(dress);
+    addPlayFrontierWall(edgesFront, edgesBack, catalog, playTop, topSeq);
   }
 
   for (const st of scene.structures || []) {

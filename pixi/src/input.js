@@ -114,7 +114,7 @@ export function createInput(canvas) {
       return { mx, my };
     },
     wantFist() {
-      return mouse.l || touch.atk;
+      return mouse.l || touch.atk || keys.j === true || keys.k === true;
     },
     wantSweep() {
       return mouse.r || touch.sweep || keys.e === true;

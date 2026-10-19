@@ -70,6 +70,8 @@ export class Game {
     this.decalsLayer = new Container();
     this.entityLayer = new Container();
     this.entityLayer.sortableChildren = true;
+    this.heroLayer = new Container();
+    this.heroLayer.sortableChildren = true;
     this.propLayer = new Container();
     this.propLayer.sortableChildren = true;
     this.actorLayer = new Container();
@@ -84,7 +86,7 @@ export class Game {
     this.envLayer.addChild(this.groundLayer, bldSh, zoneSh);
     this.envLayer.addChild(this.decalsLayer, this.propLayer, this.edgesBack);
     this.world.addChild(this.envLayer, groundSh, projSh, this.actorLayer, this.edgesFront);
-    this.actorLayer.addChild(this.entityLayer);
+    this.actorLayer.addChild(this.entityLayer, this.heroLayer);
     const ef = render.lighting.getEnvFilter();
     if (ef) this.envLayer.filters = [ef];
     render.setEnvTarget(this.envLayer);
@@ -111,6 +113,10 @@ export class Game {
     this.screenUi.label = 'screenUi';
     this.playHud = new PlayHud();
     this.touchHud = new TouchHud(input);
+    this.screenUi.eventMode = 'passive';
+    this.screenUi.interactiveChildren = true;
+    this.playHud.eventMode = 'none';
+    this.touchHud.eventMode = 'none';
     this.screenUi.addChild(this.playHud, this.touchHud);
     this.fgRails = [];
     this.railBaselineY = WORLD_H - 6;
@@ -185,8 +191,9 @@ export class Game {
     spr.animationSpeed = 0.12;
     spr.play();
     spr.label = 'hero';
+    spr.eventMode = 'none';
     this.p.sprite = spr;
-    this.entityLayer.addChild(spr);
+    this.heroLayer.addChild(spr);
     this.render.bindCharacter('hero', spr, { rx: 28, ry: 10 });
   }
 
@@ -206,15 +213,26 @@ export class Game {
   heroDebugInfo() {
     const p = this.p;
     const z = this.render.camera.worldZoom ?? 1;
-    const screenY = (p.y - this.cam.y) * z;
+    const gameX = (p.x - this.cam.x) * z;
+    const gameY = (p.y - this.cam.y) * z;
+    const rect = this.app.canvas.getBoundingClientRect();
+    const screenX = rect.left + (gameX / VIEW_W) * rect.width;
+    const screenY = rect.top + (gameY / VIEW_H) * rect.height;
+    const tex = p.sprite?.texture;
     return {
       role: 'hero',
       label: p.sprite?.label,
+      visible: !!p.sprite?.visible,
       x: Math.round(p.x),
       y: Math.round(p.y),
-      screenY: Math.round(screenY),
-      screenFraction: Math.round((screenY / VIEW_H) * 100) / 100,
+      screenXCss: Math.round(screenX),
+      screenYCss: Math.round(screenY),
+      canvasCss: { w: Math.round(rect.width), h: Math.round(rect.height) },
+      gameScreenY: Math.round(gameY),
+      screenFraction: Math.round((gameY / VIEW_H) * 100) / 100,
       hasHeroFrames: !!(Assets.sprites.hero_idle?.length),
+      textureLabel: tex?.label || tex?.textureCacheIds?.[0] || null,
+      zIndex: p.sprite?.zIndex,
     };
   }
 
@@ -760,7 +778,7 @@ export class Game {
     p.sprite.scale.x = p.face;
     p.sprite.x = p.x;
     p.sprite.y = p.y;
-    p.sprite.zIndex = p.y;
+    p.sprite.zIndex = p.y + 1_000_000;
     if (p.hitT > 0) p.sprite.tint = 0xffffff;
     this.render.updateCharacterShadow('hero', p.x, p.y, p.face);
 
@@ -980,12 +998,20 @@ export class Game {
     this.updateFgRails();
     this.drawPlayHud();
     this.drawTouchHud();
+    if (mode === 'opening' || mode === 'desktop_opening') {
+      for (const e of this.enemies) {
+        if (e.sprite) e.sprite.visible = true;
+      }
+    }
+    p.sprite.zIndex = p.y + 1_000_000;
+    this._shotMode = null;
     return {
       mode,
       fps: this.fps,
       quality: this.qualityName,
       tier: this.qualityName,
       frameMs: Math.round(this.lastFrameMs * 100) / 100,
+      hero: this.heroDebugInfo(),
     };
   }
 

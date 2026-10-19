@@ -101,8 +101,8 @@ export class RenderPipeline {
     this.camera.addTrauma(strong ? 0.22 : 0.12);
     this.camera.punchZoom(strong ? 0.03 : 0.015, 0.08);
     if (strong) this.camera.setSlowMo(0.65, 0.06);
-    this.post.triggerChromatic(strong ? 0.3 : 0.12, [1, 0.06]);
-    this.post.triggerRadial(screenX / 1280, screenY / 720, strong ? 0.38 : 0.15, 0.08);
+    this.post.triggerChromatic(strong ? 0.15 : 0.06, [1, 0.04], 0.08);
+    this.post.triggerRadial(screenX / 1280, screenY / 720, strong ? 0.2 : 0.08, 0.08);
     this.lighting.spawnDynamic({
       x: wx,
       y: wy,
