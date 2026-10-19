@@ -114,8 +114,7 @@ export function camClamp(camX, camY, zoom = 1, scene = null) {
   const topBase = scene?.walls?.topBaselineY ?? 78;
   const topH = scene?.walls?.topDisplayH ?? 303;
   const playTopY = scene?.walls?.playTopWall?.y ?? scene?.play?.y ?? 198;
-  const playTopScale = scene?.walls?.playTopWall?.scale ?? 0.62;
-  const playTopH = topH * playTopScale;
+  const playTopH = scene?.walls?.playTopWall?.displayH ?? 52;
   const ins = globalThis.__pixiViewInset || {};
   const cropTop = ins.cover ? ins.top || 0 : 0;
   const cropBottom = ins.cover ? ins.bottom || 0 : 0;

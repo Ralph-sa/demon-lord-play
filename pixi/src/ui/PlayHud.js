@@ -30,8 +30,8 @@ export class PlayHud extends Container {
     this.addChild(this.hpGfx, this.furyGfx, this.bossGfx, this.skillsGfx);
   }
 
-  redraw({ hp, fury, bossActive, comboHighlight = 2 }) {
-    const m = hudMetrics();
+  redraw({ hp, fury, bossActive, comboHighlight = 2, touchLayout = false }) {
+    const m = hudMetrics({ touchLayout });
     drawOrb(this.hpGfx, m.hpX, m.hpY, 28, hp, 0xff4444, 0x882222);
     drawOrb(this.furyGfx, m.furyX, m.furyY, 24, fury, 0xbb66ff, 0x5533aa);
 
@@ -45,6 +45,23 @@ export class PlayHud extends Container {
 
     const g = this.skillsGfx;
     g.clear();
+    if (m.compactSkills && m.skillSlots) {
+      const slots = m.skillSlots;
+      const padX = slots[0].x - 6;
+      const padY = slots[0].y - 6;
+      const padW = slots[2].x + slots[2].w - padX + 6;
+      const padH = slots[0].h + 12;
+      g.roundRect(padX, padY, padW, padH, 8).fill({ color: 0x0a080c, alpha: 0.45 });
+      for (let i = 0; i < slots.length; i++) {
+        const s = slots[i];
+        g.roundRect(s.x, s.y, s.w, s.h, 5).fill({
+          color: i === comboHighlight ? 0xffd400 : 0x444444,
+          alpha: i === comboHighlight ? 0.88 : 0.55,
+        });
+        g.roundRect(s.x, s.y, s.w, s.h, 5).stroke({ width: 1.5, color: 0x111111, alpha: 0.75 });
+      }
+      return;
+    }
     const barY = m.barY;
     const panelW = Math.min(VIEW_W - 32, 520);
     const panelX = (VIEW_W - panelW) / 2;

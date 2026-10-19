@@ -144,6 +144,14 @@ export const Assets = {
   dusk1: null,
 };
 
+const _uiTex = {};
+export function uiIconTexture(key) {
+  const im = Assets.items[key];
+  if (!im) return Texture.EMPTY;
+  if (!_uiTex[key]) _uiTex[key] = Texture.from(im);
+  return _uiTex[key];
+}
+
 export async function loadAll(renderer, onProgress) {
   const prog = createLoadProgress(onProgress);
   const M = await fetch(GEN_MANIFEST).then((r) => r.json());
@@ -161,6 +169,7 @@ export async function loadAll(renderer, onProgress) {
   prog.add(ENEMY_SPRITE_TASKS);
   prog.add(2); // vfx punch/sweep
   prog.add(Object.keys(M._items || {}).length);
+  prog.add(Object.keys(M._ui || {}).length);
   prog.add(3); // scene ground/edges
 
   let dusk1KeyCount = 0;
@@ -224,6 +233,9 @@ export async function loadAll(renderer, onProgress) {
   }
 
   for (const [k, p] of Object.entries(M._items || {})) {
+    Assets.items[k] = await img(p);
+  }
+  for (const [k, p] of Object.entries(M._ui || {})) {
     Assets.items[k] = await img(p);
   }
 

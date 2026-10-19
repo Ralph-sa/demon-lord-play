@@ -19,41 +19,31 @@ function addSprite(parent, catalog, key, x, y, opts = {}) {
   return s;
 }
 
-/** 可走区上沿矮墙：前景层 + 两端柱 + 高对比立面 */
+/** 可走区上沿矮墙：wall_top 贴图平铺（约 40–60px 高）+ 两端收口柱 + 薄阴影 */
 function addPlayFrontierWall(edgesFront, edgesBack, catalog, playTop, topSeq) {
   const py = playTop.y ?? 198;
   const px0 = playTop.x0 ?? 72;
   const px1 = playTop.x1 ?? 1328;
-  const pScale = playTop.scale ?? 0.62;
+  const displayH = playTop.displayH ?? 52;
+  const pScale = displayH / 303;
   const pSeq = playTop.sequence || topSeq;
-  const wallH = 303 * pScale;
   const span = px1 - px0;
 
   const shadow = new Graphics();
-  shadow.ellipse((px0 + px1) * 0.5, py + 12, span * 0.5, 22).fill({ color: 0x000000, alpha: 0.52 });
-  shadow.zIndex = py - 80;
+  shadow.ellipse((px0 + px1) * 0.5, py + 4, span * 0.48, 7).fill({ color: 0x000000, alpha: 0.26 });
+  shadow.zIndex = py - 4;
   edgesBack.addChild(shadow);
 
   const pillar = (x) => {
     addSprite(edgesFront, catalog, 'walls/wall_top_c.webp', x, py, {
-      scaleMul: pScale * 1.28,
-      zIndex: py + 12,
+      scaleMul: pScale * 1.12,
+      zIndex: py + 2,
     });
   };
-  pillar(px0 + 18);
-  pillar(px1 - 18);
+  pillar(px0 + 6);
+  pillar(px1 - 6);
 
-  tileTopRow(edgesFront, catalog, py, px0 + 42, px1 - 42, pSeq, pScale * 1.1);
-
-  const face = new Graphics();
-  const topY = py - wallH;
-  const inset = 28;
-  face.roundRect(px0 + inset, topY + 18, span - inset * 2, wallH - 32, 5).fill({ color: 0x4a3428, alpha: 0.96 });
-  face.rect(px0 + inset, topY + 14, span - inset * 2, 10).fill({ color: 0xffe4a8, alpha: 0.98 });
-  face.rect(px0 + inset + 6, topY + 36, span - inset * 2 - 12, wallH - 70).fill({ color: 0x2a1e18, alpha: 0.55 });
-  face.rect(px0 + inset, py - 8, span - inset * 2, 6).fill({ color: 0x120c08, alpha: 0.75 });
-  face.zIndex = py + 8;
-  edgesFront.addChild(face);
+  tileTopRow(edgesFront, catalog, py, px0 + 34, px1 - 34, pSeq, pScale);
 }
 
 function tileTopRow(parent, catalog, y, x0, x1, sequence, scaleMul = 1) {

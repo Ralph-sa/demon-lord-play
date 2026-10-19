@@ -11,7 +11,7 @@
     "topDisplayH": 303,
     "lowBaselineY": 802,
     "topSequence": ["a", "b", "c"],
-    "playTopWall": { "y": 198, "x0": 72, "x1": 1328, "scale": 0.62, "sequence": ["a", "b", "c"] }
+    "playTopWall": { "y": 198, "x0": 72, "x1": 1328, "displayH": 52, "sequence": ["a", "b", "c"] }
   },
   "floorZones": [
     { "tile": "tile_concrete_a", "x": 0, "y": 188, "w": 1400, "h": 660 },

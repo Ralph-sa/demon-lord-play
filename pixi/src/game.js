@@ -31,6 +31,7 @@ import { buildArenaRoom, camClamp } from './arena/ArenaRoom.js';
 import { buildDusk1Room } from './arena/Dusk1Room.js';
 import { PlayHud } from './ui/PlayHud.js';
 import { TouchHud } from './ui/TouchHud.js';
+import { touchControlLayout } from './ui/hudLayout.js';
 
 const angDiff = (a, b) => {
   let d = a - b;
@@ -409,7 +410,10 @@ export class Game {
     this.comboT = 0.9;
     const a = this.aimWorld();
     p.face = Math.cos(a.ang) < 0 ? -1 : 1;
-    p.cast = { id: 'fist', t: 0, step: this.combo, ang: a.ang, wind: SKILLS.fist.wind, rec: SKILLS.fist.rec * (this.combo === 2 ? 1.5 : 1) };
+    const st = this.combo;
+    p.cast = { id: 'fist', t: 0, step: st, ang: a.ang, wind: SKILLS.fist.wind, rec: SKILLS.fist.rec * (st === 2 ? 1.5 : 1) };
+    const punchKeys = ['hero_punch_light_1', 'hero_punch_light_2', 'hero_punch_heavy'];
+    this.sfx(punchKeys[st] || 'hero_punch_light_1', { vol: 0.9 });
     this.bumpCombat();
   }
 
@@ -844,6 +848,7 @@ export class Game {
       fury: clamp(this.fury / 100, 0, 1),
       bossActive: this.bossActive,
       comboHighlight: this.combo,
+      touchLayout: this.showTouchUi(),
     });
   }
 
@@ -919,7 +924,8 @@ export class Game {
       p.y = this.sceneData.spawn?.hero?.y ?? 520;
     } else if (mode === 'mobile_landscape_attack') {
       this.input.touch.forceUi = true;
-      this.input.touch.joy = { id: -1, ox: 148, oy: VIEW_H - 132, x: 148, y: VIEW_H - 132 };
+      const { joyX, joyY } = touchControlLayout();
+      this.input.touch.joy = { id: -1, ox: joyX, oy: joyY, x: joyX, y: joyY };
       this.input.touch.jx = 0.35;
       this.input.touch.jy = -0.1;
       p.cast = { id: 'fist', t: 0.16, step: 1, ang: 0.35, wind: 0.1, rec: 0.2, done: false };

@@ -1,5 +1,6 @@
 /** 键盘 + 鼠标 + 触屏虚拟摇杆（左下）与右下攻击/闪避/技能 */
 import { VIEW_W, VIEW_H } from './config.js';
+import { touchControlLayout } from './ui/hudLayout.js';
 
 export function createInput(canvas) {
   const keys = {};
@@ -14,12 +15,6 @@ export function createInput(canvas) {
     dodge: false,
     joy: null,
   };
-
-  const TB = [
-    { id: 'fist', label: '攻', x: VIEW_W - 92, y: VIEW_H - 108, r: 54 },
-    { id: 'dodge', label: '闪', x: VIEW_W - 198, y: VIEW_H - 88, r: 44 },
-    { id: 'sweep', label: '技', x: VIEW_W - 118, y: VIEW_H - 198, r: 46 },
-  ];
 
   addEventListener('keydown', (e) => {
     keys[e.key.toLowerCase()] = true;
@@ -50,11 +45,15 @@ export function createInput(canvas) {
     else mouse.l = false;
   });
 
-  const hitBtn = (q) => TB.find((b) => Math.hypot(q.x - b.x, q.y - b.y) < b.r + 12);
+  const hitBtn = (q) => {
+    const { buttons } = touchControlLayout();
+    return buttons.find((b) => Math.hypot(q.x - b.x, q.y - b.y) < b.r + 14);
+  };
 
   const onTouch = (ev) => {
     touch.on = true;
     ev.preventDefault();
+    const { joyX, joyY } = touchControlLayout();
     for (const t of ev.changedTouches) {
       const q = toCanvas(t.clientX, t.clientY);
       const id = t.identifier;
@@ -66,7 +65,9 @@ export function createInput(canvas) {
           if (btn.id === 'dodge') touch.dodge = true;
           continue;
         }
-        if (q.x < VIEW_W * 0.52 && !touch.joy) touch.joy = { id, ox: q.x, oy: q.y, x: q.x, y: q.y };
+        if (q.x < VIEW_W * 0.48 && !touch.joy) {
+          touch.joy = { id, ox: joyX, oy: joyY, x: q.x, y: q.y };
+        }
       } else if (ev.type === 'touchmove') {
         if (touch.joy?.id === id) {
           touch.joy.x = q.x;
@@ -102,7 +103,9 @@ export function createInput(canvas) {
     keys,
     mouse,
     touch,
-    TB,
+    get TB() {
+      return touchControlLayout().buttons;
+    },
     moveVec() {
       let mx = (keys.d ? 1 : 0) - (keys.a ? 1 : 0) + touch.jx;
       let my = (keys.s ? 1 : 0) - (keys.w ? 1 : 0) + touch.jy;
