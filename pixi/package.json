@@ -1,0 +1,12 @@
+{
+  "name": "guzai-pixi-room",
+  "version": "0.1.0",
+  "private": true,
+  "description": "古惑仔成魔 PixiJS 样板房（运行时仅用 vendor/pixi.min.mjs）",
+  "scripts": {
+    "postinstall": "cp node_modules/pixi.js/dist/pixi.min.mjs vendor/pixi.min.mjs 2>/dev/null || true"
+  },
+  "dependencies": {
+    "pixi.js": "^8.22.0"
+  }
+}

@@ -105,16 +105,25 @@ export function buildArenaRoom(groundImage, edges) {
   return { root, edgesBack, edgesFront };
 }
 
-export function camClamp(camX, camY, zoom = 1) {
+export function camClamp(camX, camY, zoom = 1, scene = null) {
   const M = EDGE;
   const vw = VIEW_W / zoom;
   const vh = VIEW_H / zoom;
   const minX = -M.marginX * 0.5;
   const maxX = WORLD_W + M.marginX * 0.5 - vw;
-  const minY = -M.top * 0.55;
+  const topBase = scene?.walls?.topBaselineY ?? 78;
+  const topH = scene?.walls?.topDisplayH ?? 303;
+  const minY = topBase - topH - 56;
   const maxY = WORLD_H - vh + 48;
   return {
     x: Math.max(minX, Math.min(maxX, camX)),
     y: Math.max(minY, Math.min(maxY, camY)),
   };
+}
+
+/** 总览镜头：完整顶墙入画（约 28%–36% 画面高度） */
+export function overviewCamY(scene) {
+  const topBase = scene?.walls?.topBaselineY ?? 78;
+  const topH = scene?.walls?.topDisplayH ?? 303;
+  return topBase - topH - 28;
 }

@@ -2,10 +2,11 @@
  * 镜头：0.85 总览缩放 + 以竞技场中心为主的小幅跟随
  */
 import { VIEW_W, VIEW_H, WORLD_W, WORLD_H, clamp, CAMERA_ZOOM, CAMERA_PAN_MAX } from '../../config.js';
-import { camClamp } from '../../arena/ArenaRoom.js';
+import { camClamp, overviewCamY } from '../../arena/ArenaRoom.js';
 
 export class CameraRig {
   constructor(sceneData) {
+    this.sceneData = sceneData;
     this.x = 0;
     this.y = 0;
     this.worldZoom = sceneData?.camera?.zoom ?? CAMERA_ZOOM;
@@ -24,9 +25,9 @@ export class CameraRig {
     this.punchScale = 1;
     this._punchT = 0;
     const vw = VIEW_W / this.worldZoom;
-    const vh = VIEW_H / this.worldZoom;
-    this.x = this.arenaCx - vw / 2;
-    this.y = this.arenaCy - vh / 2;
+    const c = camClamp(this.arenaCx - vw / 2, overviewCamY(sceneData), this.worldZoom, sceneData);
+    this.x = c.x;
+    this.y = c.y;
   }
 
   snapTo(x, y) {
@@ -34,15 +35,24 @@ export class CameraRig {
     const oy = clamp(y - this.arenaCy, -this.panMaxY, this.panMaxY);
     const vw = VIEW_W / this.worldZoom;
     const vh = VIEW_H / this.worldZoom;
-    const c = camClamp(this.arenaCx + ox - vw / 2, this.arenaCy + oy - vh / 2, this.worldZoom);
+    const c = camClamp(
+      this.arenaCx + ox - vw / 2,
+      this.arenaCy + oy - vh / 2,
+      this.worldZoom,
+      this.sceneData
+    );
     this.x = c.x;
     this.y = c.y;
   }
 
   snapOverview() {
     const vw = VIEW_W / this.worldZoom;
-    const vh = VIEW_H / this.worldZoom;
-    const c = camClamp(this.arenaCx - vw / 2, this.arenaCy - vh / 2 + 12, this.worldZoom);
+    const c = camClamp(
+      this.arenaCx - vw / 2,
+      overviewCamY(this.sceneData),
+      this.worldZoom,
+      this.sceneData
+    );
     this.x = c.x;
     this.y = c.y;
   }
@@ -83,7 +93,7 @@ export class CameraRig {
     const oy = clamp(focus.y - this.arenaCy + this.lookY, -this.panMaxY, this.panMaxY);
     const vw = VIEW_W / z;
     const vh = VIEW_H / z;
-    const target = camClamp(this.arenaCx + ox - vw / 2, this.arenaCy + oy - vh / 2, z);
+    const target = camClamp(this.arenaCx + ox - vw / 2, this.arenaCy + oy - vh / 2, z, this.sceneData);
     const lerp = 1 - Math.pow(0.0002, tdt);
     this.x += (target.x - this.x) * lerp;
     this.y += (target.y - this.y) * lerp;

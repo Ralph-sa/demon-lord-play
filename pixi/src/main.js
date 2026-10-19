@@ -5,6 +5,8 @@ import { loadAll } from './assets.js';
 import { createInput } from './input.js';
 import { Game } from './game.js';
 import { RenderPipeline, loadSceneData } from './render/index.js';
+import { createLoadingScreen } from './ui/loadingScreen.js';
+import { GameAudio } from './audio/GameAudio.js';
 
 const GW = VIEW_W;
 const GH = VIEW_H;
@@ -50,6 +52,11 @@ document.getElementById('orient-hint-close')?.addEventListener('pointerup', (e) 
   fitCanvas(document.querySelector('canvas'));
 });
 
+GameAudio.bindUnlock();
+
+const loading = createLoadingScreen();
+loading.setProgress(2);
+
 const app = new Application();
 await app.init({
   width: GW,
@@ -62,18 +69,36 @@ await app.init({
 });
 document.getElementById('game-host').appendChild(app.canvas);
 app.canvas.id = 'c';
+app.canvas.style.visibility = 'hidden';
 
 const input = createInput(app.canvas);
-await loadAll(app.renderer);
+
+const loadImages = loadAll(app.renderer, (p) => loading.setProgress(p));
+const loadBgm = GameAudio.preloadCoreBgm();
+await Promise.all([loadImages, loadBgm]);
+loading.setProgress(100);
+
 const sceneData = await loadSceneData('./data/scene.json');
 const render = new RenderPipeline(app, sceneData, 'high');
 render.mountStage(app.stage);
 render.registerInput(app.canvas);
+render.debug?.setAudio?.(GameAudio);
 
 const game = new Game(app, input, render, sceneData);
+game.audio = GameAudio;
+GameAudio.playBgm('bgm_title');
+
 const flashGfx = new Graphics();
 flashGfx.label = 'flash';
 app.stage.addChild(flashGfx);
+
+let combatBgm = false;
+const startCombatBgm = () => {
+  if (combatBgm) return;
+  combatBgm = true;
+  GameAudio.playBgm('bgm_kowloon');
+};
+game.onCombatStart = startCombatBgm;
 
 let last = performance.now();
 app.ticker.add(() => {
@@ -94,10 +119,13 @@ addEventListener('keydown', (e) => {
   if (e.key === 'q') game.cycleQuality();
 });
 fitCanvas(app.canvas);
+app.canvas.style.visibility = 'visible';
+loading.hide();
 
 window.__pixi = {
   game,
   render,
+  audio: GameAudio,
   stageScreenshot: (mode) => game.stageScreenshot(mode),
   getFps: () => game.fps,
   getPerfSnapshot: () => game.getPerfSnapshot(),
@@ -123,8 +151,4 @@ window.__pixi = {
       };
       poll();
     }),
-  setQuality: (q) => game.setQuality(q),
-  setTier: (t) => render.setTier(t),
 };
-
-console.info('[pixi] 样板房就绪 — ` 调试面板 | WASD/摇杆 | 左键/E 横扫 | Q 画质');

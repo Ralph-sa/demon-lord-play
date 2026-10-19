@@ -1,8 +1,5 @@
-/** 场景素材：优先 pixi_assets/index.json，回退 manifest 边缘与地面 */
-import { Assets as PixiAssets } from '../../vendor/pixi.min.mjs';
-
-const PIXI_ASSETS_INDEX = '/pixi_assets/index.json';
-const FALLBACK_MANIFEST = './assets/gen/manifest.json';
+/** 回退场景贴图：仅使用 pixi 目录内 assets/gen */
+const GEN_MANIFEST = './assets/gen/manifest.json';
 
 function loadImage(src) {
   return new Promise((resolve) => {
@@ -14,45 +11,50 @@ function loadImage(src) {
   });
 }
 
-export async function loadSceneAssets() {
-  let index = null;
-  try {
-    index = await fetch(PIXI_ASSETS_INDEX).then((r) => (r.ok ? r.json() : null));
-  } catch (_) {}
+function assetUrl(rel) {
+  if (!rel) return null;
+  if (rel.startsWith('http') || rel.startsWith('/')) return rel;
+  const path = rel.startsWith('assets/') ? rel : `assets/gen/${rel}`;
+  return `./${path}`;
+}
 
-  const manifest = await fetch(FALLBACK_MANIFEST).then((r) => r.json());
-  const img = async (rel) => loadImage(rel.startsWith('http') || rel.startsWith('/') ? rel : `./${rel}`);
+/** @param {(done:number,total:number)=>void} [onProgress] */
+export async function loadSceneAssets(onProgress) {
+  const manifest = await fetch(GEN_MANIFEST).then((r) => r.json());
+  const out = { manifest, ground: null, edges: null, textures: {} };
 
-  const out = { index, manifest, ground: null, edges: null, textures: {} };
-
-  if (index?.ground) {
-    out.ground = await img(`/pixi_assets/${index.ground}`);
-  } else if (manifest._ground) {
-    out.ground = await img(manifest._ground);
+  const tasks = [];
+  if (manifest._ground) tasks.push(['ground', manifest._ground]);
+  const E = manifest._edges;
+  if (E) {
+    if (E.top) tasks.push(['edge_top', E.top]);
+    if (E.bottom) tasks.push(['edge_bottom', E.bottom]);
+    if (E.side) tasks.push(['edge_side', E.side]);
   }
 
-  const E = index?.edges || manifest._edges;
+  let done = 0;
+  const total = tasks.length;
+  const tick = () => {
+    done++;
+    onProgress?.(done, total);
+  };
+
+  const loaded = {};
+  for (const [key, rel] of tasks) {
+    loaded[key] = await loadImage(assetUrl(rel));
+    tick();
+  }
+
+  if (loaded.ground) out.ground = loaded.ground;
   if (E) {
-    const resolveEdge = async (key) => {
-      const rel = index?.edges?.[key] || E[key];
-      if (!rel) return null;
-      if (typeof rel === 'string' && rel.includes('pixi_assets')) return img(rel.startsWith('/') ? rel : `/pixi_assets/${rel}`);
-      return img(typeof rel === 'string' ? rel : E[key]);
-    };
     out.edges = {
       topH: E.topH || 360,
       bottomH: E.bottomH || 280,
       sideW: E.sideW || 360,
-      top: await resolveEdge('top'),
-      bottom: await resolveEdge('bottom'),
-      side: await resolveEdge('side'),
+      top: loaded.edge_top,
+      bottom: loaded.edge_bottom,
+      side: loaded.edge_side,
     };
-  }
-
-  if (index?.textures) {
-    for (const [k, v] of Object.entries(index.textures)) {
-      out.textures[k] = await img(v.startsWith('/') ? v : `/pixi_assets/${v}`);
-    }
   }
 
   return out;

@@ -1,8 +1,11 @@
-/** 从 manifest 加载定稿 v6 漫画风素材，并生成障碍物占位贴图 */
+/** 从 pixi/assets/gen 加载角色素材；dusk1 场景包；进度回调 0–100 */
 import { Texture, Rectangle, Graphics, RenderTexture } from '../vendor/pixi.min.mjs';
 import { DISPLAY_H } from './config.js';
 import { loadSceneAssets } from './assets/sceneAssets.js';
 import { loadDusk1Pack } from './assets/dusk1Assets.js';
+
+const GEN_MANIFEST = './assets/gen/manifest.json';
+const ENEMY_SPRITE_TASKS = 12;
 
 function loadImage(src) {
   return new Promise((resolve) => {
@@ -12,6 +15,30 @@ function loadImage(src) {
     im.onerror = () => resolve(null);
     im.src = src;
   });
+}
+
+function assetUrl(rel) {
+  if (!rel) return null;
+  if (rel.startsWith('http') || rel.startsWith('/')) return rel;
+  const path = rel.startsWith('assets/') ? rel : `assets/gen/${rel}`;
+  return `./${path}`;
+}
+
+function createLoadProgress(onProgress) {
+  let total = 0;
+  let done = 0;
+  return {
+    add(n = 1) {
+      total += n;
+    },
+    tick() {
+      done++;
+      if (total > 0 && onProgress) onProgress(Math.min(99, Math.round((done / total) * 100)));
+    },
+    finish() {
+      onProgress?.(100);
+    },
+  };
 }
 
 /** 条带精灵图 → 帧纹理数组（底部锚点 0.92 高度，与 Canvas 原型一致） */
@@ -117,15 +144,10 @@ export const Assets = {
   dusk1: null,
 };
 
-export async function loadAll(renderer) {
-  const M = await fetch('./assets/gen/manifest.json').then((r) => r.json());
+export async function loadAll(renderer, onProgress) {
+  const prog = createLoadProgress(onProgress);
+  const M = await fetch(GEN_MANIFEST).then((r) => r.json());
   Assets.manifest = M;
-  const imgCache = {};
-  const img = async (rel) => {
-    if (!rel) return null;
-    if (!imgCache[rel]) imgCache[rel] = loadImage(`./${rel}`);
-    return imgCache[rel];
-  };
 
   const heroMap = {
     idle: 'hero_idle',
@@ -135,9 +157,37 @@ export async function loadAll(renderer) {
     dodge: 'hero_dodge',
     hit: 'hero_hit',
   };
+  prog.add(Object.keys(heroMap).length);
+  prog.add(ENEMY_SPRITE_TASKS);
+  prog.add(2); // vfx punch/sweep
+  prog.add(Object.keys(M._items || {}).length);
+  prog.add(3); // scene ground/edges
+
+  let dusk1KeyCount = 0;
+  try {
+    const duskIndex = await fetch('./assets/dusk1/index.json').then((r) => r.json());
+    dusk1KeyCount = Object.keys(duskIndex).filter((k) => !k.startsWith('_') && !duskIndex[k].frameOf).length;
+    prog.add(dusk1KeyCount);
+  } catch (_) {
+    prog.add(1);
+  }
+
+  const imgCache = {};
+  const img = async (rel) => {
+    if (!rel) return null;
+    const url = assetUrl(rel);
+    if (!imgCache[url]) {
+      imgCache[url] = loadImage(url);
+    }
+    const im = await imgCache[url];
+    prog.tick();
+    return im;
+  };
+
   for (const [anim, key] of Object.entries(heroMap)) {
     const meta = M[key];
     if (meta) Assets.sprites[`hero_${anim}`] = sliceStrip(await img(meta.src), meta, DISPLAY_H.hero);
+    else prog.tick();
   }
 
   for (const t of ['cultivator', 'taoist', 'monk', 'paladin']) {
@@ -150,9 +200,12 @@ export async function loadAll(renderer) {
   for (const v of ['punch', 'sweep']) {
     const key = `vfx_${v}`;
     if (M[key]) Assets.vfx[v] = vfxFrames(await img(M[key].src), M[key]);
+    else prog.tick();
   }
 
-  const scenePack = await loadSceneAssets();
+  const scenePack = await loadSceneAssets((d, t) => {
+    onProgress?.(Math.min(98, Math.round((d / Math.max(1, t)) * 15)));
+  });
   if (scenePack.ground) Assets.ground = scenePack.ground;
   else if (M._ground) Assets.ground = await img(M._ground);
 
@@ -175,7 +228,13 @@ export async function loadAll(renderer) {
   }
 
   try {
-    Assets.dusk1 = await loadDusk1Pack();
+    Assets.dusk1 = await loadDusk1Pack((loaded, total) => {
+      if (total > 0) {
+        const base = 20;
+        const span = 75;
+        onProgress?.(Math.min(99, base + Math.round((loaded / total) * span)));
+      }
+    });
     if (Assets.dusk1.fx.punch_spark) {
       Assets.vfx.punch = Assets.dusk1.fx.punch_spark;
       Assets.vfx.punch_spark = Assets.dusk1.fx.punch_spark;
@@ -189,6 +248,7 @@ export async function loadAll(renderer) {
     }
   } catch (e) {
     console.warn('[pixi] dusk1 pack load failed', e);
+    prog.tick();
   }
 
   if (!Assets.dusk1) {
@@ -199,4 +259,6 @@ export async function loadAll(renderer) {
     Assets.decals.oil = makeDecalTexture('oil');
     Assets.decals.manhole = makeDecalTexture('manhole');
   }
+
+  prog.finish();
 }

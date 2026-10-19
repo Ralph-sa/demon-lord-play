@@ -98,6 +98,11 @@ export class Game {
     this.qualText.x = 12;
     this.qualText.y = 30;
     this.hud.addChild(this.fpsText, this.qualText);
+    this.fpsText.visible = false;
+    this.qualText.visible = false;
+    this.bossActive = false;
+    this.audio = null;
+    this.onCombatStart = null;
     app.stage.addChild(this.hud);
 
     this.touchHud = new Graphics();
@@ -156,6 +161,7 @@ export class Game {
         : buildArenaRoom(Assets.ground, Assets.edges);
     this.groundLayer.addChild(arena.root);
     this.edgesBack.removeChildren();
+    this.edgesBack.cullableChildren = false;
     while (arena.edgesBack.children.length > 0) {
       this.edgesBack.addChild(arena.edgesBack.children[0]);
     }
@@ -183,7 +189,7 @@ export class Game {
     const { kind, x, y } = def;
     const pack = Assets.dusk1?.props?.[kind];
     const meta = pack?.meta;
-    const intactKey = kind === 'water_tower' ? `props/${kind}.png` : `props/${kind}_intact.png`;
+    const intactKey = kind === 'water_tower' ? `props/${kind}.webp` : `props/${kind}_intact.webp`;
     const built = Assets.dusk1?.makeSprite(intactKey);
     let tex = pack?.intact || Assets.props[kind];
     let ax = 0.5;
@@ -247,17 +253,21 @@ export class Game {
     this.decalsLayer.addChild(spr);
   }
 
+  playBounds() {
+    return this.sceneData.play || { x: 72, y: 198, w: 1256, h: 588 };
+  }
+
   spawnEnemies() {
-    const P = this.sceneData.play || { x: 56, y: 88, w: 1288, h: 720 };
+    const P = this.playBounds();
     const slots = [
-      [P.x + 90, P.y + 70, 'cultivator'],
-      [P.x + P.w - 90, P.y + 70, 'cultivator'],
-      [P.x + 120, P.y + P.h * 0.45, 'taoist'],
-      [P.x + P.w - 120, P.y + P.h * 0.45, 'taoist'],
-      [P.x + P.w * 0.5, P.y + 55, 'monk'],
-      [P.x + 160, P.y + P.h - 90, 'monk'],
-      [P.x + P.w - 160, P.y + P.h - 90, 'paladin'],
-      [P.x + P.w * 0.72, P.y + P.h - 100, 'paladin'],
+      [P.x + 110, P.y + 100, 'cultivator'],
+      [P.x + P.w - 110, P.y + 100, 'cultivator'],
+      [P.x + 180, P.y + P.h * 0.52, 'taoist'],
+      [P.x + P.w - 180, P.y + P.h * 0.52, 'taoist'],
+      [P.x + P.w * 0.5, P.y + 120, 'monk'],
+      [P.x + 200, P.y + P.h - 110, 'monk'],
+      [P.x + P.w - 200, P.y + P.h - 110, 'paladin'],
+      [P.x + P.w * 0.68, P.y + P.h - 120, 'paladin'],
     ];
     for (const [x, y, type] of slots) this.spawnEnemy(type, x, y);
   }
@@ -299,6 +309,14 @@ export class Game {
     return e;
   }
 
+  sfx(key, opts) {
+    this.audio?.playSfx(key, opts);
+  }
+
+  bumpCombat() {
+    this.onCombatStart?.();
+  }
+
   aimWorld() {
     const p = this.p;
     const z = this.cam.zoom ?? this.render.camera.worldZoom;
@@ -319,6 +337,8 @@ export class Game {
     p.dashVx = (dx / l) * 420;
     p.dashVy = (dy / l) * 420;
     this.vfx.dustPuff(p.x, p.y, 6);
+    this.sfx('hero_dodge');
+    this.bumpCombat();
   }
 
   showTouchUi() {
@@ -339,6 +359,7 @@ export class Game {
     const a = this.aimWorld();
     p.face = Math.cos(a.ang) < 0 ? -1 : 1;
     p.cast = { id: 'fist', t: 0, step: this.combo, ang: a.ang, wind: SKILLS.fist.wind, rec: SKILLS.fist.rec * (this.combo === 2 ? 1.5 : 1) };
+    this.bumpCombat();
   }
 
   trySweep() {
@@ -348,6 +369,7 @@ export class Game {
     const a = this.aimWorld();
     p.face = Math.cos(a.ang) < 0 ? -1 : 1;
     p.cast = { id: 'sweep', t: 0, ang: a.ang, wind: SKILLS.sweep.wind, rec: SKILLS.sweep.rec };
+    this.bumpCombat();
   }
 
   damageEnemy(e, amt, o = {}) {
@@ -389,8 +411,14 @@ export class Game {
     }
     if (o.stun) e.stun = Math.max(e.stun, o.stun);
     this.vfx.burst(e.x, e.y - 30, 6, 0xffaa55);
+    if (tier >= 2) {
+      this.sfx('hit_crit');
+      this.sfx('hit_boom', { vol: 0.75 });
+    } else if (tier >= 1) this.sfx('hit_heavy');
+    else this.sfx('hit_light');
     if (e.hp <= 0) this.killEnemy(e);
     else {
+      this.sfx('enemy_hit');
       e.sprite.tint = 0xffffff;
       setTimeout(() => {
         if (!e.dead) e.sprite.tint = 0xffffff;
@@ -402,6 +430,7 @@ export class Game {
   killEnemy(e) {
     e.dead = true;
     e.sprite.visible = false;
+    this.sfx('enemy_death');
     this.vfx.burst(e.x, e.y - 20, 14);
     this.vfx.spawnParticle(e.x, e.y - 30, { col: 0x88ccff, life: 0.5, vy: -100 });
     this.gems.push({ x: e.x, y: e.y, t: 0, sprite: null });
@@ -420,6 +449,16 @@ export class Game {
   breakCrate(prop, hitX, hitY) {
     if (prop.dead || !prop.breakable) return;
     prop.dead = true;
+    const propSfx = {
+      crate: 'prop_crate_break',
+      clay_jar: 'prop_jar_break',
+      aircon: 'prop_ac_metal',
+      gas_canister: 'prop_gas_explode',
+      bucket: 'prop_jar_break',
+      mahjong_table: 'prop_crate_break',
+      water_tower: 'prop_ac_metal',
+    };
+    this.sfx(propSfx[prop.kind] || 'prop_glass_break');
     const broken = Assets.dusk1?.props?.[prop.kind]?.broken;
     if (broken) {
       prop.sprite.texture = broken;
@@ -480,6 +519,8 @@ export class Game {
     if (c.id === 'fist') {
       const st = c.step;
       const P = SKILLS.fist;
+      this.sfx(['hero_punch_light_1', 'hero_punch_light_2', 'hero_punch_light_3'][st] || 'hero_punch_light_1');
+      if (st === 2) this.sfx('hero_punch_heavy', { vol: 0.85 });
       const frames = Assets.vfx.punch_spark || Assets.vfx.punch;
       const hx = p.x + Math.cos(c.ang) * 45;
       const hy = p.y - 25;
@@ -506,16 +547,20 @@ export class Game {
       }
     } else if (c.id === 'sweep') {
       const P = SKILLS.sweep;
+      this.sfx('hero_pipe_swing');
       this.vfx.playVfx(Assets.vfx.sweep, p.x, p.y - 20, 0.75, c.ang);
       this.vfx.hitStarburst(p.x + Math.cos(c.ang) * 70, p.y - 30, c.ang, true);
       this.vfx.dustPuff(p.x, p.y, 8);
       this.vfx.shake = Math.max(this.vfx.shake, 10);
       this.render.onSweep(p.x, p.y - 25);
+      let pipeHit = false;
       for (const e of this.enemies) {
         if (!e.dead && inArc(e.x, e.y, p.x, p.y, c.ang, P.range, P.arc)) {
+          pipeHit = true;
           this.damageEnemy(e, P.dmg, { dir: Math.atan2(e.y - p.y, e.x - p.x), kb: P.kb, stun: 0.5 });
         }
       }
+      if (pipeHit) this.sfx('hero_pipe_hit');
       this.hitProps(p.x, p.y, P.range * 0.6);
     }
   }
@@ -554,6 +599,7 @@ export class Game {
         if (d < (e.reach || 120) + 30) {
           this.p.hitT = 0.2;
           this.vfx.shake = 4;
+          this.sfx('hero_hurt');
         }
       }
       return;
@@ -567,12 +613,20 @@ export class Game {
       e.st = 'wind';
       e.stT = e.wind || 0.5;
       e.cd = e.cd0 || 2;
+      const atkSfx = {
+        cultivator: 'enemy_xiuxian_sword',
+        taoist: 'enemy_daoshi_talisman',
+        monk: 'enemy_monk_staff',
+        paladin: 'enemy_paladin_shield',
+      };
+      this.sfx(atkSfx[e.type]);
       return;
     }
     e.x += mvx * e.speed * dt;
     e.y += mvy * e.speed * dt;
-    e.x = clamp(e.x, 40, WORLD_W - 40);
-    e.y = clamp(e.y, 60, WORLD_H - 60);
+    const P = this.playBounds();
+    e.x = clamp(e.x, P.x + 28, P.x + P.w - 28);
+    e.y = clamp(e.y, P.y + 28, P.y + P.h - 28);
   }
 
   collideProps(ent, r = 14) {
@@ -609,6 +663,9 @@ export class Game {
       this._fpsAcc = 0;
       this._fpsN = 0;
       this.fpsText.text = `FPS: ${this.fps}`;
+      const dbg = this.render.debug?.visible;
+      this.fpsText.visible = !!dbg;
+      this.qualText.visible = !!dbg;
       if (this.fps < 48) this._lowTimer += 0.5;
       else this._lowTimer = Math.max(0, this._lowTimer - 0.5);
       const tier = tierFromFps(this.fps, this.qualityName, this._lowTimer);
@@ -637,7 +694,7 @@ export class Game {
       if (this.input.wantSweep()) this.trySweep();
     }
 
-    const P = this.sceneData.play || { x: 48, y: 72, w: 1304, h: 748 };
+    const P = this.playBounds();
     p.x = clamp(p.x, P.x + 20, P.x + P.w - 20);
     p.y = clamp(p.y, P.y + 20, P.y + P.h - 20);
     this.collideProps(p);
@@ -742,6 +799,11 @@ export class Game {
     g.circle(VIEW_W - 58, 52, 24).fill({ color: 0x5533aa, alpha: 0.35 });
     g.arc(VIEW_W - 58, 52, 24, -Math.PI / 2, -Math.PI / 2 + fury * Math.PI * 2).fill({ color: 0xbb66ff });
     g.circle(VIEW_W - 58, 52, 24).stroke({ width: 3, color: 0x221133 });
+    if (this.bossActive) {
+      g.roundRect(VIEW_W / 2 - 200, 10, 400, 14, 6).fill({ color: 0x1a0a20, alpha: 0.75 });
+      g.roundRect(VIEW_W / 2 - 198, 12, 396 * 0.65, 10, 4).fill({ color: 0xbb66ff, alpha: 0.95 });
+      g.roundRect(VIEW_W / 2 - 200, 10, 400, 14, 6).stroke({ width: 2, color: 0x221133, alpha: 0.9 });
+    }
     const barY = VIEW_H - 28;
     g.roundRect(VIEW_W / 2 - 140, barY - 18, 280, 36, 8).fill({ color: 0x000000, alpha: 0.45 });
     for (let i = 0; i < 3; i++) {

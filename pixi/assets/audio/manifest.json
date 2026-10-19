@@ -1,0 +1,2491 @@
+{
+ "version": 1,
+ "base": "assets/audio/",
+ "formats": {
+  "primary": "ogg",
+  "fallback": "mp3",
+  "note": "优先 ogg（Vorbis）；不支持时用 mp3。mp3 编码有前置延迟（约 1105 采样），循环 BGM 建议 ogg 或 WebAudio 指定 loopStart/loopEnd"
+ },
+ "loudness": {
+  "sfx_lufs": -14,
+  "bgm_lufs": -18
+ },
+ "bgm": {
+  "bgm_kowloon": {
+   "label": "九龙城寨战斗曲",
+   "ogg": "bgm/bgm_kowloon.ogg",
+   "mp3": "bgm/bgm_kowloon.mp3",
+   "loop": true,
+   "volume": 0.6,
+   "duration_s": 48.0,
+   "lufs": -18.0,
+   "source": "bgm_kowloon_3.wav",
+   "loop_src_range_s": [
+    6.59,
+    54.59
+   ],
+   "crossfade_s": 1.0,
+   "loop_similarity": 0.856,
+   "candidates": [
+    {
+     "file": "bgm_kowloon_1.wav",
+     "std2s": 0.9,
+     "gap_frames": 0,
+     "head_db_rel": 0.1,
+     "tail_db_rel": -2.1,
+     "loop_score": -1.100000023841858
+    },
+    {
+     "file": "bgm_kowloon_2.wav",
+     "std2s": 1.22,
+     "gap_frames": 0,
+     "head_db_rel": -0.2,
+     "tail_db_rel": -1.9,
+     "loop_score": -1.4800000190734863
+    },
+    {
+     "file": "bgm_kowloon_3.wav",
+     "std2s": 1.76,
+     "gap_frames": 2,
+     "head_db_rel": -0.4,
+     "tail_db_rel": -6.5,
+     "loop_score": -3.5399999618530273
+    },
+    {
+     "file": "bgm_kowloon_4.wav",
+     "std2s": 7.69,
+     "gap_frames": 9,
+     "head_db_rel": -12.8,
+     "tail_db_rel": -28.2,
+     "loop_score": -18.850000381469727
+    }
+   ]
+  },
+  "bgm_kowloon_intro": {
+   "label": "九龙城寨开场/过场",
+   "ogg": "bgm/bgm_kowloon_intro.ogg",
+   "mp3": "bgm/bgm_kowloon_intro.mp3",
+   "loop": false,
+   "volume": 0.6,
+   "duration_s": 59.08,
+   "lufs": -18.0,
+   "source": "bgm_kowloon_4.wav",
+   "candidates": [
+    {
+     "file": "bgm_kowloon_4.wav",
+     "std2s": 7.69,
+     "gap_frames": 9,
+     "head_db_rel": -12.8,
+     "tail_db_rel": -28.2,
+     "loop_score": -18.850000381469727
+    }
+   ]
+  },
+  "bgm_boss": {
+   "label": "Boss 战",
+   "ogg": "bgm/bgm_boss.ogg",
+   "mp3": "bgm/bgm_boss.mp3",
+   "loop": true,
+   "volume": 0.6,
+   "duration_s": 47.93,
+   "lufs": -18.0,
+   "source": "bgm_boss_2.wav",
+   "loop_src_range_s": [
+    8.78,
+    56.7
+   ],
+   "crossfade_s": 1.0,
+   "loop_similarity": 0.859,
+   "candidates": [
+    {
+     "file": "bgm_boss_1.wav",
+     "std2s": 5.8,
+     "gap_frames": 8,
+     "head_db_rel": -0.7,
+     "tail_db_rel": -19.9,
+     "loop_score": -12.0
+    },
+    {
+     "file": "bgm_boss_2.wav",
+     "std2s": 3.15,
+     "gap_frames": 4,
+     "head_db_rel": 0.1,
+     "tail_db_rel": -11.9,
+     "loop_score": -6.349999904632568
+    }
+   ]
+  },
+  "bgm_shop": {
+   "label": "商店/进化间歇",
+   "ogg": "bgm/bgm_shop.ogg",
+   "mp3": "bgm/bgm_shop.mp3",
+   "loop": true,
+   "volume": 0.6,
+   "duration_s": 44.0,
+   "lufs": -18.0,
+   "source": "bgm_shop_2.wav",
+   "loop_src_range_s": [
+    9.57,
+    53.57
+   ],
+   "crossfade_s": 1.0,
+   "loop_similarity": 1.05,
+   "candidates": [
+    {
+     "file": "bgm_shop_1.wav",
+     "std2s": 4.46,
+     "gap_frames": 10,
+     "head_db_rel": 0.2,
+     "tail_db_rel": -16.5,
+     "loop_score": -11.109999656677246
+    },
+    {
+     "file": "bgm_shop_2.wav",
+     "std2s": 1.9,
+     "gap_frames": 6,
+     "head_db_rel": 0.5,
+     "tail_db_rel": -5.7,
+     "loop_score": -5.46999979019165
+    },
+    {
+     "file": "bgm_shop_3.wav",
+     "std2s": 11.11,
+     "gap_frames": 24,
+     "head_db_rel": 0.0,
+     "tail_db_rel": -45.0,
+     "loop_score": -27.610000610351562
+    },
+    {
+     "file": "bgm_shop_4.wav",
+     "std2s": 1.25,
+     "gap_frames": 10,
+     "head_db_rel": -0.2,
+     "tail_db_rel": -8.1,
+     "loop_score": -7.130000114440918
+    }
+   ]
+  },
+  "bgm_title": {
+   "label": "标题曲",
+   "ogg": "bgm/bgm_title.ogg",
+   "mp3": "bgm/bgm_title.mp3",
+   "loop": true,
+   "volume": 0.6,
+   "duration_s": 45.33,
+   "lufs": -18.0,
+   "source": "bgm_title_1.wav",
+   "loop_src_range_s": [
+    10.73,
+    56.05
+   ],
+   "crossfade_s": 1.0,
+   "loop_similarity": 0.822,
+   "candidates": [
+    {
+     "file": "bgm_title_1.wav",
+     "std2s": 8.95,
+     "gap_frames": 13,
+     "head_db_rel": -4.3,
+     "tail_db_rel": -34.3,
+     "loop_score": -20.170000076293945
+    },
+    {
+     "file": "bgm_title_2.wav",
+     "std2s": 12.78,
+     "gap_frames": 27,
+     "head_db_rel": -30.4,
+     "tail_db_rel": -43.8,
+     "loop_score": -39.779998779296875
+    },
+    {
+     "file": "bgm_title_3.wav",
+     "std2s": 10.08,
+     "gap_frames": 14,
+     "head_db_rel": -3.4,
+     "tail_db_rel": -38.3,
+     "loop_score": -21.920000076293945
+    }
+   ]
+  }
+ },
+ "sfx": {
+  "hero_punch_light_1": {
+   "label": "主角轻拳1",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_punch_light_1_1.ogg",
+     "mp3": "sfx/hero_punch_light_1_1.mp3",
+     "duration_s": 0.356,
+     "lufs": -14.0,
+     "src": "sfx_hero_punch_light_1_1.wav"
+    },
+    {
+     "ogg": "sfx/hero_punch_light_1_2.ogg",
+     "mp3": "sfx/hero_punch_light_1_2.mp3",
+     "duration_s": 0.44,
+     "lufs": -14.0,
+     "src": "sfx_hero_punch_light_1_3.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，轻拳快速打中，第一下，短促清脆的拳击命中声，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_punch_light_1_1.wav",
+     "head_sil_s": 0.012,
+     "tail_sil_s": 0.132,
+     "active_s": 0.356,
+     "rms_db": -12.6,
+     "peak_db": -0.0,
+     "crest_db": 12.6,
+     "score": -7.88
+    },
+    {
+     "file": "sfx_hero_punch_light_1_3.wav",
+     "head_sil_s": 0.012,
+     "tail_sil_s": 0.048,
+     "active_s": 0.44,
+     "rms_db": -13.4,
+     "peak_db": -0.0,
+     "crest_db": 13.4,
+     "score": -8.31
+    },
+    {
+     "file": "sfx_hero_punch_light_1_2.wav",
+     "head_sil_s": 0.051,
+     "tail_sil_s": 0.142,
+     "active_s": 0.307,
+     "rms_db": -13.5,
+     "peak_db": -0.0,
+     "crest_db": 13.5,
+     "score": -9.39
+    },
+    {
+     "file": "sfx_hero_punch_light_1_4.wav",
+     "head_sil_s": 0.016,
+     "tail_sil_s": 0.182,
+     "active_s": 0.302,
+     "rms_db": -17.6,
+     "peak_db": -0.6,
+     "crest_db": 17.0,
+     "score": -11.24
+    }
+   ]
+  },
+  "hero_punch_light_2": {
+   "label": "主角轻拳2",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_punch_light_2_1.ogg",
+     "mp3": "sfx/hero_punch_light_2_1.mp3",
+     "duration_s": 0.425,
+     "lufs": -14.0,
+     "src": "sfx_hero_punch_light_2_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_punch_light_2_2.ogg",
+     "mp3": "sfx/hero_punch_light_2_2.mp3",
+     "duration_s": 0.431,
+     "lufs": -14.8,
+     "src": "sfx_hero_punch_light_2_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，连击第二拳，短促有弹性的拳头命中声，比第一下稍重，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_punch_light_2_4.wav",
+     "head_sil_s": 0.009,
+     "tail_sil_s": 0.066,
+     "active_s": 0.425,
+     "rms_db": -13.6,
+     "peak_db": -0.0,
+     "crest_db": 13.5,
+     "score": -8.37
+    },
+    {
+     "file": "sfx_hero_punch_light_2_2.wav",
+     "head_sil_s": 0.027,
+     "tail_sil_s": 0.042,
+     "active_s": 0.431,
+     "rms_db": -14.5,
+     "peak_db": -0.0,
+     "crest_db": 14.4,
+     "score": -9.35
+    },
+    {
+     "file": "sfx_hero_punch_light_2_3.wav",
+     "head_sil_s": 0.011,
+     "tail_sil_s": 0.158,
+     "active_s": 0.331,
+     "rms_db": -16.7,
+     "peak_db": -0.0,
+     "crest_db": 16.7,
+     "score": -10.32
+    },
+    {
+     "file": "sfx_hero_punch_light_2_1.wav",
+     "head_sil_s": 0.094,
+     "tail_sil_s": 0.243,
+     "active_s": 0.162,
+     "rms_db": -18.8,
+     "peak_db": -0.7,
+     "crest_db": 18.1,
+     "score": -21.92
+    }
+   ]
+  },
+  "hero_punch_light_3": {
+   "label": "主角轻拳3",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_punch_light_3_1.ogg",
+     "mp3": "sfx/hero_punch_light_3_1.mp3",
+     "duration_s": 0.365,
+     "lufs": -14.0,
+     "src": "sfx_hero_punch_light_3_2.wav"
+    },
+    {
+     "ogg": "sfx/hero_punch_light_3_2.ogg",
+     "mp3": "sfx/hero_punch_light_3_2.mp3",
+     "duration_s": 0.387,
+     "lufs": -14.9,
+     "src": "sfx_hero_punch_light_3_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，连击收尾第三拳，响亮有力的拳头命中声，带短促冲击感，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_punch_light_3_2.wav",
+     "head_sil_s": 0.014,
+     "tail_sil_s": 0.221,
+     "active_s": 0.365,
+     "rms_db": -13.0,
+     "peak_db": -0.0,
+     "crest_db": 13.0,
+     "score": -8.14
+    },
+    {
+     "file": "sfx_hero_punch_light_3_1.wav",
+     "head_sil_s": 0.017,
+     "tail_sil_s": 0.197,
+     "active_s": 0.387,
+     "rms_db": -14.0,
+     "peak_db": -0.0,
+     "crest_db": 14.0,
+     "score": -8.83
+    },
+    {
+     "file": "sfx_hero_punch_light_3_3.wav",
+     "head_sil_s": 0.01,
+     "tail_sil_s": 0.226,
+     "active_s": 0.364,
+     "rms_db": -14.9,
+     "peak_db": -0.3,
+     "crest_db": 14.6,
+     "score": -9.28
+    },
+    {
+     "file": "sfx_hero_punch_light_3_4.wav",
+     "head_sil_s": 0.009,
+     "tail_sil_s": 0.297,
+     "active_s": 0.295,
+     "rms_db": -15.8,
+     "peak_db": -0.0,
+     "crest_db": 15.7,
+     "score": -9.68
+    }
+   ]
+  },
+  "hero_punch_heavy": {
+   "label": "主角重拳",
+   "model": "CARTOON",
+   "source": "试听样复用",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_punch_heavy_1.ogg",
+     "mp3": "sfx/hero_punch_heavy_1.mp3",
+     "duration_s": 0.46,
+     "lufs": -15.0,
+     "src": "sfx_punch_heavy_cartoon_2.wav"
+    },
+    {
+     "ogg": "sfx/hero_punch_heavy_2.ogg",
+     "mp3": "sfx/hero_punch_heavy_2.mp3",
+     "duration_s": 0.44,
+     "lufs": -15.1,
+     "src": "sfx_punch_heavy_cartoon_1.wav"
+    }
+   ],
+   "caption": "卡通夸张的重拳命中声，沉闷有力的冲击加短促回响，漫画风格打击感",
+   "candidates": [
+    {
+     "file": "sfx_punch_heavy_cartoon_2.wav",
+     "head_sil_s": 0.01,
+     "tail_sil_s": 0.53,
+     "active_s": 0.46,
+     "rms_db": -17.0,
+     "peak_db": -1.0,
+     "crest_db": 16.0,
+     "score": -10.88
+    },
+    {
+     "file": "sfx_punch_heavy_cartoon_1.wav",
+     "head_sil_s": 0.016,
+     "tail_sil_s": 0.544,
+     "active_s": 0.44,
+     "rms_db": -17.4,
+     "peak_db": -0.7,
+     "crest_db": 16.8,
+     "score": -11.15
+    },
+    {
+     "file": "sfx_punch_heavy_cartoon_3.wav",
+     "head_sil_s": 0.019,
+     "tail_sil_s": 0.577,
+     "active_s": 0.404,
+     "rms_db": -19.6,
+     "peak_db": -0.0,
+     "crest_db": 19.6,
+     "score": -12.24
+    },
+    {
+     "file": "sfx_punch_heavy_cartoon_4.wav",
+     "head_sil_s": 0.006,
+     "tail_sil_s": 0.561,
+     "active_s": 0.433,
+     "rms_db": -20.1,
+     "peak_db": -1.2,
+     "crest_db": 19.0,
+     "score": -12.7
+    }
+   ]
+  },
+  "hero_pipe_swing": {
+   "label": "铁管挥空",
+   "model": "CARTOON",
+   "source": "试听样复用",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_pipe_swing_1.ogg",
+     "mp3": "sfx/hero_pipe_swing_1.mp3",
+     "duration_s": 0.439,
+     "lufs": -15.7,
+     "src": "sfx_pipe_swing_cartoon_2.wav"
+    },
+    {
+     "ogg": "sfx/hero_pipe_swing_2.ogg",
+     "mp3": "sfx/hero_pipe_swing_2.mp3",
+     "duration_s": 0.506,
+     "lufs": -16.0,
+     "src": "sfx_pipe_swing_cartoon_1.wav"
+    }
+   ],
+   "caption": "铁管快速挥空的呼啸破风声，金属感，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_pipe_swing_cartoon_2.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.354,
+     "active_s": 0.439,
+     "rms_db": -20.0,
+     "peak_db": -0.4,
+     "crest_db": 19.6,
+     "score": -12.36
+    },
+    {
+     "file": "sfx_pipe_swing_cartoon_1.wav",
+     "head_sil_s": 0.052,
+     "tail_sil_s": 0.242,
+     "active_s": 0.506,
+     "rms_db": -18.8,
+     "peak_db": -0.0,
+     "crest_db": 18.7,
+     "score": -12.6
+    },
+    {
+     "file": "sfx_pipe_swing_cartoon_4.wav",
+     "head_sil_s": 0.018,
+     "tail_sil_s": 0.192,
+     "active_s": 0.59,
+     "rms_db": -23.7,
+     "peak_db": -1.2,
+     "crest_db": 22.5,
+     "score": -15.19
+    },
+    {
+     "file": "sfx_pipe_swing_cartoon_3.wav",
+     "head_sil_s": 0.014,
+     "tail_sil_s": 0.239,
+     "active_s": 0.547,
+     "rms_db": -27.1,
+     "peak_db": -1.0,
+     "crest_db": 26.2,
+     "score": -16.99
+    }
+   ]
+  },
+  "hero_pipe_hit": {
+   "label": "铁管命中",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_pipe_hit_1.ogg",
+     "mp3": "sfx/hero_pipe_hit_1.mp3",
+     "duration_s": 0.638,
+     "lufs": -16.1,
+     "src": "sfx_hero_pipe_hit_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_pipe_hit_2.ogg",
+     "mp3": "sfx/hero_pipe_hit_2.mp3",
+     "duration_s": 0.315,
+     "lufs": -15.6,
+     "src": "sfx_hero_pipe_hit_3.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，铁管狠狠砸中敌人，金属铛的一声加沉闷肉击声，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_pipe_hit_4.wav",
+     "head_sil_s": 0.022,
+     "tail_sil_s": 0.14,
+     "active_s": 0.638,
+     "rms_db": -23.0,
+     "peak_db": -0.7,
+     "crest_db": 22.3,
+     "score": -14.6
+    },
+    {
+     "file": "sfx_hero_pipe_hit_3.wav",
+     "head_sil_s": 0.045,
+     "tail_sil_s": 0.441,
+     "active_s": 0.315,
+     "rms_db": -25.1,
+     "peak_db": -0.3,
+     "crest_db": 24.8,
+     "score": -16.29
+    },
+    {
+     "file": "sfx_hero_pipe_hit_2.wav",
+     "head_sil_s": 0.036,
+     "tail_sil_s": 0.426,
+     "active_s": 0.338,
+     "rms_db": -24.6,
+     "peak_db": -1.7,
+     "crest_db": 22.9,
+     "score": -16.31
+    },
+    {
+     "file": "sfx_hero_pipe_hit_1.wav",
+     "head_sil_s": 0.013,
+     "tail_sil_s": 0.089,
+     "active_s": 0.698,
+     "rms_db": -30.6,
+     "peak_db": -0.4,
+     "crest_db": 30.2,
+     "score": -18.88
+    }
+   ]
+  },
+  "hero_dodge": {
+   "label": "闪避",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_dodge_1.ogg",
+     "mp3": "sfx/hero_dodge_1.mp3",
+     "duration_s": 0.365,
+     "lufs": -15.6,
+     "src": "sfx_hero_dodge_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_dodge_2.ogg",
+     "mp3": "sfx/hero_dodge_2.mp3",
+     "duration_s": 0.336,
+     "lufs": -15.8,
+     "src": "sfx_hero_dodge_3.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，角色快速闪避翻滚，嗖的一声短促风声，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_dodge_4.wav",
+     "head_sil_s": 0.024,
+     "tail_sil_s": 0.211,
+     "active_s": 0.365,
+     "rms_db": -17.0,
+     "peak_db": -0.2,
+     "crest_db": 16.8,
+     "score": -10.86
+    },
+    {
+     "file": "sfx_hero_dodge_3.wav",
+     "head_sil_s": 0.019,
+     "tail_sil_s": 0.246,
+     "active_s": 0.336,
+     "rms_db": -17.4,
+     "peak_db": -0.3,
+     "crest_db": 17.1,
+     "score": -11.03
+    },
+    {
+     "file": "sfx_hero_dodge_2.wav",
+     "head_sil_s": 0.02,
+     "tail_sil_s": 0.242,
+     "active_s": 0.338,
+     "rms_db": -17.8,
+     "peak_db": -0.9,
+     "crest_db": 16.9,
+     "score": -11.5
+    },
+    {
+     "file": "sfx_hero_dodge_1.wav",
+     "head_sil_s": 0.01,
+     "tail_sil_s": 0.156,
+     "active_s": 0.434,
+     "rms_db": -20.0,
+     "peak_db": -3.1,
+     "crest_db": 16.9,
+     "score": -13.53
+    }
+   ]
+  },
+  "hero_hurt": {
+   "label": "主角受伤",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_hurt_1.ogg",
+     "mp3": "sfx/hero_hurt_1.mp3",
+     "duration_s": 0.791,
+     "lufs": -14.0,
+     "src": "sfx_hero_hurt_2.wav"
+    },
+    {
+     "ogg": "sfx/hero_hurt_2.ogg",
+     "mp3": "sfx/hero_hurt_2.mp3",
+     "duration_s": 0.8,
+     "lufs": -14.0,
+     "src": "sfx_hero_hurt_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，主角被打中受伤，短促的冲击声加痛哼，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_hurt_2.wav",
+     "head_sil_s": 0.004,
+     "tail_sil_s": 0.005,
+     "active_s": 0.791,
+     "rms_db": -14.1,
+     "peak_db": -1.5,
+     "crest_db": 12.6,
+     "score": -9.13
+    },
+    {
+     "file": "sfx_hero_hurt_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 0.8,
+     "rms_db": -14.6,
+     "peak_db": -2.0,
+     "crest_db": 12.6,
+     "score": -9.59
+    },
+    {
+     "file": "sfx_hero_hurt_3.wav",
+     "head_sil_s": 0.002,
+     "tail_sil_s": 0.0,
+     "active_s": 0.798,
+     "rms_db": -16.8,
+     "peak_db": -1.0,
+     "crest_db": 15.8,
+     "score": -10.52
+    },
+    {
+     "file": "sfx_hero_hurt_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.011,
+     "active_s": 0.789,
+     "rms_db": -15.9,
+     "peak_db": -4.4,
+     "crest_db": 11.6,
+     "score": -11.31
+    }
+   ]
+  },
+  "hero_death": {
+   "label": "主角死亡",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_death_1.ogg",
+     "mp3": "sfx/hero_death_1.mp3",
+     "duration_s": 1.831,
+     "lufs": -14.0,
+     "src": "sfx_hero_death_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_death_2.ogg",
+     "mp3": "sfx/hero_death_2.mp3",
+     "duration_s": 1.907,
+     "lufs": -14.0,
+     "src": "sfx_hero_death_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，主角被击倒死亡，沉重倒地加下滑音的失败音效，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hero_death_4.wav",
+     "head_sil_s": 0.023,
+     "tail_sil_s": 0.146,
+     "active_s": 1.831,
+     "rms_db": -17.6,
+     "peak_db": -4.2,
+     "crest_db": 13.4,
+     "score": -12.84
+    },
+    {
+     "file": "sfx_hero_death_1.wav",
+     "head_sil_s": 0.022,
+     "tail_sil_s": 0.071,
+     "active_s": 1.907,
+     "rms_db": -17.7,
+     "peak_db": -4.4,
+     "crest_db": 13.3,
+     "score": -12.97
+    },
+    {
+     "file": "sfx_hero_death_2.wav",
+     "head_sil_s": 0.028,
+     "tail_sil_s": 0.155,
+     "active_s": 1.817,
+     "rms_db": -17.8,
+     "peak_db": -4.2,
+     "crest_db": 13.6,
+     "score": -13.03
+    },
+    {
+     "file": "sfx_hero_death_3.wav",
+     "head_sil_s": 0.021,
+     "tail_sil_s": 0.166,
+     "active_s": 1.813,
+     "rms_db": -18.6,
+     "peak_db": -4.2,
+     "crest_db": 14.4,
+     "score": -13.37
+    }
+   ]
+  },
+  "hero_roar": {
+   "label": "怒吼",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 0.9,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_roar_1.ogg",
+     "mp3": "sfx/hero_roar_1.mp3",
+     "duration_s": 2.0,
+     "lufs": -14.0,
+     "src": "sfx_hero_roar_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_roar_2.ogg",
+     "mp3": "sfx/hero_roar_2.mp3",
+     "duration_s": 2.0,
+     "lufs": -14.0,
+     "src": "sfx_hero_roar_3.wav"
+    }
+   ],
+   "caption": "恶魔化的街头古惑仔愤怒怒吼，低沉有力带回响，魔性威压",
+   "candidates": [
+    {
+     "file": "sfx_hero_roar_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 2.0,
+     "rms_db": -9.9,
+     "peak_db": 0.0,
+     "crest_db": 9.9,
+     "score": -5.91
+    },
+    {
+     "file": "sfx_hero_roar_3.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 2.0,
+     "rms_db": -9.9,
+     "peak_db": -0.7,
+     "crest_db": 9.3,
+     "score": -6.22
+    },
+    {
+     "file": "sfx_hero_roar_1.wav",
+     "head_sil_s": 0.001,
+     "tail_sil_s": 0.002,
+     "active_s": 1.997,
+     "rms_db": -14.8,
+     "peak_db": -2.5,
+     "crest_db": 12.4,
+     "score": -9.91
+    },
+    {
+     "file": "sfx_hero_roar_2.wav",
+     "head_sil_s": 0.002,
+     "tail_sil_s": 0.0,
+     "active_s": 1.998,
+     "rms_db": -16.5,
+     "peak_db": -1.0,
+     "crest_db": 15.5,
+     "score": -10.34
+    }
+   ]
+  },
+  "hero_rage_full": {
+   "label": "气势满",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hero_rage_full_1.ogg",
+     "mp3": "sfx/hero_rage_full_1.mp3",
+     "duration_s": 1.232,
+     "lufs": -14.5,
+     "src": "sfx_hero_rage_full_4.wav"
+    },
+    {
+     "ogg": "sfx/hero_rage_full_2.ogg",
+     "mp3": "sfx/hero_rage_full_2.mp3",
+     "duration_s": 1.449,
+     "lufs": -14.6,
+     "src": "sfx_hero_rage_full_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，气势值蓄满，能量充能上扬的嗡鸣加闪亮音效，热血爆发感",
+   "candidates": [
+    {
+     "file": "sfx_hero_rage_full_4.wav",
+     "head_sil_s": 0.008,
+     "tail_sil_s": 0.26,
+     "active_s": 1.232,
+     "rms_db": -18.9,
+     "peak_db": -3.6,
+     "crest_db": 15.3,
+     "score": -12.95
+    },
+    {
+     "file": "sfx_hero_rage_full_2.wav",
+     "head_sil_s": 0.003,
+     "tail_sil_s": 0.048,
+     "active_s": 1.449,
+     "rms_db": -20.4,
+     "peak_db": -5.9,
+     "crest_db": 14.5,
+     "score": -14.66
+    },
+    {
+     "file": "sfx_hero_rage_full_3.wav",
+     "head_sil_s": 0.027,
+     "tail_sil_s": 0.101,
+     "active_s": 1.372,
+     "rms_db": -20.9,
+     "peak_db": -5.1,
+     "crest_db": 15.8,
+     "score": -15.23
+    },
+    {
+     "file": "sfx_hero_rage_full_1.wav",
+     "head_sil_s": 0.015,
+     "tail_sil_s": 0.149,
+     "active_s": 1.336,
+     "rms_db": -20.6,
+     "peak_db": -6.8,
+     "crest_db": 13.8,
+     "score": -15.48
+    }
+   ]
+  },
+  "hit_light": {
+   "label": "轻命中",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hit_light_1.ogg",
+     "mp3": "sfx/hit_light_1.mp3",
+     "duration_s": 0.153,
+     "lufs": -18.8,
+     "src": "sfx_hit_light_2.wav"
+    },
+    {
+     "ogg": "sfx/hit_light_2.ogg",
+     "mp3": "sfx/hit_light_2.mp3",
+     "duration_s": 0.205,
+     "lufs": -17.3,
+     "src": "sfx_hit_light_4.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，轻命中，短促清脆的啪的一下打击声，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hit_light_2.wav",
+     "head_sil_s": 0.017,
+     "tail_sil_s": 0.23,
+     "active_s": 0.153,
+     "rms_db": -18.0,
+     "peak_db": -0.0,
+     "crest_db": 18.0,
+     "score": -11.21
+    },
+    {
+     "file": "sfx_hit_light_4.wav",
+     "head_sil_s": 0.024,
+     "tail_sil_s": 0.171,
+     "active_s": 0.205,
+     "rms_db": -20.1,
+     "peak_db": -2.4,
+     "crest_db": 17.7,
+     "score": -13.61
+    },
+    {
+     "file": "sfx_hit_light_3.wav",
+     "head_sil_s": 0.04,
+     "tail_sil_s": 0.143,
+     "active_s": 0.217,
+     "rms_db": -19.6,
+     "peak_db": -2.2,
+     "crest_db": 17.4,
+     "score": -13.67
+    },
+    {
+     "file": "sfx_hit_light_1.wav",
+     "head_sil_s": 0.034,
+     "tail_sil_s": 0.229,
+     "active_s": 0.137,
+     "rms_db": -19.0,
+     "peak_db": -1.8,
+     "crest_db": 17.2,
+     "score": -20.95
+    }
+   ]
+  },
+  "hit_heavy": {
+   "label": "重命中",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hit_heavy_1.ogg",
+     "mp3": "sfx/hit_heavy_1.mp3",
+     "duration_s": 0.322,
+     "lufs": -15.2,
+     "src": "sfx_hit_heavy_1.wav"
+    },
+    {
+     "ogg": "sfx/hit_heavy_2.ogg",
+     "mp3": "sfx/hit_heavy_2.mp3",
+     "duration_s": 0.773,
+     "lufs": -14.0,
+     "src": "sfx_hit_heavy_3.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，重命中，厚重有力的砰的打击声，卡通夸张漫画风",
+   "candidates": [
+    {
+     "file": "sfx_hit_heavy_1.wav",
+     "head_sil_s": 0.01,
+     "tail_sil_s": 0.468,
+     "active_s": 0.322,
+     "rms_db": -19.5,
+     "peak_db": -0.0,
+     "crest_db": 19.5,
+     "score": -11.95
+    },
+    {
+     "file": "sfx_hit_heavy_3.wav",
+     "head_sil_s": 0.027,
+     "tail_sil_s": 0.0,
+     "active_s": 0.773,
+     "rms_db": -16.2,
+     "peak_db": -3.9,
+     "crest_db": 12.3,
+     "score": -11.97
+    },
+    {
+     "file": "sfx_hit_heavy_4.wav",
+     "head_sil_s": 0.01,
+     "tail_sil_s": 0.478,
+     "active_s": 0.312,
+     "rms_db": -20.2,
+     "peak_db": -0.2,
+     "crest_db": 20.0,
+     "score": -12.42
+    },
+    {
+     "file": "sfx_hit_heavy_2.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.006,
+     "active_s": 0.787,
+     "rms_db": -20.2,
+     "peak_db": -3.5,
+     "crest_db": 16.8,
+     "score": -13.71
+    }
+   ]
+  },
+  "hit_crit": {
+   "label": "暴击",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hit_crit_1.ogg",
+     "mp3": "sfx/hit_crit_1.mp3",
+     "duration_s": 0.681,
+     "lufs": -14.0,
+     "src": "sfx_hit_crit_1.wav"
+    },
+    {
+     "ogg": "sfx/hit_crit_2.ogg",
+     "mp3": "sfx/hit_crit_2.mp3",
+     "duration_s": 0.815,
+     "lufs": -14.9,
+     "src": "sfx_hit_crit_4.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，暴击命中，极响亮的爆裂打击声加闪光般的高频尾音，卡通夸张",
+   "candidates": [
+    {
+     "file": "sfx_hit_crit_1.wav",
+     "head_sil_s": 0.023,
+     "tail_sil_s": 0.297,
+     "active_s": 0.681,
+     "rms_db": -16.6,
+     "peak_db": -4.0,
+     "crest_db": 12.6,
+     "score": -12.11
+    },
+    {
+     "file": "sfx_hit_crit_4.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.178,
+     "active_s": 0.815,
+     "rms_db": -19.2,
+     "peak_db": -2.8,
+     "crest_db": 16.5,
+     "score": -12.81
+    },
+    {
+     "file": "sfx_hit_crit_3.wav",
+     "head_sil_s": 0.021,
+     "tail_sil_s": 0.354,
+     "active_s": 0.626,
+     "rms_db": -18.6,
+     "peak_db": -3.5,
+     "crest_db": 15.1,
+     "score": -13.07
+    },
+    {
+     "file": "sfx_hit_crit_2.wav",
+     "head_sil_s": 0.069,
+     "tail_sil_s": 0.2,
+     "active_s": 0.731,
+     "rms_db": -16.2,
+     "peak_db": -5.0,
+     "crest_db": 11.3,
+     "score": -13.47
+    }
+   ]
+  },
+  "hit_boom": {
+   "label": "重击低频轰响",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 0.9,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/hit_boom_1.ogg",
+     "mp3": "sfx/hit_boom_1.mp3",
+     "duration_s": 1.5,
+     "lufs": -14.0,
+     "src": "sfx_hit_boom_4.wav"
+    },
+    {
+     "ogg": "sfx/hit_boom_2.ogg",
+     "mp3": "sfx/hit_boom_2.mp3",
+     "duration_s": 1.5,
+     "lufs": -14.9,
+     "src": "sfx_hit_boom_2.wav"
+    }
+   ],
+   "caption": "重击产生的低频轰响冲击波，深沉的砰咚低音震动，短暂余震",
+   "candidates": [
+    {
+     "file": "sfx_hit_boom_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 1.5,
+     "rms_db": -7.8,
+     "peak_db": 0.0,
+     "crest_db": 7.8,
+     "score": -4.7
+    },
+    {
+     "file": "sfx_hit_boom_2.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 1.5,
+     "rms_db": -12.9,
+     "peak_db": -0.6,
+     "crest_db": 12.3,
+     "score": -7.96
+    },
+    {
+     "file": "sfx_hit_boom_1.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.122,
+     "active_s": 1.37,
+     "rms_db": -13.3,
+     "peak_db": -0.7,
+     "crest_db": 12.6,
+     "score": -8.41
+    },
+    {
+     "file": "sfx_hit_boom_3.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 1.5,
+     "rms_db": -33.4,
+     "peak_db": -20.0,
+     "crest_db": 13.4,
+     "score": -28.07
+    }
+   ]
+  },
+  "knock_land": {
+   "label": "击飞落地",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/knock_land_1.ogg",
+     "mp3": "sfx/knock_land_1.mp3",
+     "duration_s": 0.804,
+     "lufs": -15.0,
+     "src": "sfx_knock_land_2.wav"
+    },
+    {
+     "ogg": "sfx/knock_land_2.ogg",
+     "mp3": "sfx/knock_land_2.mp3",
+     "duration_s": 0.859,
+     "lufs": -15.7,
+     "src": "sfx_knock_land_1.wav"
+    }
+   ],
+   "caption": "人被击飞后重重摔在水泥地上，沉闷的落地撞击声",
+   "candidates": [
+    {
+     "file": "sfx_knock_land_2.wav",
+     "head_sil_s": 0.005,
+     "tail_sil_s": 0.191,
+     "active_s": 0.804,
+     "rms_db": -14.0,
+     "peak_db": -0.8,
+     "crest_db": 13.3,
+     "score": -8.87
+    },
+    {
+     "file": "sfx_knock_land_1.wav",
+     "head_sil_s": 0.005,
+     "tail_sil_s": 0.136,
+     "active_s": 0.859,
+     "rms_db": -15.4,
+     "peak_db": -0.0,
+     "crest_db": 15.4,
+     "score": -9.33
+    },
+    {
+     "file": "sfx_knock_land_4.wav",
+     "head_sil_s": 0.008,
+     "tail_sil_s": 0.012,
+     "active_s": 0.979,
+     "rms_db": -13.7,
+     "peak_db": -2.5,
+     "crest_db": 11.2,
+     "score": -9.45
+    },
+    {
+     "file": "sfx_knock_land_3.wav",
+     "head_sil_s": 0.163,
+     "tail_sil_s": 0.016,
+     "active_s": 0.821,
+     "rms_db": -29.5,
+     "peak_db": -8.6,
+     "crest_db": 21.0,
+     "score": -25.22
+    }
+   ]
+  },
+  "enemy_xiuxian_sword": {
+   "label": "修仙者剑气",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_xiuxian_sword_1.ogg",
+     "mp3": "sfx/enemy_xiuxian_sword_1.mp3",
+     "duration_s": 0.454,
+     "lufs": -15.7,
+     "src": "sfx_enemy_xiuxian_sword_3.wav"
+    },
+    {
+     "ogg": "sfx/enemy_xiuxian_sword_2.ogg",
+     "mp3": "sfx/enemy_xiuxian_sword_2.mp3",
+     "duration_s": 0.967,
+     "lufs": -14.9,
+     "src": "sfx_enemy_xiuxian_sword_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，修仙者挥出剑气，锐利的剑啸破空声带仙气闪光",
+   "candidates": [
+    {
+     "file": "sfx_enemy_xiuxian_sword_3.wav",
+     "head_sil_s": 0.024,
+     "tail_sil_s": 0.523,
+     "active_s": 0.454,
+     "rms_db": -15.1,
+     "peak_db": -0.1,
+     "crest_db": 15.0,
+     "score": -9.7
+    },
+    {
+     "file": "sfx_enemy_xiuxian_sword_1.wav",
+     "head_sil_s": 0.034,
+     "tail_sil_s": 0.0,
+     "active_s": 0.967,
+     "rms_db": -15.9,
+     "peak_db": -0.3,
+     "crest_db": 15.5,
+     "score": -10.51
+    },
+    {
+     "file": "sfx_enemy_xiuxian_sword_4.wav",
+     "head_sil_s": 0.022,
+     "tail_sil_s": 0.0,
+     "active_s": 0.978,
+     "rms_db": -19.0,
+     "peak_db": -0.0,
+     "crest_db": 19.0,
+     "score": -11.97
+    },
+    {
+     "file": "sfx_enemy_xiuxian_sword_2.wav",
+     "head_sil_s": 0.05,
+     "tail_sil_s": 0.26,
+     "active_s": 0.69,
+     "rms_db": -18.2,
+     "peak_db": -0.0,
+     "crest_db": 18.2,
+     "score": -12.19
+    }
+   ]
+  },
+  "enemy_daoshi_talisman": {
+   "label": "道士符纸",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_daoshi_talisman_1.ogg",
+     "mp3": "sfx/enemy_daoshi_talisman_1.mp3",
+     "duration_s": 0.728,
+     "lufs": -16.0,
+     "src": "sfx_enemy_daoshi_talisman_3.wav"
+    },
+    {
+     "ogg": "sfx/enemy_daoshi_talisman_2.ogg",
+     "mp3": "sfx/enemy_daoshi_talisman_2.mp3",
+     "duration_s": 0.931,
+     "lufs": -14.5,
+     "src": "sfx_enemy_daoshi_talisman_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，道士甩出符纸，纸张哗啦飞出加火符点燃的噗声",
+   "candidates": [
+    {
+     "file": "sfx_enemy_daoshi_talisman_3.wav",
+     "head_sil_s": 0.035,
+     "tail_sil_s": 0.237,
+     "active_s": 0.728,
+     "rms_db": -18.1,
+     "peak_db": -0.7,
+     "crest_db": 17.4,
+     "score": -12.03
+    },
+    {
+     "file": "sfx_enemy_daoshi_talisman_2.wav",
+     "head_sil_s": 0.014,
+     "tail_sil_s": 0.056,
+     "active_s": 0.931,
+     "rms_db": -21.3,
+     "peak_db": -0.1,
+     "crest_db": 21.2,
+     "score": -13.15
+    },
+    {
+     "file": "sfx_enemy_daoshi_talisman_1.wav",
+     "head_sil_s": 0.034,
+     "tail_sil_s": 0.051,
+     "active_s": 0.915,
+     "rms_db": -21.0,
+     "peak_db": -1.0,
+     "crest_db": 20.0,
+     "score": -13.83
+    },
+    {
+     "file": "sfx_enemy_daoshi_talisman_4.wav",
+     "head_sil_s": 0.025,
+     "tail_sil_s": 0.713,
+     "active_s": 0.262,
+     "rms_db": -17.6,
+     "peak_db": -2.2,
+     "crest_db": 15.4,
+     "score": -20.09
+    }
+   ]
+  },
+  "enemy_monk_staff": {
+   "label": "和尚铃杖",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_monk_staff_1.ogg",
+     "mp3": "sfx/enemy_monk_staff_1.mp3",
+     "duration_s": 0.691,
+     "lufs": -14.9,
+     "src": "sfx_enemy_monk_staff_3.wav"
+    },
+    {
+     "ogg": "sfx/enemy_monk_staff_2.ogg",
+     "mp3": "sfx/enemy_monk_staff_2.mp3",
+     "duration_s": 0.719,
+     "lufs": -14.9,
+     "src": "sfx_enemy_monk_staff_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，和尚挥动铃杖，金属锡杖铃环叮当作响加挥击风声",
+   "candidates": [
+    {
+     "file": "sfx_enemy_monk_staff_3.wav",
+     "head_sil_s": 0.009,
+     "tail_sil_s": 0.3,
+     "active_s": 0.691,
+     "rms_db": -16.1,
+     "peak_db": -0.8,
+     "crest_db": 15.4,
+     "score": -10.19
+    },
+    {
+     "file": "sfx_enemy_monk_staff_1.wav",
+     "head_sil_s": 0.014,
+     "tail_sil_s": 0.267,
+     "active_s": 0.719,
+     "rms_db": -17.0,
+     "peak_db": -1.0,
+     "crest_db": 16.0,
+     "score": -10.98
+    },
+    {
+     "file": "sfx_enemy_monk_staff_2.wav",
+     "head_sil_s": 0.002,
+     "tail_sil_s": 0.253,
+     "active_s": 0.745,
+     "rms_db": -22.3,
+     "peak_db": -0.1,
+     "crest_db": 22.3,
+     "score": -13.47
+    },
+    {
+     "file": "sfx_enemy_monk_staff_4.wav",
+     "head_sil_s": 0.154,
+     "tail_sil_s": 0.174,
+     "active_s": 0.672,
+     "rms_db": -20.8,
+     "peak_db": -2.0,
+     "crest_db": 18.8,
+     "score": -17.15
+    }
+   ]
+  },
+  "enemy_paladin_shield": {
+   "label": "圣骑士盾击",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_paladin_shield_1.ogg",
+     "mp3": "sfx/enemy_paladin_shield_1.mp3",
+     "duration_s": 0.448,
+     "lufs": -15.1,
+     "src": "sfx_enemy_paladin_shield_1.wav"
+    },
+    {
+     "ogg": "sfx/enemy_paladin_shield_2.ogg",
+     "mp3": "sfx/enemy_paladin_shield_2.mp3",
+     "duration_s": 0.707,
+     "lufs": -15.2,
+     "src": "sfx_enemy_paladin_shield_4.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，圣骑士用金属盾牌猛撞，厚重的金属铛击声",
+   "candidates": [
+    {
+     "file": "sfx_enemy_paladin_shield_1.wav",
+     "head_sil_s": 0.001,
+     "tail_sil_s": 0.351,
+     "active_s": 0.448,
+     "rms_db": -18.0,
+     "peak_db": -0.1,
+     "crest_db": 17.9,
+     "score": -10.89
+    },
+    {
+     "file": "sfx_enemy_paladin_shield_4.wav",
+     "head_sil_s": 0.002,
+     "tail_sil_s": 0.091,
+     "active_s": 0.707,
+     "rms_db": -18.5,
+     "peak_db": -0.5,
+     "crest_db": 18.0,
+     "score": -11.37
+    },
+    {
+     "file": "sfx_enemy_paladin_shield_3.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.098,
+     "active_s": 0.696,
+     "rms_db": -18.7,
+     "peak_db": -1.1,
+     "crest_db": 17.6,
+     "score": -11.84
+    },
+    {
+     "file": "sfx_enemy_paladin_shield_2.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.306,
+     "active_s": 0.494,
+     "rms_db": -23.8,
+     "peak_db": -2.0,
+     "crest_db": 21.8,
+     "score": -15.06
+    }
+   ]
+  },
+  "enemy_hit": {
+   "label": "杂兵受击",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_hit_1.ogg",
+     "mp3": "sfx/enemy_hit_1.mp3",
+     "duration_s": 0.475,
+     "lufs": -15.6,
+     "src": "sfx_enemy_hit_3.wav"
+    },
+    {
+     "ogg": "sfx/enemy_hit_2.ogg",
+     "mp3": "sfx/enemy_hit_2.mp3",
+     "duration_s": 0.393,
+     "lufs": -16.0,
+     "src": "sfx_enemy_hit_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，小兵被打中，短促的噗打击声加滑稽的哼声",
+   "candidates": [
+    {
+     "file": "sfx_enemy_hit_3.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.119,
+     "active_s": 0.475,
+     "rms_db": -18.9,
+     "peak_db": -0.2,
+     "crest_db": 18.7,
+     "score": -11.57
+    },
+    {
+     "file": "sfx_enemy_hit_2.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.201,
+     "active_s": 0.393,
+     "rms_db": -19.0,
+     "peak_db": -0.1,
+     "crest_db": 18.9,
+     "score": -11.58
+    },
+    {
+     "file": "sfx_enemy_hit_4.wav",
+     "head_sil_s": 0.011,
+     "tail_sil_s": 0.092,
+     "active_s": 0.497,
+     "rms_db": -19.4,
+     "peak_db": -3.6,
+     "crest_db": 15.9,
+     "score": -13.37
+    },
+    {
+     "file": "sfx_enemy_hit_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.369,
+     "active_s": 0.231,
+     "rms_db": -20.4,
+     "peak_db": -4.2,
+     "crest_db": 16.2,
+     "score": -13.94
+    }
+   ]
+  },
+  "enemy_death": {
+   "label": "杂兵死亡",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/enemy_death_1.ogg",
+     "mp3": "sfx/enemy_death_1.mp3",
+     "duration_s": 1.33,
+     "lufs": -15.2,
+     "src": "sfx_enemy_death_3.wav"
+    },
+    {
+     "ogg": "sfx/enemy_death_2.ogg",
+     "mp3": "sfx/enemy_death_2.mp3",
+     "duration_s": 1.211,
+     "lufs": -14.0,
+     "src": "sfx_enemy_death_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，小兵被打倒消散，滑稽的倒地声加魂魄飘散的噗嗖声",
+   "candidates": [
+    {
+     "file": "sfx_enemy_death_3.wav",
+     "head_sil_s": 0.018,
+     "tail_sil_s": 0.151,
+     "active_s": 1.33,
+     "rms_db": -21.8,
+     "peak_db": -2.4,
+     "crest_db": 19.5,
+     "score": -14.5
+    },
+    {
+     "file": "sfx_enemy_death_2.wav",
+     "head_sil_s": 0.032,
+     "tail_sil_s": 0.257,
+     "active_s": 1.211,
+     "rms_db": -19.0,
+     "peak_db": -5.9,
+     "crest_db": 13.1,
+     "score": -14.56
+    },
+    {
+     "file": "sfx_enemy_death_4.wav",
+     "head_sil_s": 0.017,
+     "tail_sil_s": 0.006,
+     "active_s": 1.478,
+     "rms_db": -23.4,
+     "peak_db": -1.2,
+     "crest_db": 22.3,
+     "score": -14.93
+    },
+    {
+     "file": "sfx_enemy_death_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.095,
+     "active_s": 1.405,
+     "rms_db": -24.7,
+     "peak_db": -6.3,
+     "crest_db": 18.4,
+     "score": -17.38
+    }
+   ]
+  },
+  "prop_crate_break": {
+   "label": "木箱碎",
+   "model": "COMMON",
+   "source": "试听样复用",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/prop_crate_break_1.ogg",
+     "mp3": "sfx/prop_crate_break_1.mp3",
+     "duration_s": 1.16,
+     "lufs": -14.8,
+     "src": "sfx_crate_break_common_2.wav"
+    },
+    {
+     "ogg": "sfx/prop_crate_break_2.ogg",
+     "mp3": "sfx/prop_crate_break_2.mp3",
+     "duration_s": 1.15,
+     "lufs": -14.8,
+     "src": "sfx_crate_break_common_1.wav"
+    }
+   ],
+   "caption": "木箱被打碎的碎裂声，木板断裂飞溅，卡通夸张有弹性",
+   "candidates": [
+    {
+     "file": "sfx_crate_break_common_2.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.04,
+     "active_s": 1.16,
+     "rms_db": -12.2,
+     "peak_db": -0.0,
+     "crest_db": 12.2,
+     "score": -7.34
+    },
+    {
+     "file": "sfx_crate_break_common_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.05,
+     "active_s": 1.15,
+     "rms_db": -13.1,
+     "peak_db": -0.0,
+     "crest_db": 13.1,
+     "score": -7.87
+    },
+    {
+     "file": "sfx_crate_break_common_4.wav",
+     "head_sil_s": 0.18,
+     "tail_sil_s": 0.023,
+     "active_s": 0.996,
+     "rms_db": -23.6,
+     "peak_db": 0.0,
+     "crest_db": 23.6,
+     "score": -18.65
+    },
+    {
+     "file": "sfx_crate_break_common_3.wav",
+     "head_sil_s": 0.22,
+     "tail_sil_s": 0.0,
+     "active_s": 0.98,
+     "rms_db": -26.9,
+     "peak_db": 0.0,
+     "crest_db": 26.9,
+     "score": -21.66
+    }
+   ]
+  },
+  "prop_jar_break": {
+   "label": "陶缸碎",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/prop_jar_break_1.ogg",
+     "mp3": "sfx/prop_jar_break_1.mp3",
+     "duration_s": 1.116,
+     "lufs": -14.7,
+     "src": "sfx_prop_jar_break_2.wav"
+    },
+    {
+     "ogg": "sfx/prop_jar_break_2.ogg",
+     "mp3": "sfx/prop_jar_break_2.mp3",
+     "duration_s": 1.146,
+     "lufs": -14.4,
+     "src": "sfx_prop_jar_break_1.wav"
+    }
+   ],
+   "caption": "陶缸被打碎，陶瓷破裂碎片四溅的哗啦声",
+   "candidates": [
+    {
+     "file": "sfx_prop_jar_break_2.wav",
+     "head_sil_s": 0.002,
+     "tail_sil_s": 0.082,
+     "active_s": 1.116,
+     "rms_db": -15.1,
+     "peak_db": -0.0,
+     "crest_db": 15.1,
+     "score": -9.11
+    },
+    {
+     "file": "sfx_prop_jar_break_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.054,
+     "active_s": 1.146,
+     "rms_db": -15.6,
+     "peak_db": -0.0,
+     "crest_db": 15.6,
+     "score": -9.38
+    },
+    {
+     "file": "sfx_prop_jar_break_3.wav",
+     "head_sil_s": 0.209,
+     "tail_sil_s": 0.493,
+     "active_s": 0.498,
+     "rms_db": -23.4,
+     "peak_db": 0.0,
+     "crest_db": 23.4,
+     "score": -19.29
+    },
+    {
+     "file": "sfx_prop_jar_break_4.wav",
+     "head_sil_s": 0.796,
+     "tail_sil_s": 0.013,
+     "active_s": 0.391,
+     "rms_db": -21.1,
+     "peak_db": 0.0,
+     "crest_db": 21.1,
+     "score": -40.56
+    }
+   ]
+  },
+  "prop_ac_metal": {
+   "label": "空调外机撞击",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/prop_ac_metal_1.ogg",
+     "mp3": "sfx/prop_ac_metal_1.mp3",
+     "duration_s": 0.705,
+     "lufs": -15.1,
+     "src": "sfx_prop_ac_metal_2.wav"
+    },
+    {
+     "ogg": "sfx/prop_ac_metal_2.ogg",
+     "mp3": "sfx/prop_ac_metal_2.mp3",
+     "duration_s": 1.0,
+     "lufs": -14.6,
+     "src": "sfx_prop_ac_metal_4.wav"
+    }
+   ],
+   "caption": "空调外机被重击，空心金属箱体的哐当撞击声带金属回响",
+   "candidates": [
+    {
+     "file": "sfx_prop_ac_metal_2.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.288,
+     "active_s": 0.705,
+     "rms_db": -16.7,
+     "peak_db": -0.2,
+     "crest_db": 16.5,
+     "score": -10.25
+    },
+    {
+     "file": "sfx_prop_ac_metal_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 1.0,
+     "rms_db": -18.5,
+     "peak_db": 0.0,
+     "crest_db": 18.5,
+     "score": -11.09
+    },
+    {
+     "file": "sfx_prop_ac_metal_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.27,
+     "active_s": 0.73,
+     "rms_db": -19.1,
+     "peak_db": -0.4,
+     "crest_db": 18.7,
+     "score": -11.62
+    },
+    {
+     "file": "sfx_prop_ac_metal_3.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.001,
+     "active_s": 0.999,
+     "rms_db": -21.0,
+     "peak_db": 0.0,
+     "crest_db": 21.0,
+     "score": -12.58
+    }
+   ]
+  },
+  "prop_gas_explode": {
+   "label": "煤气罐爆炸",
+   "model": "COMMON",
+   "source": "试听样复用",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/prop_gas_explode_1.ogg",
+     "mp3": "sfx/prop_gas_explode_1.mp3",
+     "duration_s": 1.746,
+     "lufs": -14.0,
+     "src": "sfx_gas_explode_common_1.wav"
+    },
+    {
+     "ogg": "sfx/prop_gas_explode_2.ogg",
+     "mp3": "sfx/prop_gas_explode_2.mp3",
+     "duration_s": 2.0,
+     "lufs": -14.0,
+     "src": "sfx_gas_explode_common_3.wav"
+    }
+   ],
+   "caption": "煤气罐爆炸，先嘶嘶漏气再轰的一声巨响，卡通夸张的爆炸冲击",
+   "candidates": [
+    {
+     "file": "sfx_gas_explode_common_1.wav",
+     "head_sil_s": 0.028,
+     "tail_sil_s": 0.227,
+     "active_s": 1.746,
+     "rms_db": -13.5,
+     "peak_db": -0.1,
+     "crest_db": 13.5,
+     "score": -8.82
+    },
+    {
+     "file": "sfx_gas_explode_common_3.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 2.0,
+     "rms_db": -15.5,
+     "peak_db": 0.0,
+     "crest_db": 15.5,
+     "score": -9.32
+    },
+    {
+     "file": "sfx_gas_explode_common_2.wav",
+     "head_sil_s": 0.246,
+     "tail_sil_s": 0.897,
+     "active_s": 0.858,
+     "rms_db": -16.0,
+     "peak_db": -3.4,
+     "crest_db": 12.6,
+     "score": -17.13
+    },
+    {
+     "file": "sfx_gas_explode_common_4.wav",
+     "head_sil_s": 0.299,
+     "tail_sil_s": 0.0,
+     "active_s": 1.701,
+     "rms_db": -18.2,
+     "peak_db": 0.0,
+     "crest_db": 18.2,
+     "score": -18.39
+    }
+   ]
+  },
+  "prop_glass_break": {
+   "label": "玻璃碎",
+   "model": "COMMON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/prop_glass_break_1.ogg",
+     "mp3": "sfx/prop_glass_break_1.mp3",
+     "duration_s": 1.064,
+     "lufs": -14.5,
+     "src": "sfx_prop_glass_break_1.wav"
+    },
+    {
+     "ogg": "sfx/prop_glass_break_2.ogg",
+     "mp3": "sfx/prop_glass_break_2.mp3",
+     "duration_s": 0.986,
+     "lufs": -14.6,
+     "src": "sfx_prop_glass_break_2.wav"
+    }
+   ],
+   "caption": "玻璃窗被打碎，清脆的玻璃碎裂四溅声",
+   "candidates": [
+    {
+     "file": "sfx_prop_glass_break_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.136,
+     "active_s": 1.064,
+     "rms_db": -18.2,
+     "peak_db": -0.0,
+     "crest_db": 18.2,
+     "score": -10.94
+    },
+    {
+     "file": "sfx_prop_glass_break_2.wav",
+     "head_sil_s": 0.001,
+     "tail_sil_s": 0.213,
+     "active_s": 0.986,
+     "rms_db": -19.0,
+     "peak_db": -0.0,
+     "crest_db": 18.9,
+     "score": -11.4
+    },
+    {
+     "file": "sfx_prop_glass_break_3.wav",
+     "head_sil_s": 0.283,
+     "tail_sil_s": 0.064,
+     "active_s": 0.853,
+     "rms_db": -24.4,
+     "peak_db": -0.8,
+     "crest_db": 23.6,
+     "score": -22.03
+    },
+    {
+     "file": "sfx_prop_glass_break_4.wav",
+     "head_sil_s": 0.292,
+     "tail_sil_s": 0.482,
+     "active_s": 0.426,
+     "rms_db": -28.0,
+     "peak_db": 0.0,
+     "crest_db": 28.0,
+     "score": -24.14
+    }
+   ]
+  },
+  "pickup_soul": {
+   "label": "魂晶拾取",
+   "model": "CARTOON",
+   "source": "试听样复用",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/pickup_soul_1.ogg",
+     "mp3": "sfx/pickup_soul_1.mp3",
+     "duration_s": 0.748,
+     "lufs": -14.5,
+     "src": "sfx_soul_pickup_cartoon_4.wav"
+    },
+    {
+     "ogg": "sfx/pickup_soul_2.ogg",
+     "mp3": "sfx/pickup_soul_2.mp3",
+     "duration_s": 0.5,
+     "lufs": -14.7,
+     "src": "sfx_soul_pickup_cartoon_2.wav"
+    }
+   ],
+   "caption": "拾取魂晶的清脆闪亮音效，上扬的魔幻叮咚声，带一点暗黑感",
+   "candidates": [
+    {
+     "file": "sfx_soul_pickup_cartoon_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.052,
+     "active_s": 0.748,
+     "rms_db": -22.8,
+     "peak_db": -2.5,
+     "crest_db": 20.3,
+     "score": -14.66
+    },
+    {
+     "file": "sfx_soul_pickup_cartoon_2.wav",
+     "head_sil_s": 0.015,
+     "tail_sil_s": 0.285,
+     "active_s": 0.5,
+     "rms_db": -24.0,
+     "peak_db": -0.1,
+     "crest_db": 23.9,
+     "score": -14.78
+    },
+    {
+     "file": "sfx_soul_pickup_cartoon_3.wav",
+     "head_sil_s": 0.017,
+     "tail_sil_s": 0.034,
+     "active_s": 0.749,
+     "rms_db": -23.6,
+     "peak_db": -1.3,
+     "crest_db": 22.3,
+     "score": -15.14
+    },
+    {
+     "file": "sfx_soul_pickup_cartoon_1.wav",
+     "head_sil_s": 0.004,
+     "tail_sil_s": 0.202,
+     "active_s": 0.594,
+     "rms_db": -25.1,
+     "peak_db": -0.1,
+     "crest_db": 25.0,
+     "score": -15.23
+    }
+   ]
+  },
+  "loot_beam": {
+   "label": "光柱掉落",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/loot_beam_1.ogg",
+     "mp3": "sfx/loot_beam_1.mp3",
+     "duration_s": 1.495,
+     "lufs": -15.2,
+     "src": "sfx_loot_beam_1.wav"
+    },
+    {
+     "ogg": "sfx/loot_beam_2.ogg",
+     "mp3": "sfx/loot_beam_2.mp3",
+     "duration_s": 1.489,
+     "lufs": -14.8,
+     "src": "sfx_loot_beam_4.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，宝物光柱从天而降，闪亮的魔法嗡鸣加落地叮的一声",
+   "candidates": [
+    {
+     "file": "sfx_loot_beam_1.wav",
+     "head_sil_s": 0.005,
+     "tail_sil_s": 0.0,
+     "active_s": 1.495,
+     "rms_db": -14.7,
+     "peak_db": -1.1,
+     "crest_db": 13.6,
+     "score": -9.33
+    },
+    {
+     "file": "sfx_loot_beam_4.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.011,
+     "active_s": 1.489,
+     "rms_db": -14.7,
+     "peak_db": -1.4,
+     "crest_db": 13.4,
+     "score": -9.4
+    },
+    {
+     "file": "sfx_loot_beam_3.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.076,
+     "active_s": 1.424,
+     "rms_db": -14.9,
+     "peak_db": -2.2,
+     "crest_db": 12.6,
+     "score": -9.81
+    },
+    {
+     "file": "sfx_loot_beam_2.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.111,
+     "active_s": 1.389,
+     "rms_db": -16.0,
+     "peak_db": -1.5,
+     "crest_db": 14.6,
+     "score": -10.22
+    }
+   ]
+  },
+  "ui_level_up": {
+   "label": "升级",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/ui_level_up_1.ogg",
+     "mp3": "sfx/ui_level_up_1.mp3",
+     "duration_s": 1.67,
+     "lufs": -14.5,
+     "src": "sfx_ui_level_up_3.wav"
+    },
+    {
+     "ogg": "sfx/ui_level_up_2.ogg",
+     "mp3": "sfx/ui_level_up_2.mp3",
+     "duration_s": 1.816,
+     "lufs": -14.0,
+     "src": "sfx_ui_level_up_1.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，升级进化，上扬的胜利号角式短旋律加闪光音效",
+   "candidates": [
+    {
+     "file": "sfx_ui_level_up_3.wav",
+     "head_sil_s": 0.029,
+     "tail_sil_s": 0.301,
+     "active_s": 1.67,
+     "rms_db": -17.4,
+     "peak_db": -3.7,
+     "crest_db": 13.7,
+     "score": -12.68
+    },
+    {
+     "file": "sfx_ui_level_up_1.wav",
+     "head_sil_s": 0.026,
+     "tail_sil_s": 0.158,
+     "active_s": 1.816,
+     "rms_db": -17.3,
+     "peak_db": -4.4,
+     "crest_db": 12.9,
+     "score": -12.8
+    },
+    {
+     "file": "sfx_ui_level_up_2.wav",
+     "head_sil_s": 0.024,
+     "tail_sil_s": 0.027,
+     "active_s": 1.948,
+     "rms_db": -18.3,
+     "peak_db": -3.9,
+     "crest_db": 14.4,
+     "score": -13.18
+    },
+    {
+     "file": "sfx_ui_level_up_4.wav",
+     "head_sil_s": 0.025,
+     "tail_sil_s": 0.056,
+     "active_s": 1.919,
+     "rms_db": -18.4,
+     "peak_db": -5.7,
+     "crest_db": 12.7,
+     "score": -13.93
+    }
+   ]
+  },
+  "ui_click": {
+   "label": "按钮点击",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 0.7,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/ui_click_1.ogg",
+     "mp3": "sfx/ui_click_1.mp3",
+     "duration_s": 0.163,
+     "lufs": -15.3,
+     "src": "sfx_ui_click_3.wav"
+    },
+    {
+     "ogg": "sfx/ui_click_2.ogg",
+     "mp3": "sfx/ui_click_2.mp3",
+     "duration_s": 0.212,
+     "lufs": -15.1,
+     "src": "sfx_ui_click_4.wav"
+    }
+   ],
+   "caption": "游戏界面按钮点击，短促清脆的哒一声",
+   "candidates": [
+    {
+     "file": "sfx_ui_click_3.wav",
+     "head_sil_s": 0.011,
+     "tail_sil_s": 0.126,
+     "active_s": 0.163,
+     "rms_db": -17.9,
+     "peak_db": -0.1,
+     "crest_db": 17.8,
+     "score": -11.04
+    },
+    {
+     "file": "sfx_ui_click_4.wav",
+     "head_sil_s": 0.016,
+     "tail_sil_s": 0.072,
+     "active_s": 0.212,
+     "rms_db": -18.3,
+     "peak_db": -0.5,
+     "crest_db": 17.8,
+     "score": -11.59
+    },
+    {
+     "file": "sfx_ui_click_1.wav",
+     "head_sil_s": 0.0,
+     "tail_sil_s": 0.0,
+     "active_s": 0.3,
+     "rms_db": -21.8,
+     "peak_db": -0.1,
+     "crest_db": 21.7,
+     "score": -13.11
+    },
+    {
+     "file": "sfx_ui_click_2.wav",
+     "head_sil_s": 0.048,
+     "tail_sil_s": 0.0,
+     "active_s": 0.252,
+     "rms_db": -21.9,
+     "peak_db": -0.4,
+     "crest_db": 21.5,
+     "score": -14.46
+    }
+   ]
+  },
+  "door_open": {
+   "label": "开门",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/door_open_1.ogg",
+     "mp3": "sfx/door_open_1.mp3",
+     "duration_s": 1.151,
+     "lufs": -14.7,
+     "src": "sfx_door_open_3.wav"
+    },
+    {
+     "ogg": "sfx/door_open_2.ogg",
+     "mp3": "sfx/door_open_2.mp3",
+     "duration_s": 1.179,
+     "lufs": -15.3,
+     "src": "sfx_door_open_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，铁闸卷帘门哗啦升起打开，金属卷动声",
+   "candidates": [
+    {
+     "file": "sfx_door_open_3.wav",
+     "head_sil_s": 0.012,
+     "tail_sil_s": 0.337,
+     "active_s": 1.151,
+     "rms_db": -20.7,
+     "peak_db": -0.4,
+     "crest_db": 20.3,
+     "score": -12.9
+    },
+    {
+     "file": "sfx_door_open_2.wav",
+     "head_sil_s": 0.014,
+     "tail_sil_s": 0.307,
+     "active_s": 1.179,
+     "rms_db": -22.6,
+     "peak_db": -1.0,
+     "crest_db": 21.6,
+     "score": -14.32
+    },
+    {
+     "file": "sfx_door_open_1.wav",
+     "head_sil_s": 0.006,
+     "tail_sil_s": 0.331,
+     "active_s": 1.164,
+     "rms_db": -23.0,
+     "peak_db": -1.2,
+     "crest_db": 21.8,
+     "score": -14.4
+    },
+    {
+     "file": "sfx_door_open_4.wav",
+     "head_sil_s": 0.006,
+     "tail_sil_s": 0.514,
+     "active_s": 0.979,
+     "rms_db": -23.9,
+     "peak_db": -1.2,
+     "crest_db": 22.8,
+     "score": -14.99
+    }
+   ]
+  },
+  "wave_start": {
+   "label": "波次开始",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/wave_start_1.ogg",
+     "mp3": "sfx/wave_start_1.mp3",
+     "duration_s": 1.666,
+     "lufs": -14.9,
+     "src": "sfx_wave_start_1.wav"
+    },
+    {
+     "ogg": "sfx/wave_start_2.ogg",
+     "mp3": "sfx/wave_start_2.mp3",
+     "duration_s": 1.08,
+     "lufs": -14.0,
+     "src": "sfx_wave_start_3.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，新一波敌人来袭，锣鼓重击一声加紧张的上扬音效，港片风",
+   "candidates": [
+    {
+     "file": "sfx_wave_start_1.wav",
+     "head_sil_s": 0.036,
+     "tail_sil_s": 0.299,
+     "active_s": 1.666,
+     "rms_db": -19.1,
+     "peak_db": -0.7,
+     "crest_db": 18.4,
+     "score": -12.66
+    },
+    {
+     "file": "sfx_wave_start_3.wav",
+     "head_sil_s": 0.106,
+     "tail_sil_s": 0.814,
+     "active_s": 1.08,
+     "rms_db": -16.0,
+     "peak_db": -2.4,
+     "crest_db": 13.6,
+     "score": -13.19
+    },
+    {
+     "file": "sfx_wave_start_4.wav",
+     "head_sil_s": 0.055,
+     "tail_sil_s": 0.193,
+     "active_s": 1.752,
+     "rms_db": -17.3,
+     "peak_db": -5.4,
+     "crest_db": 11.9,
+     "score": -13.9
+    },
+    {
+     "file": "sfx_wave_start_2.wav",
+     "head_sil_s": 0.061,
+     "tail_sil_s": 0.112,
+     "active_s": 1.827,
+     "rms_db": -25.0,
+     "peak_db": -3.9,
+     "crest_db": 21.1,
+     "score": -18.07
+    }
+   ]
+  },
+  "wave_end": {
+   "label": "波次结束",
+   "model": "CARTOON",
+   "source": "量产",
+   "loop": false,
+   "volume": 1.0,
+   "random_variant": true,
+   "variants": [
+    {
+     "ogg": "sfx/wave_end_1.ogg",
+     "mp3": "sfx/wave_end_1.mp3",
+     "duration_s": 1.442,
+     "lufs": -14.0,
+     "src": "sfx_wave_end_4.wav"
+    },
+    {
+     "ogg": "sfx/wave_end_2.ogg",
+     "mp3": "sfx/wave_end_2.mp3",
+     "duration_s": 1.158,
+     "lufs": -14.9,
+     "src": "sfx_wave_end_2.wav"
+    }
+   ],
+   "caption": "港式街头漫画风格动作游戏，一波战斗结束胜利，锣声加轻快上扬的完成提示音",
+   "candidates": [
+    {
+     "file": "sfx_wave_end_4.wav",
+     "head_sil_s": 0.007,
+     "tail_sil_s": 0.551,
+     "active_s": 1.442,
+     "rms_db": -17.7,
+     "peak_db": -3.5,
+     "crest_db": 14.2,
+     "score": -12.2
+    },
+    {
+     "file": "sfx_wave_end_2.wav",
+     "head_sil_s": 0.004,
+     "tail_sil_s": 0.838,
+     "active_s": 1.158,
+     "rms_db": -20.5,
+     "peak_db": -2.6,
+     "crest_db": 17.8,
+     "score": -13.43
+    },
+    {
+     "file": "sfx_wave_end_3.wav",
+     "head_sil_s": 0.009,
+     "tail_sil_s": 1.169,
+     "active_s": 0.822,
+     "rms_db": -22.1,
+     "peak_db": -0.0,
+     "crest_db": 22.1,
+     "score": -13.48
+    },
+    {
+     "file": "sfx_wave_end_1.wav",
+     "head_sil_s": 0.009,
+     "tail_sil_s": 1.361,
+     "active_s": 0.631,
+     "rms_db": -21.7,
+     "peak_db": -1.1,
+     "crest_db": 20.6,
+     "score": -21.66
+    }
+   ]
+  }
+ }
+}

@@ -3,6 +3,7 @@ export class DebugPanel {
   constructor(pipeline, onQuality) {
     this.pipeline = pipeline;
     this.onQuality = onQuality;
+    this.audio = null;
     this.visible = false;
     this.el = document.createElement('div');
     this.el.id = 'pixi-debug';
@@ -25,6 +26,7 @@ export class DebugPanel {
 <label><input type="checkbox" data-k="chromatic"> 色差</label>
 <label><input type="checkbox" data-k="radialDistort"> 径向模糊</label>
 <label><input type="checkbox" data-k="damageVignette"> 受伤红边</label>
+<label><input type="checkbox" id="pixi-debug-mute"> 静音</label>
 <select id="pixi-debug-quality">
 <option value="high">画质：高</option>
 <option value="mid">画质：中</option>
@@ -47,7 +49,16 @@ export class DebugPanel {
     this.el.querySelector('#pixi-debug-quality').addEventListener('change', (e) => {
       this.onQuality?.(e.target.value);
     });
+    this.muteEl = this.el.querySelector('#pixi-debug-mute');
+    this.muteEl?.addEventListener('change', () => {
+      this.audio?.setMuted(this.muteEl.checked);
+    });
     this._syncFromPipeline();
+  }
+
+  setAudio(audioApi) {
+    this.audio = audioApi;
+    if (this.muteEl) this.muteEl.checked = audioApi?.isMuted?.() ?? false;
   }
 
   _syncFromPipeline() {
