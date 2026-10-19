@@ -113,7 +113,10 @@ export function camClamp(camX, camY, zoom = 1, scene = null) {
   const maxX = WORLD_W + M.marginX * 0.5 - vw;
   const topBase = scene?.walls?.topBaselineY ?? 78;
   const topH = scene?.walls?.topDisplayH ?? 303;
-  const minY = topBase - topH - 56;
+  const playTopY = scene?.walls?.playTopWall?.y ?? scene?.play?.y ?? 198;
+  const playTopScale = scene?.walls?.playTopWall?.scale ?? 0.42;
+  const playTopH = topH * playTopScale;
+  const minY = Math.min(topBase - topH - 56, playTopY - playTopH - 72);
   const maxY = WORLD_H - vh + 48;
   return {
     x: Math.max(minX, Math.min(maxX, camX)),

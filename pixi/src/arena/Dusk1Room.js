@@ -19,7 +19,7 @@ function addSprite(parent, catalog, key, x, y, opts = {}) {
   return s;
 }
 
-function tileTopRow(parent, catalog, y, x0, x1, sequence) {
+function tileTopRow(parent, catalog, y, x0, x1, sequence, scaleMul = 1) {
   const sprites = [];
   let x = x0;
   let i = 0;
@@ -30,12 +30,13 @@ function tileTopRow(parent, catalog, y, x0, x1, sequence) {
     const meta = catalog.index[key];
     const tex = catalog.textures[key];
     if (!tex || !meta) break;
-    const w = meta.w * (meta.displayScale ?? 1);
+    const sc = (meta.displayScale ?? 1) * scaleMul;
+    const w = meta.w * sc;
     const s = new Sprite(tex);
     s.anchor.set(0, 1);
     s.x = x;
     s.y = y;
-    s.scale.set(meta.displayScale ?? 1);
+    s.scale.set(sc);
     s.cullable = false;
     parent.addChild(s);
     sprites.push(s);
@@ -160,6 +161,16 @@ export function buildDusk1Room(scene, catalog) {
 
   const lowY = scene.walls?.lowBaselineY ?? WORLD_H - 58;
   tileRepeatX(edgesBack, catalog, 'walls/wall_low.webp', lowY, -48, WORLD_W + 48);
+
+  const playTop = scene.walls?.playTopWall;
+  if (playTop) {
+    const py = playTop.y ?? scene.play?.y ?? 198;
+    const px0 = playTop.x0 ?? scene.play?.x ?? 72;
+    const px1 = playTop.x1 ?? (scene.play ? scene.play.x + scene.play.w : WORLD_W - 72);
+    const pSeq = playTop.sequence || topSeq;
+    const pScale = playTop.scale ?? 0.4;
+    tileTopRow(edgesBack, catalog, py, px0, px1, pSeq, pScale);
+  }
 
   for (const st of scene.structures || []) {
     const layer = st.layer === 'foreground' ? edgesFront : edgesBack;

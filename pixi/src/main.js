@@ -23,9 +23,26 @@ function viewSize() {
 function fitCanvas(canvas) {
   const { w, h } = viewSize();
   if (!canvas || w < 1 || h < 1) return;
-  const s = Math.min(w / GW, h / GH);
-  canvas.style.width = `${GW * s}px`;
-  canvas.style.height = `${GH * s}px`;
+  const gameAspect = GW / GH;
+  const viewAspect = w / h;
+  const useCover = viewAspect > gameAspect + 0.02;
+  const s = useCover ? Math.max(w / GW, h / GH) : Math.min(w / GW, h / GH);
+  const dispW = GW * s;
+  const dispH = GH * s;
+  canvas.style.width = `${dispW}px`;
+  canvas.style.height = `${dispH}px`;
+  canvas.style.marginLeft = `${(w - dispW) / 2}px`;
+  canvas.style.marginTop = `${(h - dispH) / 2}px`;
+  const cropX = Math.max(0, (dispW - w) / 2);
+  const cropY = Math.max(0, (dispH - h) / 2);
+  globalThis.__pixiViewInset = {
+    left: cropX / s,
+    top: cropY / s,
+    right: cropX / s,
+    bottom: cropY / s,
+    scale: s,
+    cover: useCover,
+  };
   document.documentElement.style.setProperty('--app-h', `${h}px`);
   syncOrientHint();
 }
@@ -126,6 +143,8 @@ window.__pixi = {
   game,
   render,
   audio: GameAudio,
+  setTier: (t) => render.setTier(t),
+  setQuality: (t) => game.setQuality(t),
   stageScreenshot: (mode) => game.stageScreenshot(mode),
   getFps: () => game.fps,
   getPerfSnapshot: () => game.getPerfSnapshot(),

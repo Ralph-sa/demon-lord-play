@@ -25,11 +25,18 @@
       align-items: center;
       justify-content: center;
     }
+    #game-host {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     #game-host canvas {
       display: block;
       touch-action: none;
-      max-width: 100%;
-      max-height: 100%;
+      flex-shrink: 0;
       position: relative;
       z-index: 2;
     }

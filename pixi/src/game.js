@@ -29,6 +29,7 @@ import { VfxSystem } from './vfx.js';
 import { tierFromFps } from './render/qualityPresets.js';
 import { buildArenaRoom } from './arena/ArenaRoom.js';
 import { buildDusk1Room } from './arena/Dusk1Room.js';
+import { hudMetrics } from './ui/hudLayout.js';
 
 const angDiff = (a, b) => {
   let d = a - b;
@@ -784,27 +785,33 @@ export class Game {
     this.drawTouchHud();
   }
 
+  drawOrb(g, cx, cy, r, track, trackColor, rimColor) {
+    g.circle(cx, cy, r + 6).fill({ color: 0x1a1010, alpha: 0.55 });
+    g.circle(cx, cy, r).fill({ color: rimColor, alpha: 0.9 });
+    if (track > 0.001) {
+      const a0 = -Math.PI / 2;
+      const a1 = a0 + track * Math.PI * 2;
+      g.arc(cx, cy, r - 2, a0, a1).stroke({ width: 7, color: trackColor, cap: 'round' });
+    }
+    g.circle(cx, cy, r).stroke({ width: 4, color: 0x111111 });
+  }
+
   drawPlayHud() {
     const g = this.playHud;
     g.clear();
-    if (!this.showTouchUi()) return;
     const p = this.p;
     const hp = clamp(p.hp / 120, 0, 1);
     const fury = clamp(this.fury / 100, 0, 1);
-    g.circle(58, 52, 34).fill({ color: 0x1a1010, alpha: 0.55 });
-    g.circle(58, 52, 28).fill({ color: 0x882222, alpha: 0.9 });
-    g.arc(58, 52, 28, -Math.PI / 2, -Math.PI / 2 + hp * Math.PI * 2).fill({ color: 0xff4444 });
-    g.circle(58, 52, 28).stroke({ width: 4, color: 0x111111 });
-    g.circle(VIEW_W - 58, 52, 30).fill({ color: 0x1a1010, alpha: 0.55 });
-    g.circle(VIEW_W - 58, 52, 24).fill({ color: 0x5533aa, alpha: 0.35 });
-    g.arc(VIEW_W - 58, 52, 24, -Math.PI / 2, -Math.PI / 2 + fury * Math.PI * 2).fill({ color: 0xbb66ff });
-    g.circle(VIEW_W - 58, 52, 24).stroke({ width: 3, color: 0x221133 });
+    const m = hudMetrics();
+    this.drawOrb(g, m.hpX, m.hpY, 28, hp, 0xff4444, 0x882222);
+    this.drawOrb(g, m.furyX, m.furyY, 24, fury, 0xbb66ff, 0x5533aa);
     if (this.bossActive) {
-      g.roundRect(VIEW_W / 2 - 200, 10, 400, 14, 6).fill({ color: 0x1a0a20, alpha: 0.75 });
-      g.roundRect(VIEW_W / 2 - 198, 12, 396 * 0.65, 10, 4).fill({ color: 0xbb66ff, alpha: 0.95 });
-      g.roundRect(VIEW_W / 2 - 200, 10, 400, 14, 6).stroke({ width: 2, color: 0x221133, alpha: 0.9 });
+      const bx = VIEW_W / 2 - 200;
+      g.roundRect(bx, m.bossY, 400, 14, 6).fill({ color: 0x1a0a20, alpha: 0.75 });
+      g.roundRect(bx + 2, m.bossY + 2, 396 * 0.65, 10, 4).fill({ color: 0xbb66ff, alpha: 0.95 });
+      g.roundRect(bx, m.bossY, 400, 14, 6).stroke({ width: 2, color: 0x221133, alpha: 0.9 });
     }
-    const barY = VIEW_H - 28;
+    const barY = m.barY;
     g.roundRect(VIEW_W / 2 - 140, barY - 18, 280, 36, 8).fill({ color: 0x000000, alpha: 0.45 });
     for (let i = 0; i < 3; i++) {
       const x = VIEW_W / 2 - 90 + i * 90;
@@ -926,18 +933,50 @@ export class Game {
       this.envLayer.filters = ef ? [ef] : null;
       this.actorLayer.filters = [this.render.actorBoost, this.render.lighting.hitFlashFilter];
       this.render.post.setQuality(this.quality);
-    } else if (mode === 'heavy_hit') {
+    } else if (mode === 'heavy_hit' || mode === 'combat_hit' || mode === 'desktop_attack') {
+      const enemy = this.enemies.find((e) => !e.dead);
+      if (enemy) {
+        p.x = enemy.x - 55;
+        p.y = enemy.y + 8;
+        p.face = 1;
+      }
       p.cast = { id: 'fist', t: 0.2, step: 2, ang: 0, wind: 0.1, rec: 0.2, done: false };
+      p.anim = 'attack';
+      const fr = Assets.sprites.hero_attack;
+      if (fr) {
+        p.sprite.textures = fr;
+        p.sprite.play();
+      }
       this.resolveCast();
-      this.render.onHeavyHit(p.x + 60, p.y - 30, VIEW_W / 2, VIEW_H / 2);
+      if (enemy) {
+        enemy.hit = 0.2;
+        enemy.sprite.tint = 0xffffff;
+        this.vfx.hitStarburst(enemy.x, enemy.y - 28, 0, true);
+        this.vfx.flash = 0.35;
+      }
+      const hx = p.x + 60;
+      const hy = p.y - 30;
+      this.render.onHeavyHit(hx, hy, hx - this.cam.x, hy - this.cam.y);
+      this.render.lighting.spawnDynamic({
+        x: hx,
+        y: hy,
+        radius: 130,
+        intensity: 1,
+        life: 0.22,
+        color: 0xfff8e8,
+      });
     }
-    if (mode === 'room_compare' || mode === 'lights_night') {
+    if (mode === 'opening' || mode === 'desktop_opening') {
+      this.render.camera.snapTo(p.x, p.y - 55);
+    } else if (mode === 'room_compare' || mode === 'lights_night') {
       this.render.camera.snapOverview();
-      this.cam.x = this.render.camera.x;
-      this.cam.y = this.render.camera.y;
     } else {
       this._snapCameraToPlayer();
     }
+    this.cam.x = this.render.camera.x;
+    this.cam.y = this.render.camera.y;
+    p.sprite.x = p.x;
+    p.sprite.y = p.y;
     this.updateFgRails();
     this.drawPlayHud();
     this.drawTouchHud();

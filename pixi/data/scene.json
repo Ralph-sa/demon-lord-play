@@ -3,14 +3,15 @@
   "assetPack": "dusk1",
   "world": { "w": 1400, "h": 860 },
   "play": { "x": 72, "y": 198, "w": 1256, "h": 588 },
-  "spawn": { "hero": { "x": 700, "y": 520 }, "enemySpread": 210 },
+  "spawn": { "hero": { "x": 700, "y": 548 }, "enemySpread": 210 },
   "camera": { "zoom": 0.85, "panMaxX": 88, "panMaxY": 64 },
   "foregroundRail": { "y": 858, "scale": 0.6 },
   "walls": {
     "topBaselineY": 78,
     "topDisplayH": 303,
     "lowBaselineY": 802,
-    "topSequence": ["a", "b", "c"]
+    "topSequence": ["a", "b", "c"],
+    "playTopWall": { "y": 198, "x0": 72, "x1": 1328, "scale": 0.42, "sequence": ["a", "b", "c"] }
   },
   "floorZones": [
     { "tile": "tile_concrete_a", "x": 0, "y": 188, "w": 1400, "h": 660 },
