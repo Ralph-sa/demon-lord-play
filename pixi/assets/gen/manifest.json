@@ -1,0 +1,255 @@
+{
+ "hero_idle": {
+  "src": "assets/gen/hero_idle.png",
+  "frames": 4,
+  "w": 109,
+  "h": 161,
+  "ax": 0.5,
+  "ay": 0.9751552795031055,
+  "bodyH": 150
+ },
+ "hero_run": {
+  "src": "assets/gen/hero_run.png",
+  "frames": 6,
+  "w": 129,
+  "h": 161,
+  "ax": 0.5,
+  "ay": 0.9751552795031055,
+  "bodyH": 150
+ },
+ "hero_combo": {
+  "src": "assets/gen/hero_combo.png",
+  "frames": 6,
+  "w": 152,
+  "h": 159,
+  "ax": 0.5,
+  "ay": 0.9748427672955975,
+  "bodyH": 150
+ },
+ "hero_sweep": {
+  "src": "assets/gen/hero_sweep.png",
+  "frames": 6,
+  "w": 173,
+  "h": 172,
+  "ax": 0.5,
+  "ay": 0.9767441860465116,
+  "bodyH": 150
+ },
+ "hero_dodge": {
+  "src": "assets/gen/hero_dodge.png",
+  "frames": 4,
+  "w": 170,
+  "h": 129,
+  "ax": 0.5,
+  "ay": 0.9689922480620154,
+  "bodyH": 150
+ },
+ "hero_hit": {
+  "src": "assets/gen/hero_hit.png",
+  "frames": 3,
+  "w": 133,
+  "h": 158,
+  "ax": 0.5,
+  "ay": 0.9746835443037974,
+  "bodyH": 150
+ },
+ "hero_death": {
+  "src": "assets/gen/hero_death.png",
+  "frames": 5,
+  "w": 176,
+  "h": 154,
+  "ax": 0.5,
+  "ay": 0.974025974025974,
+  "bodyH": 150
+ },
+ "cultivator_move": {
+  "src": "assets/gen/cultivator_move.png",
+  "frames": 4,
+  "w": 88,
+  "h": 174,
+  "ax": 0.5,
+  "ay": 0.9770114942528736,
+  "bodyH": 165
+ },
+ "cultivator_attack": {
+  "src": "assets/gen/cultivator_attack.png",
+  "frames": 4,
+  "w": 235,
+  "h": 173,
+  "ax": 0.5,
+  "ay": 0.976878612716763,
+  "bodyH": 165
+ },
+ "cultivator_death": {
+  "src": "assets/gen/cultivator_death.png",
+  "frames": 4,
+  "w": 245,
+  "h": 165,
+  "ax": 0.5,
+  "ay": 0.9757575757575757,
+  "bodyH": 165
+ },
+ "taoist_move": {
+  "src": "assets/gen/taoist_move.png",
+  "frames": 4,
+  "w": 108,
+  "h": 153,
+  "ax": 0.5,
+  "ay": 0.9738562091503268,
+  "bodyH": 144
+ },
+ "taoist_attack": {
+  "src": "assets/gen/taoist_attack.png",
+  "frames": 4,
+  "w": 190,
+  "h": 152,
+  "ax": 0.5,
+  "ay": 0.9736842105263158,
+  "bodyH": 144
+ },
+ "taoist_death": {
+  "src": "assets/gen/taoist_death.png",
+  "frames": 4,
+  "w": 170,
+  "h": 148,
+  "ax": 0.5,
+  "ay": 0.972972972972973,
+  "bodyH": 144
+ },
+ "monk_move": {
+  "src": "assets/gen/monk_move.png",
+  "frames": 4,
+  "w": 116,
+  "h": 135,
+  "ax": 0.5,
+  "ay": 0.9703703703703703,
+  "bodyH": 126
+ },
+ "monk_attack": {
+  "src": "assets/gen/monk_attack.png",
+  "frames": 4,
+  "w": 164,
+  "h": 165,
+  "ax": 0.5,
+  "ay": 0.9757575757575757,
+  "bodyH": 126
+ },
+ "monk_death": {
+  "src": "assets/gen/monk_death.png",
+  "frames": 4,
+  "w": 156,
+  "h": 130,
+  "ax": 0.5,
+  "ay": 0.9692307692307692,
+  "bodyH": 126
+ },
+ "paladin_move": {
+  "src": "assets/gen/paladin_move.png",
+  "frames": 4,
+  "w": 164,
+  "h": 159,
+  "ax": 0.5,
+  "ay": 0.9748427672955975,
+  "bodyH": 150
+ },
+ "paladin_attack": {
+  "src": "assets/gen/paladin_attack.png",
+  "frames": 4,
+  "w": 198,
+  "h": 158,
+  "ax": 0.5,
+  "ay": 0.9746835443037974,
+  "bodyH": 150
+ },
+ "paladin_death": {
+  "src": "assets/gen/paladin_death.png",
+  "frames": 4,
+  "w": 185,
+  "h": 150,
+  "ax": 0.5,
+  "ay": 0.9733333333333334,
+  "bodyH": 150
+ },
+ "vfx_punch": {
+  "src": "assets/gen/vfx_punch.png",
+  "frames": 6,
+  "w": 180,
+  "h": 202,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_sweep": {
+  "src": "assets/gen/vfx_sweep.png",
+  "frames": 6,
+  "w": 184,
+  "h": 139,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_slam": {
+  "src": "assets/gen/vfx_slam.png",
+  "frames": 6,
+  "w": 186,
+  "h": 181,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_fire": {
+  "src": "assets/gen/vfx_fire.png",
+  "frames": 6,
+  "w": 189,
+  "h": 145,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_aura": {
+  "src": "assets/gen/vfx_aura.png",
+  "frames": 6,
+  "w": 192,
+  "h": 193,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "vfx_beam": {
+  "src": "assets/gen/vfx_beam.png",
+  "frames": 6,
+  "w": 165,
+  "h": 210,
+  "ax": 0.5,
+  "ay": 0.5
+ },
+ "_ui": {
+  "orb_hp": "assets/gen/ui_orb_hp.png",
+  "orb_fury": "assets/gen/ui_orb_fury.png",
+  "icon_fist": "assets/gen/ui_icon_fist.png",
+  "icon_pipe": "assets/gen/ui_icon_pipe.png",
+  "icon_kick": "assets/gen/ui_icon_kick.png",
+  "icon_bottle": "assets/gen/ui_icon_bottle.png",
+  "icon_roar": "assets/gen/ui_icon_roar.png",
+  "icon_flame": "assets/gen/ui_icon_flame.png",
+  "btn_yellow": "assets/gen/ui_btn_yellow.png",
+  "btn_gray": "assets/gen/ui_btn_gray.png",
+  "panel": "assets/gen/ui_panel.png",
+  "card_shop": "assets/gen/ui_card_shop.png",
+  "card_level": "assets/gen/ui_card_level.png",
+  "icon_dash": "assets/gen/ui_icon_dash.png"
+ },
+ "_ground": "assets/gen/ground_kowloon.jpg",
+ "_edges": {
+  "top": "assets/gen/edge_top_kowloon.png",
+  "bottom": "assets/gen/edge_bottom_kowloon.png",
+  "side": "assets/gen/edge_side_kowloon.png",
+  "topH": 360,
+  "bottomH": 280,
+  "sideW": 360
+ },
+ "_items": {
+  "item_gem_small": "assets/gen/item_gem_small.png",
+  "item_gem_large": "assets/gen/item_gem_large.png",
+  "item_talisman": "assets/gen/item_talisman.png",
+  "loot_beam_1": "assets/gen/loot_beam_1.png",
+  "loot_beam_2": "assets/gen/loot_beam_2.png",
+  "loot_beam_3": "assets/gen/loot_beam_3.png",
+  "loot_beam_4": "assets/gen/loot_beam_4.png"
+ }
+}

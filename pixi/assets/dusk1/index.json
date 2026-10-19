@@ -1,0 +1,1545 @@
+{
+ "tiles/tile_concrete_a.jpg": {
+  "w": 256,
+  "h": 307,
+  "tiling": "repeat",
+  "opaque": true,
+  "source": "tile_concrete_a 变体1",
+  "method": "周期裁剪 x[292,940) y[184,962) + 24px 窄带接缝融合",
+  "seamCost": [
+   11.3,
+   10.7
+  ]
+ },
+ "tiles/tile_concrete_b.jpg": {
+  "w": 256,
+  "h": 218,
+  "tiling": "repeat",
+  "opaque": true,
+  "source": "tile_concrete_b 变体2",
+  "method": "周期裁剪 x[188,846) y[108,668) + 24px 窄带接缝融合",
+  "seamCost": [
+   9.2,
+   8.3
+  ]
+ },
+ "tiles/tile_brick.jpg": {
+  "w": 256,
+  "h": 190,
+  "tiling": "repeat",
+  "opaque": true,
+  "source": "tile_brick 变体1",
+  "method": "周期裁剪 x[44,846) y[336,930) + 24px 窄带接缝融合",
+  "seamCost": [
+   5.6,
+   7.4
+  ]
+ },
+ "tiles/tile_iron.jpg": {
+  "w": 256,
+  "h": 365,
+  "tiling": "repeat",
+  "opaque": true,
+  "source": "tile_iron 变体1",
+  "method": "周期裁剪 x[192,802) y[48,918) + 24px 窄带接缝融合",
+  "seamCost": [
+   4.4,
+   4.5
+  ]
+ },
+ "decals/manhole.png": {
+  "w": 94,
+  "h": 68,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 78,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.17
+ },
+ "decals/drain_grate.png": {
+  "w": 109,
+  "h": 59,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 91,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "decals/crack_long.png": {
+  "w": 184,
+  "h": 127,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 156,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.043,
+  "edgeGreenPct": 0.07
+ },
+ "decals/crack_fork.png": {
+  "w": 169,
+  "h": 133,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 143,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.025,
+  "edgeGreenPct": 0.04
+ },
+ "decals/crack_web.png": {
+  "w": 154,
+  "h": 114,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 130,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.051,
+  "edgeGreenPct": 0.14
+ },
+ "decals/oil_stain.png": {
+  "w": 139,
+  "h": 104,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 117,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.055,
+  "edgeGreenPct": 0.25
+ },
+ "decals/paper_scraps.png": {
+  "w": 109,
+  "h": 77,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 91,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.031,
+  "edgeGreenPct": 0.08
+ },
+ "decals/battle_crater.png": {
+  "w": 199,
+  "h": 160,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "displayW": 169,
+  "collision": null,
+  "layer": "floorDecal",
+  "greenPct": 0.054,
+  "edgeGreenPct": 0.24
+ },
+ "props/crate_intact.png": {
+  "w": 109,
+  "h": 115,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -38,
+   "y": -35,
+   "w": 75,
+   "h": 35,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_broken.png": {
+  "w": 110,
+  "h": 111,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -38,
+   "y": -34,
+   "w": 77,
+   "h": 34,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_0.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.115,
+  "edgeGreenPct": 0.47
+ },
+ "props/crate_fragments_1.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_2.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_3.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_4.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_5.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments_6.png": {
+  "w": 68,
+  "h": 72,
+  "frameOf": "props/crate_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/crate_fragments.png": {
+  "w": 476,
+  "h": 72,
+  "frames": 7,
+  "frameW": 68,
+  "frameH": 72,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.022,
+  "edgeGreenPct": 0.08
+ },
+ "props/aircon_intact.png": {
+  "w": 116,
+  "h": 109,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -40,
+   "y": -32,
+   "w": 81,
+   "h": 32,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.011,
+  "edgeGreenPct": 0.1
+ },
+ "props/aircon_broken.png": {
+  "w": 123,
+  "h": 109,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -43,
+   "y": -32,
+   "w": 86,
+   "h": 32,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_0.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_1.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_2.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_3.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_4.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.34
+ },
+ "props/aircon_fragments_5.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments_6.png": {
+  "w": 68,
+  "h": 69,
+  "frameOf": "props/aircon_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/aircon_fragments.png": {
+  "w": 476,
+  "h": 69,
+  "frames": 7,
+  "frameW": 68,
+  "frameH": 69,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.04
+ },
+ "props/gas_canister_intact.png": {
+  "w": 64,
+  "h": 102,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -22,
+   "y": -31,
+   "w": 44,
+   "h": 31,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_broken.png": {
+  "w": 70,
+  "h": 101,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -25,
+   "y": -31,
+   "w": 48,
+   "h": 31,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_0.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_1.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_2.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_3.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_4.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_5.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments_6.png": {
+  "w": 66,
+  "h": 53,
+  "frameOf": "props/gas_canister_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/gas_canister_fragments.png": {
+  "w": 462,
+  "h": 53,
+  "frames": 7,
+  "frameW": 66,
+  "frameH": 53,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_intact.png": {
+  "w": 72,
+  "h": 77,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -25,
+   "y": -23,
+   "w": 49,
+   "h": 23,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_broken.png": {
+  "w": 72,
+  "h": 77,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -25,
+   "y": -23,
+   "w": 49,
+   "h": 23,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_0.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_1.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_2.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_3.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_4.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_5.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments_6.png": {
+  "w": 49,
+  "h": 50,
+  "frameOf": "props/clay_jar_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/clay_jar_fragments.png": {
+  "w": 343,
+  "h": 50,
+  "frames": 7,
+  "frameW": 49,
+  "frameH": 50,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_intact.png": {
+  "w": 64,
+  "h": 69,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -22,
+   "y": -21,
+   "w": 44,
+   "h": 21,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_broken.png": {
+  "w": 64,
+  "h": 68,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -22,
+   "y": -21,
+   "w": 44,
+   "h": 21,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_0.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_1.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_2.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_3.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_4.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_5.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments_6.png": {
+  "w": 48,
+  "h": 48,
+  "frameOf": "props/bucket_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/bucket_fragments.png": {
+  "w": 336,
+  "h": 48,
+  "frames": 7,
+  "frameW": 48,
+  "frameH": 48,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_intact.png": {
+  "w": 199,
+  "h": 140,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -69,
+   "y": -43,
+   "w": 138,
+   "h": 43,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "intact",
+  "greenPct": 0.006,
+  "edgeGreenPct": 0.07
+ },
+ "props/mahjong_table_broken.png": {
+  "w": 212,
+  "h": 145,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -74,
+   "y": -44,
+   "w": 147,
+   "h": 44,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": true,
+  "state": "broken",
+  "greenPct": 0.016,
+  "edgeGreenPct": 0.04
+ },
+ "props/mahjong_table_fragments_0.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_1.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_2.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_3.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_4.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_5.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments_6.png": {
+  "w": 93,
+  "h": 77,
+  "frameOf": "props/mahjong_table_fragments.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/mahjong_table_fragments.png": {
+  "w": 651,
+  "h": 77,
+  "frames": 7,
+  "frameW": 93,
+  "frameH": 77,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "note": "碎片整图（等距单元格），单块见 _0.._6",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "props/water_tower.png": {
+  "w": 229,
+  "h": 299,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "collision": {
+   "x": -83,
+   "y": -78,
+   "w": 166,
+   "h": 78,
+   "unit": "displayPx,相对锚点"
+  },
+  "breakable": false,
+  "note": "不可破坏障碍",
+  "greenPct": 0.015,
+  "edgeGreenPct": 0.15
+ },
+ "fx/pipe_sweep_0.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.033,
+  "edgeGreenPct": 0.26
+ },
+ "fx/pipe_sweep_1.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.038,
+  "edgeGreenPct": 0.22
+ },
+ "fx/pipe_sweep_2.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.021,
+  "edgeGreenPct": 0.23
+ },
+ "fx/pipe_sweep_3.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.016,
+  "edgeGreenPct": 0.1
+ },
+ "fx/pipe_sweep_4.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.024,
+  "edgeGreenPct": 0.12
+ },
+ "fx/pipe_sweep_5.png": {
+  "w": 308,
+  "h": 304,
+  "frameOf": "fx/pipe_sweep.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.02,
+  "edgeGreenPct": 0.07
+ },
+ "fx/pipe_sweep.png": {
+  "w": 1848,
+  "h": 304,
+  "frames": 6,
+  "frameW": 308,
+  "frameH": 304,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "fps": 18,
+  "loop": false,
+  "blend": "normal(程序可另加 add 发光层)",
+  "greenPct": 0.024,
+  "edgeGreenPct": 0.16
+ },
+ "fx/punch_spark_0.png": {
+  "w": 143,
+  "h": 149,
+  "frameOf": "fx/punch_spark.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.133,
+  "edgeGreenPct": 0.22
+ },
+ "fx/punch_spark_1.png": {
+  "w": 143,
+  "h": 149,
+  "frameOf": "fx/punch_spark.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "fx/punch_spark_2.png": {
+  "w": 143,
+  "h": 149,
+  "frameOf": "fx/punch_spark.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.02,
+  "edgeGreenPct": 0.08
+ },
+ "fx/punch_spark_3.png": {
+  "w": 143,
+  "h": 149,
+  "frameOf": "fx/punch_spark.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.121,
+  "edgeGreenPct": 0.17
+ },
+ "fx/punch_spark_4.png": {
+  "w": 143,
+  "h": 149,
+  "frameOf": "fx/punch_spark.png",
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "fx/punch_spark.png": {
+  "w": 715,
+  "h": 149,
+  "frames": 5,
+  "frameW": 143,
+  "frameH": 149,
+  "anchor": [
+   0.5,
+   0.5
+  ],
+  "displayScale": 0.8667,
+  "fps": 18,
+  "loop": false,
+  "blend": "normal(程序可另加 add 发光层)",
+  "greenPct": 0.03,
+  "edgeGreenPct": 0.08
+ },
+ "fx/dust_0.png": {
+  "w": 173,
+  "h": 153,
+  "frameOf": "fx/dust.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.09
+ },
+ "fx/dust_1.png": {
+  "w": 173,
+  "h": 153,
+  "frameOf": "fx/dust.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.11
+ },
+ "fx/dust_2.png": {
+  "w": 173,
+  "h": 153,
+  "frameOf": "fx/dust.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.017,
+  "edgeGreenPct": 0.22
+ },
+ "fx/dust_3.png": {
+  "w": 173,
+  "h": 153,
+  "frameOf": "fx/dust.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.168,
+  "edgeGreenPct": 0.52
+ },
+ "fx/dust_4.png": {
+  "w": 173,
+  "h": 153,
+  "frameOf": "fx/dust.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.999,
+  "edgeGreenPct": 0.35
+ },
+ "fx/dust.png": {
+  "w": 865,
+  "h": 153,
+  "frames": 5,
+  "frameW": 173,
+  "frameH": 153,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "fps": 18,
+  "loop": false,
+  "blend": "normal(程序可另加 add 发光层)",
+  "greenPct": 0.109,
+  "edgeGreenPct": 0.29
+ },
+ "fx/gas_explode_0.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.121,
+  "edgeGreenPct": 0.46
+ },
+ "fx/gas_explode_1.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.093,
+  "edgeGreenPct": 0.37
+ },
+ "fx/gas_explode_2.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.046,
+  "edgeGreenPct": 0.34
+ },
+ "fx/gas_explode_3.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.014,
+  "edgeGreenPct": 0.17
+ },
+ "fx/gas_explode_4.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.038,
+  "edgeGreenPct": 0.21
+ },
+ "fx/gas_explode_5.png": {
+  "w": 278,
+  "h": 364,
+  "frameOf": "fx/gas_explode.png",
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "greenPct": 0.049,
+  "edgeGreenPct": 0.2
+ },
+ "fx/gas_explode.png": {
+  "w": 1668,
+  "h": 364,
+  "frames": 6,
+  "frameW": 278,
+  "frameH": 364,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 0.8667,
+  "fps": 14,
+  "loop": false,
+  "blend": "normal(程序可另加 add 发光层)",
+  "greenPct": 0.052,
+  "edgeGreenPct": 0.29
+ },
+ "walls/wall_low.png": {
+  "w": 524,
+  "h": 147,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 1,
+  "collision": {
+   "x": -252,
+   "y": -51,
+   "w": 503,
+   "h": 51,
+   "unit": "displayPx,相对锚点"
+  },
+  "note": "矮墙一段（带两端收口），可首尾相接排列",
+  "greenPct": 0.002,
+  "edgeGreenPct": 0.02
+ },
+ "walls/fg_rail.png": {
+  "w": 659,
+  "h": 180,
+  "anchor": [
+   0,
+   1.0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-x",
+  "layer": "foreground",
+  "collision": null,
+  "note": "底部前景栏杆+晾衣绳，画在角色之上，建议半透明 0.85~1",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "walls/platform.png": {
+  "w": 304,
+  "h": 223,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 1,
+  "collision": {
+   "solid": {
+    "x": -137,
+    "y": -190,
+    "w": 274,
+    "h": 100
+   },
+   "stairs": {
+    "x": -116,
+    "y": -89,
+    "w": 109,
+    "h": 89
+   },
+   "unit": "displayPx,相对锚点(估算)"
+  },
+  "note": "高台+楼梯，台面可站人(z层)",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.05
+ },
+ "walls/stair_door_closed.png": {
+  "w": 184,
+  "h": 199,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 1,
+  "collision": {
+   "x": -83,
+   "y": -70,
+   "w": 166,
+   "h": 70
+  },
+  "trigger": null,
+  "state": "closed",
+  "greenPct": 0.011,
+  "edgeGreenPct": 0.19
+ },
+ "walls/stair_door_open.png": {
+  "w": 184,
+  "h": 199,
+  "anchor": [
+   0.5,
+   1.0
+  ],
+  "displayScale": 1,
+  "collision": {
+   "x": -83,
+   "y": -70,
+   "w": 166,
+   "h": 70
+  },
+  "trigger": {
+   "x": -46,
+   "y": -60,
+   "w": 92,
+   "h": 60
+  },
+  "state": "open",
+  "greenPct": 0.004,
+  "edgeGreenPct": 0.05
+ },
+ "_meta": {
+  "project": "古惑仔成魔 PixiJS 样板房间",
+  "canvas": [
+   1280,
+   720
+  ],
+  "heroDisplayH": 130,
+  "coords": "anchor 为 Pixi anchor(0..1)；displayScale=显示像素/存储像素；collision 单位为显示像素、相对锚点；物件/贴花/特效的 displayScale 与碰撞盒已按角色显示高度 130 换算（存储图约为显示尺寸的 1.15 倍）",
+  "style": "傍晚1 基准，无烘焙发光",
+  "gen": "AIART gpt，纯绿底抠图"
+ },
+ "walls/wall_top_a.png": {
+  "w": 531,
+  "h": 303,
+  "anchor": [
+   0,
+   1.0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-x，a/b/c 可任意顺序首尾相接（切口都在楼与楼的分界处）",
+  "baseLineY": 301,
+  "collision": {
+   "x": 0,
+   "y": -42,
+   "w": 531,
+   "h": 40,
+   "unit": "displayPx,相对锚点(底边)；地面从 baseLine 开始"
+  },
+  "view": "俯视3/4(约45°)：楼顶+底层1~2层立面",
+  "content": "奶白楼+灰蓝楼（含凹进去的楼梯口）",
+  "greenPct": 0.088,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_top_b.png": {
+  "w": 458,
+  "h": 303,
+  "anchor": [
+   0,
+   1.0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-x，a/b/c 可任意顺序首尾相接（切口都在楼与楼的分界处）",
+  "baseLineY": 301,
+  "collision": {
+   "x": 0,
+   "y": -42,
+   "w": 458,
+   "h": 40,
+   "unit": "displayPx,相对锚点(底边)；地面从 baseLine 开始"
+  },
+  "view": "俯视3/4(约45°)：楼顶+底层1~2层立面",
+  "content": "奶白楼+粉楼（含楼梯口）",
+  "greenPct": 0.0,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_top_c.png": {
+  "w": 531,
+  "h": 303,
+  "anchor": [
+   0,
+   1.0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-x，a/b/c 可任意顺序首尾相接（切口都在楼与楼的分界处）",
+  "baseLineY": 301,
+  "collision": {
+   "x": 0,
+   "y": -42,
+   "w": 531,
+   "h": 40,
+   "unit": "displayPx,相对锚点(底边)；地面从 baseLine 开始"
+  },
+  "view": "俯视3/4(约45°)：楼顶+底层1~2层立面",
+  "content": "粉楼+米黄楼（含楼梯口）",
+  "greenPct": 3.329,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_side_left_a.png": {
+  "w": 231,
+  "h": 384,
+  "anchor": [
+   0,
+   0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-y，同侧 a/b 可任意顺序上下相接（首尾共用同一条接缝带）",
+  "collision": {
+   "x": 0,
+   "y": 0,
+   "w": 185,
+   "h": 384,
+   "unit": "displayPx,相对锚点"
+  },
+  "view": "俯视3/4：一列楼的楼顶+朝向房间内的侧立面",
+  "greenPct": 0.011,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_side_left_b.png": {
+  "w": 252,
+  "h": 585,
+  "anchor": [
+   0,
+   0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-y，同侧 a/b 可任意顺序上下相接（首尾共用同一条接缝带）",
+  "collision": {
+   "x": 0,
+   "y": 0,
+   "w": 202,
+   "h": 585,
+   "unit": "displayPx,相对锚点"
+  },
+  "view": "俯视3/4：一列楼的楼顶+朝向房间内的侧立面",
+  "greenPct": 0.221,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_side_right_a.png": {
+  "w": 227,
+  "h": 384,
+  "anchor": [
+   1,
+   0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-y，同侧 a/b 可任意顺序上下相接（首尾共用同一条接缝带）",
+  "collision": {
+   "x": -182,
+   "y": 0,
+   "w": 182,
+   "h": 384,
+   "unit": "displayPx,相对锚点"
+  },
+  "view": "俯视3/4：一列楼的楼顶+朝向房间内的侧立面",
+  "greenPct": 0.721,
+  "edgeGreenPct": 0.0
+ },
+ "walls/wall_side_right_b.png": {
+  "w": 240,
+  "h": 350,
+  "anchor": [
+   1,
+   0
+  ],
+  "displayScale": 1,
+  "tiling": "repeat-y，同侧 a/b 可任意顺序上下相接（首尾共用同一条接缝带）",
+  "collision": {
+   "x": -192,
+   "y": 0,
+   "w": 192,
+   "h": 350,
+   "unit": "displayPx,相对锚点"
+  },
+  "view": "俯视3/4：一列楼的楼顶+朝向房间内的侧立面",
+  "greenPct": 1.253,
+  "edgeGreenPct": 0.0
+ }
+}

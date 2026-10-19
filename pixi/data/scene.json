@@ -1,0 +1,96 @@
+{
+  "id": "kowloon_arena_dusk1",
+  "assetPack": "dusk1",
+  "world": { "w": 1400, "h": 860 },
+  "play": { "x": 56, "y": 88, "w": 1288, "h": 720 },
+  "spawn": { "hero": { "x": 700, "y": 520 }, "enemySpread": 210 },
+  "walls": {
+    "topBaselineY": 62,
+    "lowBaselineY": 802,
+    "topSequence": ["a", "b", "c"]
+  },
+  "floorZones": [
+    { "tile": "tile_concrete_a", "x": 0, "y": 72, "w": 1400, "h": 788 },
+    { "tile": "tile_brick", "x": 72, "y": 108, "w": 468, "h": 392 },
+    { "tile": "tile_concrete_b", "x": 520, "y": 96, "w": 880, "h": 404 }
+  ],
+  "curbs": [
+    { "tile": "tile_iron", "x": 72, "y": 492, "w": 468, "h": 28 },
+    { "tile": "tile_iron", "x": 72, "y": 108, "w": 28, "h": 412 },
+    { "tile": "tile_iron", "x": 512, "y": 108, "w": 28, "h": 412 },
+    { "tile": "tile_iron", "x": 520, "y": 488, "w": 880, "h": 24 }
+  ],
+  "structures": [
+    { "kind": "platform", "x": 1088, "y": 468 },
+    { "kind": "stair_door", "x": 1188, "y": 318, "open": false },
+    { "kind": "fg_rail", "y": 836, "x0": -300, "x1": 1700, "alpha": 0.92 }
+  ],
+  "ambient": {
+    "multiply": [0.94, 0.91, 0.88],
+    "add": [0.03, 0.02, 0.01],
+    "minCharacter": 0.9,
+    "envDarkenMax": 0.15
+  },
+  "sun": {
+    "angle": 2.35,
+    "length": 0.48,
+    "alpha": 0.3,
+    "skewX": -0.5,
+    "scaleY": 0.26
+  },
+  "staticLights": [
+    { "id": "win_l1", "x": 248, "y": 118, "poolX": 220, "poolY": 360, "radius": 68, "ry": 32, "color": "#ffc860", "intensity": 0.5, "flicker": 0.05 },
+    { "id": "win_l2", "x": 412, "y": 108, "poolX": 380, "poolY": 340, "radius": 62, "ry": 30, "color": "#ffd078", "intensity": 0.48, "flicker": 0.04 },
+    { "id": "win_tc", "x": 700, "y": 98, "poolX": 700, "poolY": 320, "radius": 70, "ry": 34, "color": "#ffb858", "intensity": 0.52, "flicker": 0.05 },
+    { "id": "win_tr", "x": 1020, "y": 112, "poolX": 980, "poolY": 350, "radius": 66, "ry": 31, "color": "#ffa848", "intensity": 0.5, "flicker": 0.05 },
+    { "id": "lamp_br", "x": 1268, "y": 248, "poolX": 1180, "poolY": 580, "radius": 74, "ry": 36, "color": "#88c8ff", "intensity": 0.38, "flicker": 0.08 },
+    { "id": "lamp_street_l", "x": 168, "y": 248, "poolX": 260, "poolY": 640, "radius": 80, "ry": 38, "color": "#ffc860", "intensity": 0.55, "flicker": 0.06 },
+    { "id": "lamp_street_r", "x": 1232, "y": 232, "poolX": 1140, "poolY": 660, "radius": 82, "ry": 40, "color": "#ffa848", "intensity": 0.56, "flicker": 0.06 }
+  ],
+  "buildingShadows": [
+    { "x": -320, "y": -160, "w": 280, "h": 1100, "alpha": 0.14 },
+    { "x": 1440, "y": -160, "w": 280, "h": 1100, "alpha": 0.16 }
+  ],
+  "shadowZones": [
+    { "x": -300, "y": 40, "w": 220, "h": 820, "darken": 0.94 },
+    { "x": 1480, "y": 40, "w": 220, "h": 820, "darken": 0.94 }
+  ],
+  "decals": [
+    { "kind": "manhole", "x": 620, "y": 580, "rot": 0 },
+    { "kind": "manhole", "x": 940, "y": 640, "rot": 0.2 },
+    { "kind": "drain_grate", "x": 480, "y": 720, "rot": 0 },
+    { "kind": "drain_grate", "x": 820, "y": 740, "rot": 0.1 },
+    { "kind": "crack_long", "x": 760, "y": 500, "rot": -0.3 },
+    { "kind": "crack_fork", "x": 540, "y": 620, "rot": 0.5 },
+    { "kind": "crack_web", "x": 1020, "y": 520, "rot": 0 },
+    { "kind": "oil_stain", "x": 360, "y": 560, "rot": 0 },
+    { "kind": "oil_stain", "x": 880, "y": 460, "rot": 0.4 },
+    { "kind": "paper_scraps", "x": 300, "y": 680, "rot": 0.8 },
+    { "kind": "battle_crater", "x": 180, "y": 480, "rot": 0, "scale": 0.9 }
+  ],
+  "props": [
+    { "kind": "water_tower", "x": 1210, "y": 710 },
+    { "kind": "mahjong_table", "x": 268, "y": 448 },
+    { "kind": "crate", "x": 688, "y": 478, "breakable": true },
+    { "kind": "crate", "x": 588, "y": 548, "breakable": true },
+    { "kind": "crate", "x": 912, "y": 398, "breakable": true },
+    { "kind": "crate", "x": 1048, "y": 548, "breakable": true },
+    { "kind": "gas_canister", "x": 168, "y": 618, "breakable": true },
+    { "kind": "gas_canister", "x": 208, "y": 648, "breakable": true },
+    { "kind": "gas_canister", "x": 248, "y": 678, "breakable": true },
+    { "kind": "gas_canister", "x": 328, "y": 708, "breakable": true },
+    { "kind": "bucket", "x": 408, "y": 558, "breakable": true },
+    { "kind": "bucket", "x": 448, "y": 578, "breakable": true },
+    { "kind": "bucket", "x": 488, "y": 598, "breakable": true },
+    { "kind": "clay_jar", "x": 528, "y": 628, "breakable": true },
+    { "kind": "clay_jar", "x": 568, "y": 648, "breakable": true },
+    { "kind": "clay_jar", "x": 608, "y": 618, "breakable": true },
+    { "kind": "clay_jar", "x": 648, "y": 658, "breakable": true },
+    { "kind": "aircon", "x": 318, "y": 248, "breakable": true },
+    { "kind": "aircon", "x": 548, "y": 228, "breakable": true },
+    { "kind": "aircon", "x": 968, "y": 238, "breakable": true },
+    { "kind": "gas_canister", "x": 768, "y": 688, "breakable": true },
+    { "kind": "bucket", "x": 848, "y": 708, "breakable": true },
+    { "kind": "clay_jar", "x": 988, "y": 698, "breakable": true }
+  ]
+}

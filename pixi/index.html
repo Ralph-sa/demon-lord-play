@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a1520">
+  <title>古惑仔成魔 · PixiJS 样板房</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: #000;
+      width: 100%;
+      overflow: hidden;
+      position: fixed;
+      inset: 0;
+      touch-action: none;
+      user-select: none;
+      height: 100%;
+      height: var(--app-h, 100dvh);
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #game-host canvas {
+      display: block;
+      touch-action: none;
+      max-width: 100%;
+      max-height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    #orient-hint {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      padding: .55rem .75rem .65rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.82));
+      color: #ffd400;
+      font: 600 14px/1.35 sans-serif;
+      text-align: center;
+      pointer-events: none;
+    }
+    #orient-hint.show { display: block; }
+    #orient-hint button {
+      font: 700 15px sans-serif;
+      margin-left: .6rem;
+      padding: .35rem .75rem;
+      border: 2px solid #ffd400;
+      border-radius: 10px;
+      background: #222;
+      color: #fff;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-host"></div>
+  <div id="orient-hint" aria-hidden="true">
+    <span>横屏体验更佳，竖屏也可直接玩</span>
+    <button type="button" id="orient-hint-close">知道了</button>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
