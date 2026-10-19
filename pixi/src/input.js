@@ -1,4 +1,4 @@
-/** 键盘 + 鼠标 + 触屏虚拟摇杆（左下）与右下攻击/闪避/技能 */
+/** 键盘 + 鼠标 + 触屏：动作在按下瞬间入队，避免同帧 touchstart/touchend 吞点击 */
 import { VIEW_W, VIEW_H } from './config.js';
 import { touchControlLayout } from './ui/hudLayout.js';
 
@@ -15,9 +15,20 @@ export function createInput(canvas) {
     dodge: false,
     joy: null,
   };
+  const pulse = { fist: 0, sweep: 0, dodge: 0 };
+  const btnTouchIds = new Set();
+
+  const queue = (kind) => {
+    pulse[kind] += 1;
+  };
 
   addEventListener('keydown', (e) => {
-    keys[e.key.toLowerCase()] = true;
+    const k = e.key.toLowerCase();
+    keys[k] = true;
+    if (e.repeat) return;
+    if (k === 'j' || k === 'k') queue('fist');
+    if (k === 'e') queue('sweep');
+    if (k === ' ') queue('dodge');
   });
   addEventListener('keyup', (e) => {
     keys[e.key.toLowerCase()] = false;
@@ -37,8 +48,13 @@ export function createInput(canvas) {
     mouse.y = q.y;
   });
   canvas.addEventListener('mousedown', (e) => {
-    if (e.button === 2) mouse.r = true;
-    else mouse.l = true;
+    if (e.button === 2) {
+      mouse.r = true;
+      queue('sweep');
+    } else {
+      mouse.l = true;
+      queue('fist');
+    }
   });
   addEventListener('mouseup', (e) => {
     if (e.button === 2) mouse.r = false;
@@ -50,6 +66,19 @@ export function createInput(canvas) {
     return buttons.find((b) => Math.hypot(q.x - b.x, q.y - b.y) < b.r + 14);
   };
 
+  const syncTouchBtnHeld = () => {
+    touch.atk = false;
+    touch.sweep = false;
+    touch.dodge = false;
+    for (const id of btnTouchIds) {
+      const role = touch._btnByTouch?.[id];
+      if (role === 'fist') touch.atk = true;
+      if (role === 'sweep') touch.sweep = true;
+      if (role === 'dodge') touch.dodge = true;
+    }
+  };
+  touch._btnByTouch = {};
+
   const onTouch = (ev) => {
     touch.on = true;
     ev.preventDefault();
@@ -60,9 +89,12 @@ export function createInput(canvas) {
       if (ev.type === 'touchstart') {
         const btn = hitBtn(q);
         if (btn) {
-          if (btn.id === 'fist') touch.atk = true;
-          if (btn.id === 'sweep') touch.sweep = true;
-          if (btn.id === 'dodge') touch.dodge = true;
+          btnTouchIds.add(id);
+          touch._btnByTouch[id] = btn.id;
+          if (btn.id === 'fist') queue('fist');
+          if (btn.id === 'sweep') queue('sweep');
+          if (btn.id === 'dodge') queue('dodge');
+          syncTouchBtnHeld();
           continue;
         }
         if (q.x < VIEW_W * 0.48 && !touch.joy) {
@@ -89,9 +121,10 @@ export function createInput(canvas) {
           touch.joy = null;
           touch.jx = touch.jy = 0;
         }
-        touch.atk = false;
-        touch.sweep = false;
-        touch.dodge = false;
+        if (btnTouchIds.delete(id)) {
+          delete touch._btnByTouch[id];
+          syncTouchBtnHeld();
+        }
       }
     }
   };
@@ -99,7 +132,7 @@ export function createInput(canvas) {
     canvas.addEventListener(type, onTouch, { passive: false });
   }
 
-  return {
+  const api = {
     keys,
     mouse,
     touch,
@@ -116,14 +149,42 @@ export function createInput(canvas) {
       }
       return { mx, my };
     },
+    consumeFist() {
+      if (pulse.fist > 0) {
+        pulse.fist -= 1;
+        return true;
+      }
+      return false;
+    },
+    consumeSweep() {
+      if (pulse.sweep > 0) {
+        pulse.sweep -= 1;
+        return true;
+      }
+      return false;
+    },
+    consumeDodge() {
+      if (pulse.dodge > 0) {
+        pulse.dodge -= 1;
+        return true;
+      }
+      return false;
+    },
+    /** Playwright：模拟瞬时点击 */
+    simulateTapButton(id) {
+      if (id === 'fist') queue('fist');
+      if (id === 'sweep') queue('sweep');
+      if (id === 'dodge') queue('dodge');
+    },
     wantFist() {
-      return mouse.l || touch.atk || keys.j === true || keys.k === true;
+      return api.consumeFist();
     },
     wantSweep() {
-      return mouse.r || touch.sweep || keys.e === true;
+      return api.consumeSweep();
     },
     wantDodge() {
-      return keys[' '] === true || touch.dodge;
+      return api.consumeDodge();
     },
   };
+  return api;
 }

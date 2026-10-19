@@ -105,31 +105,62 @@ export function buildArenaRoom(groundImage, edges) {
   return { root, edgesBack, edgesFront };
 }
 
+export function coverInsets() {
+  const ins = globalThis.__pixiViewInset || {};
+  const cropTop = ins.cover ? ins.top || 0 : 0;
+  const cropBottom = ins.cover ? ins.bottom || 0 : 0;
+  return { cropTop, cropBottom, cover: !!ins.cover };
+}
+
+/** 可见区内纵向像素位置（游戏坐标，相对 camY 的偏移量） */
+export function coverFocusScreenY(fraction = 0.6) {
+  const { cropTop, cropBottom, cover } = coverInsets();
+  const visH = VIEW_H - cropTop - cropBottom;
+  if (!cover) return VIEW_H * fraction;
+  return cropTop + visH * fraction;
+}
+
+export function effectiveWorldZoom(baseZoom) {
+  const { cover } = coverInsets();
+  const mul = globalThis.__pixiCoverZoomMul ?? 0.9;
+  if (!cover) return baseZoom;
+  return baseZoom * mul;
+}
+
 export function camClamp(camX, camY, zoom = 1, scene = null) {
   const M = EDGE;
-  const vw = VIEW_W / zoom;
-  const vh = VIEW_H / zoom;
+  const z = effectiveWorldZoom(zoom);
+  const vw = VIEW_W / z;
+  const vh = VIEW_H / z;
+  const { cropTop, cropBottom } = coverInsets();
   const minX = -M.marginX * 0.5;
   const maxX = WORLD_W + M.marginX * 0.5 - vw;
   const topBase = scene?.walls?.topBaselineY ?? 78;
   const topH = scene?.walls?.topDisplayH ?? 303;
   const playTopY = scene?.walls?.playTopWall?.y ?? scene?.play?.y ?? 198;
-  const playTopH = scene?.walls?.playTopWall?.displayH ?? 52;
-  const ins = globalThis.__pixiViewInset || {};
-  const cropTop = ins.cover ? ins.top || 0 : 0;
-  const cropBottom = ins.cover ? ins.bottom || 0 : 0;
+  const playTopH = scene?.walls?.playTopWall?.displayH ?? 58;
+  const wallPad = 16;
   let minY = Math.min(topBase - topH - 56, playTopY - playTopH - 80);
   let maxY = WORLD_H - vh + 48;
-  if (cropTop > 0) {
-    maxY = Math.min(maxY, playTopY - playTopH - cropTop - 8);
-  }
+  maxY = Math.min(maxY, playTopY - playTopH - cropTop - wallPad);
   if (cropBottom > 0) {
-    minY = Math.max(minY, playTopY - playTopH - 40);
+    minY = Math.max(minY, playTopY - playTopH - 20);
   }
+  if (minY > maxY) minY = maxY;
   return {
     x: Math.max(minX, Math.min(maxX, camX)),
     y: Math.max(minY, Math.min(maxY, camY)),
+    zoom: z,
   };
+}
+
+export function camForFocus(focusX, focusY, zoom, scene, screenFraction = 0.58) {
+  const z = effectiveWorldZoom(zoom);
+  const vw = VIEW_W / z;
+  const screenY = coverFocusScreenY(screenFraction);
+  const camY = focusY - screenY / z;
+  const camX = focusX - vw / 2;
+  return camClamp(camX, camY, zoom, scene);
 }
 
 /** 总览镜头：完整顶墙入画（约 28%–36% 画面高度） */

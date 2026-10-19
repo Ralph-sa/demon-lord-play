@@ -24,26 +24,37 @@ function addPlayFrontierWall(edgesFront, edgesBack, catalog, playTop, topSeq) {
   const py = playTop.y ?? 198;
   const px0 = playTop.x0 ?? 72;
   const px1 = playTop.x1 ?? 1328;
-  const displayH = playTop.displayH ?? 52;
+  const displayH = playTop.displayH ?? 58;
   const pScale = displayH / 303;
   const pSeq = playTop.sequence || topSeq;
   const span = px1 - px0;
+  const capY = py - displayH + 6;
 
   const shadow = new Graphics();
-  shadow.ellipse((px0 + px1) * 0.5, py + 4, span * 0.48, 7).fill({ color: 0x000000, alpha: 0.26 });
+  shadow.ellipse((px0 + px1) * 0.5, py + 5, span * 0.5, 10).fill({ color: 0x000000, alpha: 0.44 });
   shadow.zIndex = py - 4;
   edgesBack.addChild(shadow);
 
   const pillar = (x) => {
     addSprite(edgesFront, catalog, 'walls/wall_top_c.webp', x, py, {
-      scaleMul: pScale * 1.12,
-      zIndex: py + 2,
+      scaleMul: pScale * 1.48,
+      zIndex: py + 3,
     });
   };
-  pillar(px0 + 6);
-  pillar(px1 - 6);
+  pillar(px0 + 4);
+  pillar(px1 - 4);
 
-  tileTopRow(edgesFront, catalog, py, px0 + 34, px1 - 34, pSeq, pScale);
+  tileTopRow(edgesFront, catalog, py, px0 + 48, px1 - 48, pSeq, pScale * 1.06);
+
+  const rim = new Graphics();
+  rim.moveTo(px0 + 40, capY);
+  rim.lineTo(px1 - 40, capY);
+  rim.stroke({ width: 4, color: 0xfff0c8, alpha: 0.95 });
+  rim.moveTo(px0 + 44, py - 2);
+  rim.lineTo(px1 - 44, py - 2);
+  rim.stroke({ width: 2, color: 0x2a1810, alpha: 0.55 });
+  rim.zIndex = py + 4;
+  edgesFront.addChild(rim);
 }
 
 function tileTopRow(parent, catalog, y, x0, x1, sequence, scaleMul = 1) {

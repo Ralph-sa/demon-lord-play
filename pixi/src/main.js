@@ -43,6 +43,8 @@ function fitCanvas(canvas) {
     scale: s,
     cover: useCover,
   };
+  globalThis.__pixiCoverZoomMul = useCover ? 0.88 : 1;
+  window.__pixi?.render?.camera?.applyViewportZoom?.();
   document.documentElement.style.setProperty('--app-h', `${h}px`);
   syncOrientHint();
 }
@@ -142,11 +144,21 @@ loading.hide();
 
 window.__pixiDebug = () => game.heroDebugInfo();
 
+window.__pixiInputTest = {
+  tapAttack() {
+    input.simulateTapButton('fist');
+    game.update(1 / 60);
+    return game.p.cast?.id === 'fist';
+  },
+};
+
 window.__pixi = {
   game,
   render,
   audio: GameAudio,
   debug: window.__pixiDebug,
+  input,
+  inputTest: window.__pixiInputTest,
   setTier: (t) => render.setTier(t),
   setQuality: (t) => game.setQuality(t),
   stageScreenshot: (mode) => game.stageScreenshot(mode),

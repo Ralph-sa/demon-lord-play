@@ -2,14 +2,15 @@
  * 镜头：0.85 总览缩放 + 以竞技场中心为主的小幅跟随
  */
 import { VIEW_W, VIEW_H, WORLD_W, WORLD_H, clamp, CAMERA_ZOOM, CAMERA_PAN_MAX } from '../../config.js';
-import { camClamp, overviewCamY } from '../../arena/ArenaRoom.js';
+import { camClamp, camForFocus, coverInsets, effectiveWorldZoom, overviewCamY } from '../../arena/ArenaRoom.js';
 
 export class CameraRig {
   constructor(sceneData) {
     this.sceneData = sceneData;
     this.x = 0;
     this.y = 0;
-    this.worldZoom = sceneData?.camera?.zoom ?? CAMERA_ZOOM;
+    this._baseZoom = sceneData?.camera?.zoom ?? CAMERA_ZOOM;
+    this.worldZoom = effectiveWorldZoom(this._baseZoom);
     this.panMaxX = sceneData?.camera?.panMaxX ?? CAMERA_PAN_MAX.x;
     this.panMaxY = sceneData?.camera?.panMaxY ?? CAMERA_PAN_MAX.y;
     this.arenaCx = WORLD_W / 2;
@@ -30,7 +31,19 @@ export class CameraRig {
     this.y = c.y;
   }
 
-  snapTo(x, y) {
+  applyViewportZoom() {
+    this.worldZoom = effectiveWorldZoom(this._baseZoom);
+  }
+
+  snapTo(x, y, screenFraction = 0.58) {
+    const { cover } = coverInsets();
+    if (cover) {
+      const c = camForFocus(x, y, this._baseZoom, this.sceneData, screenFraction);
+      this.worldZoom = c.zoom ?? effectiveWorldZoom(this._baseZoom);
+      this.x = c.x;
+      this.y = c.y;
+      return;
+    }
     const ox = clamp(x - this.arenaCx, -this.panMaxX, this.panMaxX);
     const oy = clamp(y - this.arenaCy, -this.panMaxY, this.panMaxY);
     const vw = VIEW_W / this.worldZoom;
@@ -38,9 +51,10 @@ export class CameraRig {
     const c = camClamp(
       this.arenaCx + ox - vw / 2,
       this.arenaCy + oy - vh / 2,
-      this.worldZoom,
+      this._baseZoom,
       this.sceneData
     );
+    this.worldZoom = c.zoom ?? this.worldZoom;
     this.x = c.x;
     this.y = c.y;
   }
@@ -77,7 +91,9 @@ export class CameraRig {
       if (this.slowMoTimer <= 0) this.slowMo = 1;
     }
     const tdt = dt * this.slowMo;
+    this.worldZoom = effectiveWorldZoom(this._baseZoom);
     const z = this.worldZoom;
+    const { cover } = coverInsets();
 
     this.trauma = Math.max(0, this.trauma - this.traumaDecay * tdt);
     this._noiseT += tdt * 28;
@@ -89,11 +105,18 @@ export class CameraRig {
     this.lookX += (vel.x * lookAhead * 0.25 - this.lookX) * (1 - Math.pow(0.001, tdt));
     this.lookY += (vel.y * lookAhead * 0.25 - this.lookY) * (1 - Math.pow(0.001, tdt));
 
-    const ox = clamp(focus.x - this.arenaCx + this.lookX, -this.panMaxX, this.panMaxX);
-    const oy = clamp(focus.y - this.arenaCy + this.lookY, -this.panMaxY, this.panMaxY);
-    const vw = VIEW_W / z;
-    const vh = VIEW_H / z;
-    const target = camClamp(this.arenaCx + ox - vw / 2, this.arenaCy + oy - vh / 2, z, this.sceneData);
+    let target;
+    if (cover) {
+      target = camForFocus(focus.x + this.lookX, focus.y + this.lookY, this._baseZoom, this.sceneData, 0.58);
+      this.worldZoom = target.zoom ?? z;
+    } else {
+      const ox = clamp(focus.x - this.arenaCx + this.lookX, -this.panMaxX, this.panMaxX);
+      const oy = clamp(focus.y - this.arenaCy + this.lookY, -this.panMaxY, this.panMaxY);
+      const vw = VIEW_W / z;
+      const vh = VIEW_H / z;
+      target = camClamp(this.arenaCx + ox - vw / 2, this.arenaCy + oy - vh / 2, this._baseZoom, this.sceneData);
+      this.worldZoom = target.zoom ?? z;
+    }
     const lerp = 1 - Math.pow(0.0002, tdt);
     this.x += (target.x - this.x) * lerp;
     this.y += (target.y - this.y) * lerp;

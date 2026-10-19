@@ -27,7 +27,7 @@ import {
 import { Assets } from './assets.js';
 import { VfxSystem } from './vfx.js';
 import { tierFromFps } from './render/qualityPresets.js';
-import { buildArenaRoom, camClamp } from './arena/ArenaRoom.js';
+import { buildArenaRoom, camForFocus, coverInsets } from './arena/ArenaRoom.js';
 import { buildDusk1Room } from './arena/Dusk1Room.js';
 import { PlayHud } from './ui/PlayHud.js';
 import { TouchHud } from './ui/TouchHud.js';
@@ -139,7 +139,7 @@ export class Game {
     this.p.y = sp.y;
     this.p.sprite.x = sp.x;
     this.p.sprite.y = sp.y;
-    this.render.camera.snapTo(sp.x, sp.y);
+    this.render.camera.snapTo(sp.x, sp.y, 0.58);
     this._prevX = sp.x;
     this._prevY = sp.y;
   }
@@ -200,11 +200,9 @@ export class Game {
 
   snapCameraHeroScreenY(fraction = 0.6) {
     const p = this.p;
-    const z = this.render.camera.worldZoom;
-    const vw = VIEW_W / z;
-    const vh = VIEW_H / z;
-    const targetCamY = p.y - (VIEW_H * fraction) / z;
-    const c = camClamp(p.x - vw / 2, targetCamY, z, this.sceneData);
+    this.render.camera.applyViewportZoom?.();
+    const c = camForFocus(p.x, p.y, this.render.camera._baseZoom, this.sceneData, fraction);
+    this.render.camera.worldZoom = c.zoom ?? this.render.camera.worldZoom;
     this.render.camera.x = c.x;
     this.render.camera.y = c.y;
     this.cam.x = c.x;
@@ -219,6 +217,8 @@ export class Game {
     const rect = this.app.canvas.getBoundingClientRect();
     const screenX = rect.left + (gameX / VIEW_W) * rect.width;
     const screenY = rect.top + (gameY / VIEW_H) * rect.height;
+    const { cropTop, cropBottom } = coverInsets();
+    const visH = VIEW_H - cropTop - cropBottom;
     const tex = p.sprite?.texture;
     return {
       role: 'hero',
@@ -230,7 +230,8 @@ export class Game {
       screenYCss: Math.round(screenY),
       canvasCss: { w: Math.round(rect.width), h: Math.round(rect.height) },
       gameScreenY: Math.round(gameY),
-      screenFraction: Math.round((gameY / VIEW_H) * 100) / 100,
+      screenFraction: Math.round(((gameY - cropTop) / Math.max(1, visH)) * 100) / 100,
+      coverZoom: this.render.camera.worldZoom,
       hasHeroFrames: !!(Assets.sprites.hero_idle?.length),
       textureLabel: tex?.label || tex?.textureCacheIds?.[0] || null,
       zIndex: p.sprite?.zIndex,
