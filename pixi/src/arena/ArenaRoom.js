@@ -119,7 +119,7 @@ export function camClamp(camX, camY, zoom = 1, scene = null) {
   const ins = globalThis.__pixiViewInset || {};
   const cropTop = ins.cover ? ins.top || 0 : 0;
   const cropBottom = ins.cover ? ins.bottom || 0 : 0;
-  const minY = Math.min(topBase - topH - 56, playTopY - playTopH - 80);
+  let minY = Math.min(topBase - topH - 56, playTopY - playTopH - 80);
   let maxY = WORLD_H - vh + 48;
   if (cropTop > 0) {
     maxY = Math.min(maxY, playTopY - playTopH - cropTop - 8);
