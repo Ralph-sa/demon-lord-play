@@ -135,18 +135,21 @@ export class LightingSystem {
     }
     this.addOverlay.visible = true;
 
+    const z = cam.zoom ?? 1;
     for (const { def: L, pool, lamp } of this.staticSprites) {
       const flick = 1 + Math.sin(this.t * 5 + L.x * 0.1) * (L.flicker || 0);
       const px = L.poolX ?? L.x;
       const py = L.poolY ?? L.y + 40;
-      pool.position.set(px - cam.x, py - cam.y);
-      pool.scale.set((L.radius / 64) * flick, ((L.ry || L.radius) / 64) * flick);
+      const rad = (L.radius ?? 72) * (L.poolScale ?? 1.15);
+      const ry = (L.ry || L.radius || 72) * (L.poolScale ?? 1.15);
+      pool.position.set((px - cam.x) * z, (py - cam.y) * z);
+      pool.scale.set((rad / 64) * flick * z, (ry / 64) * flick * z);
       const rgb = hexRgb(L.color);
       pool.tint = (Math.floor(rgb.r * 255) << 16) | (Math.floor(rgb.g * 255) << 8) | Math.floor(rgb.b * 255);
-      pool.alpha = (L.intensity ?? 0.5) * flick;
+      pool.alpha = Math.min(1, (L.intensity ?? 0.65) * flick * 1.25);
       lamp.clear();
-      const sx = L.x - cam.x;
-      const sy = L.y - cam.y;
+      const sx = (L.x - cam.x) * z;
+      const sy = (L.y - cam.y) * z;
       if (sx > -20 && sx < VIEW_W + 20 && sy > -20 && sy < VIEW_H * 0.32) {
         lamp.roundRect(sx - 6, sy - 10, 12, 18, 2).fill({ color: 0x2a2520, alpha: 0.85 });
         lamp.circle(sx, sy - 2, 6).fill({ color: 0xfff8e0, alpha: 0.95 });
@@ -163,8 +166,8 @@ export class LightingSystem {
         continue;
       }
       const k = d.life / d.maxLife;
-      d.pool.position.set(d.x - cam.x, d.y - cam.y);
-      d.pool.scale.set((d.radius / 64) * k, (d.radius / 64) * k);
+      d.pool.position.set((d.x - cam.x) * z, (d.y - cam.y) * z);
+      d.pool.scale.set((d.radius / 64) * k * z, (d.radius / 64) * k * z);
       d.pool.tint = d.color;
       d.pool.alpha = d.intensity * k;
     }

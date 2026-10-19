@@ -105,12 +105,14 @@ export function buildArenaRoom(groundImage, edges) {
   return { root, edgesBack, edgesFront };
 }
 
-export function camClamp(camX, camY) {
+export function camClamp(camX, camY, zoom = 1) {
   const M = EDGE;
-  const minX = -M.marginX;
-  const maxX = WORLD_W + M.marginX - VIEW_W;
-  const minY = -M.top * 0.85;
-  const maxY = WORLD_H + M.bottom * 0.85 - VIEW_H;
+  const vw = VIEW_W / zoom;
+  const vh = VIEW_H / zoom;
+  const minX = -M.marginX * 0.5;
+  const maxX = WORLD_W + M.marginX * 0.5 - vw;
+  const minY = -M.top * 0.55;
+  const maxY = WORLD_H - vh + 48;
   return {
     x: Math.max(minX, Math.min(maxX, camX)),
     y: Math.max(minY, Math.min(maxY, camY)),

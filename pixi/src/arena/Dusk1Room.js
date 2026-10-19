@@ -68,22 +68,27 @@ function tileSideColumn(parent, catalog, side, x, y0, y1) {
   }
 }
 
-function tileRepeatX(parent, catalog, key, y, x0, x1, alpha = 1) {
+function tileRepeatX(parent, catalog, key, y, x0, x1, opts = {}) {
   const meta = catalog.index[key];
   const tex = catalog.textures[key];
-  if (!tex || !meta) return;
-  const w = meta.w * (meta.displayScale ?? 1);
+  if (!tex || !meta) return [];
+  const scaleMul = opts.scaleMul ?? 1;
+  const alpha = opts.alpha ?? 1;
+  const sprites = [];
+  const w = meta.w * (meta.displayScale ?? 1) * scaleMul;
   let x = x0;
   while (x < x1) {
     const s = new Sprite(tex);
     s.anchor.set(0, 1);
     s.x = x;
     s.y = y;
-    s.scale.set(meta.displayScale ?? 1);
+    s.scale.set((meta.displayScale ?? 1) * scaleMul);
     s.alpha = alpha;
     parent.addChild(s);
+    sprites.push(s);
     x += w - 3;
   }
+  return sprites;
 }
 
 export function buildDusk1Room(scene, catalog) {
@@ -128,6 +133,9 @@ export function buildDusk1Room(scene, catalog) {
   const edgesBack = new Container();
   const edgesFront = new Container();
   edgesFront.sortableChildren = true;
+  const fgRails = [];
+  const railY = scene.foregroundRail?.y ?? WORLD_H - 6;
+  const railScale = scene.foregroundRail?.scale ?? 0.6;
 
   const topY = scene.walls?.topBaselineY ?? 62;
   const topSeq = scene.walls?.topSequence || ['a', 'b', 'c'];
@@ -149,15 +157,25 @@ export function buildDusk1Room(scene, catalog) {
       const key = st.open ? 'walls/stair_door_open.png' : 'walls/stair_door_closed.png';
       addSprite(layer, catalog, key, st.x, st.y, { state: st.open ? 'open' : 'closed' });
     } else if (st.kind === 'fg_rail') {
-      tileRepeatX(layer, catalog, 'walls/fg_rail.png', st.y ?? WORLD_H - 28, st.x0 ?? -padL, st.x1 ?? WORLD_W + padL, st.alpha ?? 0.92);
+      fgRails.push(
+        ...tileRepeatX(layer, catalog, 'walls/fg_rail.png', st.y ?? railY, st.x0 ?? -padL, st.x1 ?? WORLD_W + padL, {
+          alpha: st.alpha ?? 0.95,
+          scaleMul: st.scale ?? railScale,
+        })
+      );
     }
   }
 
   if (!scene.structures?.some((s) => s.kind === 'fg_rail')) {
-    tileRepeatX(edgesFront, catalog, 'walls/fg_rail.png', WORLD_H - 24, -padL, WORLD_W + padL, 0.9);
+    fgRails.push(
+      ...tileRepeatX(edgesFront, catalog, 'walls/fg_rail.png', railY, -padL, WORLD_W + padL, {
+        alpha: 0.95,
+        scaleMul: railScale,
+      })
+    );
   }
 
-  return { root, edgesBack, edgesFront, floorRoot };
+  return { root, edgesBack, edgesFront, floorRoot, fgRails, railBaselineY: railY };
 }
 
 export { camClamp };

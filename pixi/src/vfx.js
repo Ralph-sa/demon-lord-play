@@ -214,7 +214,7 @@ export class VfxSystem {
     anim.play();
   }
 
-  update(dt, cam) {
+  update(dt, cam, zoom = 1) {
     if (this.hitstop > 0) {
       this.hitstop -= dt;
       dt *= 0.15;
@@ -249,13 +249,13 @@ export class VfxSystem {
       n.t.alpha = clamp(n.life, 0, 1);
     }
 
-    const ox = -cam.x;
-    const oy = -cam.y;
-    this.trails.position.set(ox, oy);
-    this.particles.position.set(ox, oy);
-    this.fxTop.position.set(ox, oy);
-    this.nums.position.set(ox, oy);
-    this.lightLayer.position.set(ox, oy);
+    const z = cam.zoom ?? zoom ?? 1;
+    const ox = -cam.x * z;
+    const oy = -cam.y * z;
+    for (const layer of [this.trails, this.particles, this.fxTop, this.nums, this.lightLayer]) {
+      layer.position.set(ox, oy);
+      layer.scale.set(z);
+    }
   }
 
   applyCameraOffset(cam, targetX, targetY) {

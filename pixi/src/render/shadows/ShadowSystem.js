@@ -19,6 +19,25 @@ export class ShadowSystem {
 
     this._buildBuildingShadows(sceneData.buildingShadows || []);
     this._buildZones(sceneData.shadowZones || []);
+    this._buildCasters(sceneData.shadowCasters || []);
+  }
+
+  _buildCasters(list) {
+    const g = new Graphics();
+    const ang = this.sun.angle ?? 2.35;
+    for (const c of list) {
+      const len = c.len ?? 120;
+      const dx = Math.cos(ang) * len;
+      const dy = Math.sin(ang) * len * 0.55;
+      g.roundRect(c.x + dx * 0.38, c.y + dy * 0.38, (c.w ?? 80) + len * 0.28, (c.h ?? 40) + 16, 8).fill({
+        color: 0x000000,
+        alpha: c.alpha ?? 0.28,
+      });
+    }
+    g.blendMode = 'multiply';
+    g.alpha = 0.85;
+    g.label = 'casterShadows';
+    this.buildingLayer.addChild(g);
   }
 
   _buildBuildingShadows(list) {
@@ -49,7 +68,7 @@ export class ShadowSystem {
   /** 注册可投影实体 */
   bindEntity(id, sprite, opts = {}) {
     const gs = new Graphics();
-    gs.ellipse(0, 0, opts.rx ?? 26, opts.ry ?? 10).fill({ color: 0x000000, alpha: 0.34 });
+    gs.ellipse(0, 0, opts.rx ?? 28, opts.ry ?? 11).fill({ color: 0x000000, alpha: 0.42 });
     this.groundLayer.addChild(gs);
     this.groundShadows.set(id, gs);
 
@@ -76,10 +95,11 @@ export class ShadowSystem {
       spr.texture = source.texture;
       spr.scale.x = face * Math.abs(source.scale.x);
       spr.scale.y = source.scale.y * (this.sun.scaleY ?? 0.28);
-      const len = (this.sun.length ?? 0.5) * 70;
+      const len = (this.sun.length ?? 0.55) * 95;
       const ang = this.sun.angle ?? 2.3;
       spr.x = x + Math.cos(ang) * len;
-      spr.y = y + Math.sin(ang) * len * 0.55 + 8;
+      spr.y = y + Math.sin(ang) * len * 0.58 + 10;
+      spr.alpha = Math.min(0.5, (this.sun.alpha ?? 0.38) + 0.08);
       spr.skew.x = this.sun.skewX ?? -0.55;
       spr.rotation = 0;
     }

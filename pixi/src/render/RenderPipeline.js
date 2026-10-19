@@ -17,7 +17,7 @@ export class RenderPipeline {
     this.quality = { ...RENDER_QUALITY[tier] };
 
     this.post = new PostPipeline(app);
-    this.camera = new CameraRig();
+    this.camera = new CameraRig(sceneData);
     this.lighting = new LightingSystem(app.renderer, sceneData, this.quality);
     this.shadows = new ShadowSystem(sceneData, this.quality);
 
@@ -129,12 +129,16 @@ export class RenderPipeline {
 
   update(dt, focus) {
     const camState = this.camera.update(dt, focus, this._vel);
-    this.camera.applyTo(this.camWrap);
+    this.camera.applyTo(this.camWrap, camState.zoom ?? this.camera.worldZoom);
     const darken = this.shadows.darkenAt(focus.x, focus.y);
-    this.lighting.update(dt, { x: camState.x, y: camState.y }, darken);
+    const z = camState.zoom ?? this.camera.worldZoom;
+    this.lighting.update(dt, { x: camState.x, y: camState.y, zoom: z }, darken);
     this.lighting.decayFlash(dt);
     this.post.update(dt);
-    return { cam: { x: camState.x, y: camState.y }, timeScale: camState.timeScale };
+    return {
+      cam: { x: camState.x, y: camState.y, zoom: z },
+      timeScale: camState.timeScale,
+    };
   }
 
   registerInput(canvas) {

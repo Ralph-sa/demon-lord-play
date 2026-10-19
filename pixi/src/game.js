@@ -27,7 +27,7 @@ import {
 import { Assets } from './assets.js';
 import { VfxSystem } from './vfx.js';
 import { tierFromFps } from './render/qualityPresets.js';
-import { buildArenaRoom, camClamp } from './arena/ArenaRoom.js';
+import { buildArenaRoom } from './arena/ArenaRoom.js';
 import { buildDusk1Room } from './arena/Dusk1Room.js';
 
 const angDiff = (a, b) => {
@@ -101,7 +101,10 @@ export class Game {
     app.stage.addChild(this.hud);
 
     this.touchHud = new Graphics();
-    app.stage.addChild(this.touchHud);
+    this.playHud = new Graphics();
+    app.stage.addChild(this.playHud, this.touchHud);
+    this.fgRails = [];
+    this.railBaselineY = WORLD_H - 6;
 
     this.p = this.mkPlayer();
     this.enemies = [];
@@ -139,6 +142,10 @@ export class Game {
       shadow: null,
       sprite: null,
       t: 0,
+      dashT: 0,
+      dashCd: 0,
+      dashVx: 0,
+      dashVy: 0,
     };
   }
 
@@ -156,6 +163,8 @@ export class Game {
     while (arena.edgesFront.children.length > 0) {
       this.edgesFront.addChild(arena.edgesFront.children[0]);
     }
+    this.fgRails = arena.fgRails || [];
+    this.railBaselineY = arena.railBaselineY ?? WORLD_H - 6;
     for (const pr of this.sceneData.props || []) {
       this.mkProp(pr);
     }
@@ -239,18 +248,16 @@ export class Game {
   }
 
   spawnEnemies() {
-    const cx = this.sceneData.spawn?.hero?.x ?? WORLD_W / 2;
-    const cy = this.sceneData.spawn?.hero?.y ?? WORLD_H * 0.58;
-    const r = this.sceneData.spawn?.enemySpread ?? 200;
+    const P = this.sceneData.play || { x: 56, y: 88, w: 1288, h: 720 };
     const slots = [
-      [cx - r * 0.9, cy - 40, 'cultivator'],
-      [cx + r * 0.9, cy - 40, 'cultivator'],
-      [cx - r * 0.7, cy + 50, 'taoist'],
-      [cx + r * 0.7, cy + 50, 'taoist'],
-      [cx - r * 0.35, cy - r * 0.55, 'monk'],
-      [cx + r * 0.35, cy - r * 0.55, 'monk'],
-      [cx - r * 1.1, cy + r * 0.45, 'paladin'],
-      [cx + r * 1.1, cy + r * 0.45, 'paladin'],
+      [P.x + 90, P.y + 70, 'cultivator'],
+      [P.x + P.w - 90, P.y + 70, 'cultivator'],
+      [P.x + 120, P.y + P.h * 0.45, 'taoist'],
+      [P.x + P.w - 120, P.y + P.h * 0.45, 'taoist'],
+      [P.x + P.w * 0.5, P.y + 55, 'monk'],
+      [P.x + 160, P.y + P.h - 90, 'monk'],
+      [P.x + P.w - 160, P.y + P.h - 90, 'paladin'],
+      [P.x + P.w * 0.72, P.y + P.h - 100, 'paladin'],
     ];
     for (const [x, y, type] of slots) this.spawnEnemy(type, x, y);
   }
@@ -294,9 +301,34 @@ export class Game {
 
   aimWorld() {
     const p = this.p;
-    const mx = this.input.mouse.x + this.cam.x;
-    const my = this.input.mouse.y + this.cam.y;
+    const z = this.cam.zoom ?? this.render.camera.worldZoom;
+    const mx = this.input.mouse.x / z + this.cam.x;
+    const my = this.input.mouse.y / z + this.cam.y;
     return { x: mx, y: my, ang: Math.atan2(my - (p.y - 20), mx - p.x) };
+  }
+
+  tryDash() {
+    const p = this.p;
+    if (p.dashCd > 0 || p.dashT > 0 || p.cast) return;
+    const { mx, my } = this.input.moveVec();
+    const l = Math.hypot(mx, my) || 1;
+    const dx = mx || p.face;
+    const dy = my;
+    p.dashT = 0.22;
+    p.dashCd = 0.55;
+    p.dashVx = (dx / l) * 420;
+    p.dashVy = (dy / l) * 420;
+    this.vfx.dustPuff(p.x, p.y, 6);
+  }
+
+  showTouchUi() {
+    return this.input.touch.on || this.input.touch.forceUi;
+  }
+
+  updateFgRails() {
+    const behind = this.p.y > this.railBaselineY - 48;
+    const a = behind ? 0.4 : 0.95;
+    for (const s of this.fgRails) s.alpha = a;
   }
 
   tryFist() {
@@ -589,12 +621,18 @@ export class Game {
     const { mx, my } = this.input.moveVec();
     let realDt = this.vfx.hitstop > 0 ? dt * 0.12 : dt;
 
-    if (!this._shotMode) {
+    if (p.dashCd > 0) p.dashCd -= realDt;
+    if (p.dashT > 0) {
+      p.dashT -= realDt;
+      p.x += p.dashVx * realDt;
+      p.y += p.dashVy * realDt;
+    } else if (!this._shotMode) {
       if (mx || my) {
         p.x += mx * p.speed * realDt;
         p.y += my * p.speed * realDt;
         p.face = mx < 0 ? -1 : mx > 0 ? 1 : p.face;
       }
+      if (this.input.wantDodge()) this.tryDash();
       if (this.input.wantFist()) this.tryFist();
       if (this.input.wantSweep()) this.trySweep();
     }
@@ -680,22 +718,51 @@ export class Game {
     realDt *= camState.timeScale;
     this.cam.x = camState.cam.x;
     this.cam.y = camState.cam.y;
+    this.cam.zoom = camState.cam.zoom ?? this.render.camera.worldZoom;
     this.vfx.applyCameraOffset(this.cam, this.cam.x, this.cam.y);
-    this.vfx.update(realDt, this.cam);
+    this.vfx.update(realDt, this.cam, this.cam.zoom);
+    this.updateFgRails();
 
+    this.drawPlayHud();
     this.drawTouchHud();
+  }
+
+  drawPlayHud() {
+    const g = this.playHud;
+    g.clear();
+    if (!this.showTouchUi()) return;
+    const p = this.p;
+    const hp = clamp(p.hp / 120, 0, 1);
+    const fury = clamp(this.fury / 100, 0, 1);
+    g.circle(58, 52, 34).fill({ color: 0x1a1010, alpha: 0.55 });
+    g.circle(58, 52, 28).fill({ color: 0x882222, alpha: 0.9 });
+    g.arc(58, 52, 28, -Math.PI / 2, -Math.PI / 2 + hp * Math.PI * 2).fill({ color: 0xff4444 });
+    g.circle(58, 52, 28).stroke({ width: 4, color: 0x111111 });
+    g.circle(VIEW_W - 58, 52, 30).fill({ color: 0x1a1010, alpha: 0.55 });
+    g.circle(VIEW_W - 58, 52, 24).fill({ color: 0x5533aa, alpha: 0.35 });
+    g.arc(VIEW_W - 58, 52, 24, -Math.PI / 2, -Math.PI / 2 + fury * Math.PI * 2).fill({ color: 0xbb66ff });
+    g.circle(VIEW_W - 58, 52, 24).stroke({ width: 3, color: 0x221133 });
+    const barY = VIEW_H - 28;
+    g.roundRect(VIEW_W / 2 - 140, barY - 18, 280, 36, 8).fill({ color: 0x000000, alpha: 0.45 });
+    for (let i = 0; i < 3; i++) {
+      const x = VIEW_W / 2 - 90 + i * 90;
+      g.roundRect(x, barY - 12, 72, 24, 6).fill({ color: i === 2 ? 0xffd400 : 0x444444, alpha: i === 2 ? 0.85 : 0.55 });
+      g.roundRect(x, barY - 12, 72, 24, 6).stroke({ width: 2, color: 0x111111, alpha: 0.8 });
+    }
   }
 
   drawTouchHud() {
     const g = this.touchHud;
     g.clear();
+    if (!this.showTouchUi()) return;
     const T = this.input.touch;
-    if (!T.on) return;
+    const joyX = T.joy?.ox ?? 148;
+    const joyY = T.joy?.oy ?? VIEW_H - 132;
     if (T.joy) {
-      g.circle(T.joy.ox, T.joy.oy, 75).stroke({ width: 3, color: 0xffffff, alpha: 0.35 });
-      g.circle(T.joy.ox + T.jx * 70, T.joy.oy + T.jy * 70, 32).fill({ color: 0xffd400, alpha: 0.55 });
+      g.circle(joyX, joyY, 75).stroke({ width: 3, color: 0xffffff, alpha: 0.35 });
+      g.circle(joyX + T.jx * 70, joyY + T.jy * 70, 32).fill({ color: 0xffd400, alpha: 0.55 });
     } else {
-      g.circle(160, VIEW_H - 150, 75).stroke({ width: 2, color: 0xffffff, alpha: 0.2 });
+      g.circle(joyX, joyY, 75).stroke({ width: 2, color: 0xffffff, alpha: 0.28 });
     }
     for (const b of this.input.TB) {
       g.circle(b.x, b.y, b.r).fill({ color: 0x000000, alpha: 0.45 });
@@ -721,7 +788,6 @@ export class Game {
   /** Playwright 验收：切入指定镜头 */
   _snapCameraToPlayer() {
     const p = this.p;
-    const c = camClamp(p.x - VIEW_W / 2, p.y - VIEW_H / 2);
     this.render.camera.snapTo(p.x, p.y);
     this.cam.x = this.render.camera.x;
     this.cam.y = this.render.camera.y;
@@ -755,9 +821,28 @@ export class Game {
         this.vfx.burst(crate.x, crate.y, 20, 0xffcc88);
       }
     } else if (mode === 'lights' || mode === 'lights_night') {
-      p.x = 960;
-      p.y = 480;
-      this.render.lighting.spawnDynamic({ x: 960, y: 480, radius: 180, intensity: 1.3, life: 2, color: 0xffd080 });
+      this.render.camera.snapOverview();
+      for (const L of this.sceneData.staticLights || []) {
+        this.render.lighting.spawnDynamic({
+          x: L.poolX ?? L.x,
+          y: L.poolY ?? L.y,
+          radius: (L.radius ?? 70) * 1.35,
+          intensity: 1.05,
+          life: 2.5,
+          color: parseInt(String(L.color).replace('#', ''), 16) || 0xffc860,
+        });
+      }
+    } else if (mode === 'room_compare') {
+      this.render.camera.snapOverview();
+      p.x = this.sceneData.spawn?.hero?.x ?? 700;
+      p.y = this.sceneData.spawn?.hero?.y ?? 520;
+    } else if (mode === 'mobile_landscape_attack') {
+      this.input.touch.forceUi = true;
+      this.input.touch.joy = { id: -1, ox: 148, oy: VIEW_H - 132, x: 148, y: VIEW_H - 132 };
+      this.input.touch.jx = 0.35;
+      this.input.touch.jy = -0.1;
+      p.cast = { id: 'fist', t: 0.16, step: 1, ang: 0.35, wind: 0.1, rec: 0.2, done: false };
+      this.resolveCast();
     } else if (mode === 'post_off') {
       this.setQuality('high');
       this.render.post.setToggles({
@@ -783,11 +868,17 @@ export class Game {
       p.cast = { id: 'fist', t: 0.2, step: 2, ang: 0, wind: 0.1, rec: 0.2, done: false };
       this.resolveCast();
       this.render.onHeavyHit(p.x + 60, p.y - 30, VIEW_W / 2, VIEW_H / 2);
-    } else if (mode === 'mobile_landscape_attack') {
-      p.cast = { id: 'fist', t: 0.16, step: 1, ang: 0.35, wind: 0.1, rec: 0.2, done: false };
-      this.resolveCast();
     }
-    this._snapCameraToPlayer();
+    if (mode === 'room_compare' || mode === 'lights_night') {
+      this.render.camera.snapOverview();
+      this.cam.x = this.render.camera.x;
+      this.cam.y = this.render.camera.y;
+    } else {
+      this._snapCameraToPlayer();
+    }
+    this.updateFgRails();
+    this.drawPlayHud();
+    this.drawTouchHud();
     return {
       mode,
       fps: this.fps,

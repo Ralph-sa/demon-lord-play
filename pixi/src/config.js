@@ -1,6 +1,10 @@
 /** 古惑仔成魔 · PixiJS 样板房常量 */
 export const VIEW_W = 1280;
 export const VIEW_H = 720;
+
+/** 横屏总览：世界缩放进视口，减少跟镜位移 */
+export const CAMERA_ZOOM = 0.85;
+export const CAMERA_PAN_MAX = { x: 88, y: 64 };
 export const WORLD_W = 1400;
 export const WORLD_H = 860;
 
