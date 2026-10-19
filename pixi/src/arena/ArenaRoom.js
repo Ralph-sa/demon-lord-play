@@ -114,10 +114,19 @@ export function camClamp(camX, camY, zoom = 1, scene = null) {
   const topBase = scene?.walls?.topBaselineY ?? 78;
   const topH = scene?.walls?.topDisplayH ?? 303;
   const playTopY = scene?.walls?.playTopWall?.y ?? scene?.play?.y ?? 198;
-  const playTopScale = scene?.walls?.playTopWall?.scale ?? 0.42;
+  const playTopScale = scene?.walls?.playTopWall?.scale ?? 0.58;
   const playTopH = topH * playTopScale;
-  const minY = Math.min(topBase - topH - 56, playTopY - playTopH - 72);
-  const maxY = WORLD_H - vh + 48;
+  const ins = globalThis.__pixiViewInset || {};
+  const cropTop = ins.cover ? ins.top || 0 : 0;
+  const cropBottom = ins.cover ? ins.bottom || 0 : 0;
+  const minY = Math.min(topBase - topH - 56, playTopY - playTopH - 80);
+  let maxY = WORLD_H - vh + 48;
+  if (cropTop > 0) {
+    maxY = Math.min(maxY, playTopY - playTopH - cropTop - 8);
+  }
+  if (cropBottom > 0) {
+    minY = Math.max(minY, playTopY - playTopH - 40);
+  }
   return {
     x: Math.max(minX, Math.min(maxX, camX)),
     y: Math.max(minY, Math.min(maxY, camY)),

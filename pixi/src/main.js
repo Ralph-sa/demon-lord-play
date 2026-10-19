@@ -108,6 +108,7 @@ GameAudio.playBgm('bgm_title');
 const flashGfx = new Graphics();
 flashGfx.label = 'flash';
 app.stage.addChild(flashGfx);
+app.stage.addChild(game.screenUi);
 
 let combatBgm = false;
 const startCombatBgm = () => {
@@ -139,10 +140,13 @@ fitCanvas(app.canvas);
 app.canvas.style.visibility = 'visible';
 loading.hide();
 
+window.__pixiDebug = () => game.heroDebugInfo();
+
 window.__pixi = {
   game,
   render,
   audio: GameAudio,
+  debug: window.__pixiDebug,
   setTier: (t) => render.setTier(t),
   setQuality: (t) => game.setQuality(t),
   stageScreenshot: (mode) => game.stageScreenshot(mode),

@@ -96,14 +96,22 @@ export class RenderPipeline {
     return this.lighting.spawnDynamic(opts);
   }
 
-  onHeavyHit(wx, wy, screenX, screenY) {
-    this.camera.addTrauma(0.35);
-    this.camera.punchZoom(0.05, 0.14);
-    this.camera.setSlowMo(0.55, 0.1);
-    this.post.triggerChromatic(1, [1, 0.15]);
-    this.post.triggerRadial(screenX / 1280, screenY / 720, 1.4);
-    this.lighting.spawnDynamic({ x: wx, y: wy, radius: 140, intensity: 1.2, life: 0.2, color: 0xfff8e0 });
-    this.lighting.flashCharacter(0.85);
+  onHeavyHit(wx, wy, screenX, screenY, opts = {}) {
+    const strong = opts.strong !== false;
+    this.camera.addTrauma(strong ? 0.22 : 0.12);
+    this.camera.punchZoom(strong ? 0.03 : 0.015, 0.08);
+    if (strong) this.camera.setSlowMo(0.65, 0.06);
+    this.post.triggerChromatic(strong ? 0.3 : 0.12, [1, 0.06]);
+    this.post.triggerRadial(screenX / 1280, screenY / 720, strong ? 0.38 : 0.15, 0.08);
+    this.lighting.spawnDynamic({
+      x: wx,
+      y: wy,
+      radius: strong ? 110 : 80,
+      intensity: strong ? 0.95 : 0.65,
+      life: 0.16,
+      color: 0xfff8e0,
+    });
+    if (strong) this.lighting.flashCharacter(0.55);
   }
 
   onSweep(wx, wy) {

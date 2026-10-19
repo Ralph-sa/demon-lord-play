@@ -53,6 +53,8 @@ export class PostPipeline {
       damageVignette: true,
     };
     this.quality = null;
+    this._radialDecay = 12;
+    this._chromaDecay = 5;
     this._rebuildFilterChain();
   }
 
@@ -92,16 +94,18 @@ export class PostPipeline {
     this.shell.filters = chain.length ? chain : null;
   }
 
-  triggerChromatic(amount = 1, dir = [1, 0.2]) {
+  triggerChromatic(amount = 1, dir = [1, 0.2], decayMs = 0.08) {
     const u = this.chromatic.resources.chromaUniforms.uniforms;
     u.uAmount = amount;
     u.uDir = dir;
+    this._chromaDecay = decayMs > 0 ? amount / decayMs : 5;
   }
 
-  triggerRadial(cx = 0.5, cy = 0.5, strength = 1.2) {
+  triggerRadial(cx = 0.5, cy = 0.5, strength = 1.2, decayMs = 0.08) {
     const u = this.radial.resources.radialUniforms.uniforms;
     u.uCenter = [cx, cy];
     u.uStrength = strength;
+    this._radialDecay = decayMs > 0 ? strength / decayMs : 12;
   }
 
   triggerDamageEdge(amount = 0.8) {
@@ -110,9 +114,9 @@ export class PostPipeline {
 
   update(dt) {
     const cu = this.chromatic.resources.chromaUniforms.uniforms;
-    if (cu.uAmount > 0) cu.uAmount = Math.max(0, cu.uAmount - dt * 4);
+    if (cu.uAmount > 0) cu.uAmount = Math.max(0, cu.uAmount - dt * (this._chromaDecay || 5));
     const ru = this.radial.resources.radialUniforms.uniforms;
-    if (ru.uStrength > 0) ru.uStrength = Math.max(0, ru.uStrength - dt * 3.5);
+    if (ru.uStrength > 0) ru.uStrength = Math.max(0, ru.uStrength - dt * (this._radialDecay || 12));
     const du = this.damageEdge.resources.dmgUniforms.uniforms;
     if (du.uAmount > 0) du.uAmount = Math.max(0, du.uAmount - dt * 1.8);
   }

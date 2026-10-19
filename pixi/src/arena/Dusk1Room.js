@@ -168,8 +168,22 @@ export function buildDusk1Room(scene, catalog) {
     const px0 = playTop.x0 ?? scene.play?.x ?? 72;
     const px1 = playTop.x1 ?? (scene.play ? scene.play.x + scene.play.w : WORLD_W - 72);
     const pSeq = playTop.sequence || topSeq;
-    const pScale = playTop.scale ?? 0.4;
+    const pScale = playTop.scale ?? 0.58;
     tileTopRow(edgesBack, catalog, py, px0, px1, pSeq, pScale);
+    const wallH = 303 * pScale;
+    const dress = new Graphics();
+    const midX = (px0 + px1) * 0.5;
+    const span = px1 - px0;
+    dress.ellipse(midX, py + 6, span * 0.48, 14 * pScale).fill({ color: 0x000000, alpha: 0.32 });
+    const capY = py - wallH + 10 * pScale;
+    dress.moveTo(px0, capY);
+    dress.lineTo(px1, capY);
+    dress.stroke({ width: Math.max(2, 3 * pScale), color: 0xffe8c0, alpha: 0.9 });
+    dress.moveTo(px0 + 8, py - 2);
+    dress.lineTo(px1 - 8, py - 2);
+    dress.stroke({ width: 2, color: 0x6a5a48, alpha: 0.55 });
+    dress.zIndex = py - 1;
+    edgesBack.addChild(dress);
   }
 
   for (const st of scene.structures || []) {

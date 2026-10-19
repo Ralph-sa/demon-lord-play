@@ -27,9 +27,10 @@ import {
 import { Assets } from './assets.js';
 import { VfxSystem } from './vfx.js';
 import { tierFromFps } from './render/qualityPresets.js';
-import { buildArenaRoom } from './arena/ArenaRoom.js';
+import { buildArenaRoom, camClamp } from './arena/ArenaRoom.js';
 import { buildDusk1Room } from './arena/Dusk1Room.js';
-import { hudMetrics } from './ui/hudLayout.js';
+import { PlayHud } from './ui/PlayHud.js';
+import { TouchHud } from './ui/TouchHud.js';
 
 const angDiff = (a, b) => {
   let d = a - b;
@@ -106,9 +107,11 @@ export class Game {
     this.onCombatStart = null;
     app.stage.addChild(this.hud);
 
-    this.touchHud = new Graphics();
-    this.playHud = new Graphics();
-    app.stage.addChild(this.playHud, this.touchHud);
+    this.screenUi = new Container();
+    this.screenUi.label = 'screenUi';
+    this.playHud = new PlayHud();
+    this.touchHud = new TouchHud(input);
+    this.screenUi.addChild(this.playHud, this.touchHud);
     this.fgRails = [];
     this.railBaselineY = WORLD_H - 6;
 
@@ -181,9 +184,38 @@ export class Game {
     spr.anchor.set(0.5, 0.92);
     spr.animationSpeed = 0.12;
     spr.play();
+    spr.label = 'hero';
     this.p.sprite = spr;
     this.entityLayer.addChild(spr);
     this.render.bindCharacter('hero', spr, { rx: 28, ry: 10 });
+  }
+
+  snapCameraHeroScreenY(fraction = 0.6) {
+    const p = this.p;
+    const z = this.render.camera.worldZoom;
+    const vw = VIEW_W / z;
+    const vh = VIEW_H / z;
+    const targetCamY = p.y - (VIEW_H * fraction) / z;
+    const c = camClamp(p.x - vw / 2, targetCamY, z, this.sceneData);
+    this.render.camera.x = c.x;
+    this.render.camera.y = c.y;
+    this.cam.x = c.x;
+    this.cam.y = c.y;
+  }
+
+  heroDebugInfo() {
+    const p = this.p;
+    const z = this.render.camera.worldZoom ?? 1;
+    const screenY = (p.y - this.cam.y) * z;
+    return {
+      role: 'hero',
+      label: p.sprite?.label,
+      x: Math.round(p.x),
+      y: Math.round(p.y),
+      screenY: Math.round(screenY),
+      screenFraction: Math.round((screenY / VIEW_H) * 100) / 100,
+      hasHeroFrames: !!(Assets.sprites.hero_idle?.length),
+    };
   }
 
   mkProp(def) {
@@ -265,7 +297,7 @@ export class Game {
       [P.x + P.w - 110, P.y + 100, 'cultivator'],
       [P.x + 180, P.y + P.h * 0.52, 'taoist'],
       [P.x + P.w - 180, P.y + P.h * 0.52, 'taoist'],
-      [P.x + P.w * 0.5, P.y + 120, 'monk'],
+      [P.x + P.w * 0.32, P.y + 145, 'monk'],
       [P.x + 200, P.y + P.h - 110, 'monk'],
       [P.x + P.w - 200, P.y + P.h - 110, 'paladin'],
       [P.x + P.w * 0.68, P.y + P.h - 120, 'paladin'],
@@ -397,10 +429,11 @@ export class Game {
       life: 0.18,
       color: 0xfff0c0,
     });
-    if (tier >= 1) {
-      const sx = e.x - this.cam.x;
-      const sy = e.y - 60 - this.cam.y;
-      this.render.onHeavyHit(e.x, e.y - 30, sx, sy);
+    if (tier >= 2) {
+      const z = this.cam.zoom ?? this.render.camera.worldZoom ?? 1;
+      const sx = (e.x - this.cam.x) * z;
+      const sy = (e.y - 60 - this.cam.y) * z;
+      this.render.onHeavyHit(e.x, e.y - 30, sx, sy, { strong: true });
     }
     this.vfx.damageNum(e.x + rnd(-10, 10), e.y - 55, Math.round(amt), tier);
     const hs = Math.min(0.1, 0.012 + amt / 800) * (tier ? 1.3 : 1);
@@ -542,9 +575,10 @@ export class Game {
         life: 0.16,
         color: 0xfff8e8,
       });
-      if (st === 2) {
+      if (st === 2 && !this._lightHitFx) {
         this.vfx.shake = Math.max(this.vfx.shake, 6);
-        this.render.onHeavyHit(hx, hy, hx - this.cam.x, hy - this.cam.y);
+        const z = this.cam.zoom ?? this.render.camera.worldZoom ?? 1;
+        this.render.onHeavyHit(hx, hy, (hx - this.cam.x) * z, (hy - this.cam.y) * z, { strong: true });
       }
     } else if (c.id === 'sweep') {
       const P = SKILLS.sweep;
@@ -785,58 +819,18 @@ export class Game {
     this.drawTouchHud();
   }
 
-  drawOrb(g, cx, cy, r, track, trackColor, rimColor) {
-    g.circle(cx, cy, r + 6).fill({ color: 0x1a1010, alpha: 0.55 });
-    g.circle(cx, cy, r).fill({ color: rimColor, alpha: 0.9 });
-    if (track > 0.001) {
-      const a0 = -Math.PI / 2;
-      const a1 = a0 + track * Math.PI * 2;
-      g.arc(cx, cy, r - 2, a0, a1).stroke({ width: 7, color: trackColor, cap: 'round' });
-    }
-    g.circle(cx, cy, r).stroke({ width: 4, color: 0x111111 });
-  }
-
   drawPlayHud() {
-    const g = this.playHud;
-    g.clear();
     const p = this.p;
-    const hp = clamp(p.hp / 120, 0, 1);
-    const fury = clamp(this.fury / 100, 0, 1);
-    const m = hudMetrics();
-    this.drawOrb(g, m.hpX, m.hpY, 28, hp, 0xff4444, 0x882222);
-    this.drawOrb(g, m.furyX, m.furyY, 24, fury, 0xbb66ff, 0x5533aa);
-    if (this.bossActive) {
-      const bx = VIEW_W / 2 - 200;
-      g.roundRect(bx, m.bossY, 400, 14, 6).fill({ color: 0x1a0a20, alpha: 0.75 });
-      g.roundRect(bx + 2, m.bossY + 2, 396 * 0.65, 10, 4).fill({ color: 0xbb66ff, alpha: 0.95 });
-      g.roundRect(bx, m.bossY, 400, 14, 6).stroke({ width: 2, color: 0x221133, alpha: 0.9 });
-    }
-    const barY = m.barY;
-    g.roundRect(VIEW_W / 2 - 140, barY - 18, 280, 36, 8).fill({ color: 0x000000, alpha: 0.45 });
-    for (let i = 0; i < 3; i++) {
-      const x = VIEW_W / 2 - 90 + i * 90;
-      g.roundRect(x, barY - 12, 72, 24, 6).fill({ color: i === 2 ? 0xffd400 : 0x444444, alpha: i === 2 ? 0.85 : 0.55 });
-      g.roundRect(x, barY - 12, 72, 24, 6).stroke({ width: 2, color: 0x111111, alpha: 0.8 });
-    }
+    this.playHud.redraw({
+      hp: clamp(p.hp / 120, 0, 1),
+      fury: clamp(this.fury / 100, 0, 1),
+      bossActive: this.bossActive,
+      comboHighlight: this.combo,
+    });
   }
 
   drawTouchHud() {
-    const g = this.touchHud;
-    g.clear();
-    if (!this.showTouchUi()) return;
-    const T = this.input.touch;
-    const joyX = T.joy?.ox ?? 148;
-    const joyY = T.joy?.oy ?? VIEW_H - 132;
-    if (T.joy) {
-      g.circle(joyX, joyY, 75).stroke({ width: 3, color: 0xffffff, alpha: 0.35 });
-      g.circle(joyX + T.jx * 70, joyY + T.jy * 70, 32).fill({ color: 0xffd400, alpha: 0.55 });
-    } else {
-      g.circle(joyX, joyY, 75).stroke({ width: 2, color: 0xffffff, alpha: 0.28 });
-    }
-    for (const b of this.input.TB) {
-      g.circle(b.x, b.y, b.r).fill({ color: 0x000000, alpha: 0.45 });
-      g.circle(b.x, b.y, b.r).stroke({ width: 3, color: 0xffd400, alpha: 0.85 });
-    }
+    this.touchHud.redraw(this.showTouchUi());
   }
 
   setQuality(name) {
@@ -934,11 +928,13 @@ export class Game {
       this.actorLayer.filters = [this.render.actorBoost, this.render.lighting.hitFlashFilter];
       this.render.post.setQuality(this.quality);
     } else if (mode === 'heavy_hit' || mode === 'combat_hit' || mode === 'desktop_attack') {
-      const enemy = this.enemies.find((e) => !e.dead);
+      this._lightHitFx = mode === 'desktop_attack';
+      const enemy = this.enemies.find((e) => !e.dead && e.x > p.x + 40) || this.enemies.find((e) => !e.dead);
       if (enemy) {
-        p.x = enemy.x - 55;
-        p.y = enemy.y + 8;
+        p.x = enemy.x - 72;
+        p.y = enemy.y + 6;
         p.face = 1;
+        enemy.sprite.visible = true;
       }
       p.cast = { id: 'fist', t: 0.2, step: 2, ang: 0, wind: 0.1, rec: 0.2, done: false };
       p.anim = 'attack';
@@ -952,22 +948,26 @@ export class Game {
         enemy.hit = 0.2;
         enemy.sprite.tint = 0xffffff;
         this.vfx.hitStarburst(enemy.x, enemy.y - 28, 0, true);
-        this.vfx.flash = 0.35;
+        this.vfx.flash = 0.1;
+        const z = this.render.camera.worldZoom;
+        const hx = enemy.x - 8;
+        const hy = enemy.y - 26;
+        this.render.onHeavyHit(hx, hy, (hx - this.cam.x) * z, (hy - this.cam.y) * z, { strong: true });
       }
-      const hx = p.x + 60;
-      const hy = p.y - 30;
-      this.render.onHeavyHit(hx, hy, hx - this.cam.x, hy - this.cam.y);
-      this.render.lighting.spawnDynamic({
-        x: hx,
-        y: hy,
-        radius: 130,
-        intensity: 1,
-        life: 0.22,
-        color: 0xfff8e8,
-      });
-    }
-    if (mode === 'opening' || mode === 'desktop_opening') {
-      this.render.camera.snapTo(p.x, p.y - 55);
+      this._lightHitFx = false;
+    } else if (mode === 'opening' || mode === 'desktop_opening') {
+      for (const e of this.enemies) {
+        e.sprite.visible = false;
+      }
+      p.sprite.visible = true;
+      p.sprite.zIndex = 900000;
+      p.sprite.tint = 0xffffff;
+      const fr = Assets.sprites.hero_idle;
+      if (fr?.length) {
+        p.sprite.textures = fr;
+        p.sprite.play();
+      }
+      this.snapCameraHeroScreenY(0.6);
     } else if (mode === 'room_compare' || mode === 'lights_night') {
       this.render.camera.snapOverview();
     } else {
